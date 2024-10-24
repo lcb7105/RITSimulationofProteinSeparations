@@ -13,7 +13,7 @@ describe('OneDE', () => {
     expect(screen.getByText('Acrylamide %:')).toBeInTheDocument();
 
     // Check if the files and upload buttons are rendered
-    expect(screen.getByText('Select Files')).toBeInTheDocument();
+    expect(screen.getByText('Select Folder')).toBeInTheDocument();
     expect(screen.getByText('Upload')).toBeInTheDocument();
 
     // Check if the "Add Well" and "Drop Well" buttons are rendered

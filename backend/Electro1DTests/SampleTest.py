@@ -72,5 +72,24 @@ class TestSample(unittest.TestCase):
         self.assertFalse(self.sample_obj.fill_switch)
         self.assertTrue(self.sample_obj.empty_switch)
 
+    def test_draw_sample(self):
+        self.sample_obj.change_on = True
+        self.sample_obj.fill_counter = 1
+        self.sample_obj.fill_switch = True
+        self.sample_obj.draw_sample(self)
+        self.assertEqual(self.sample_obj.samp_y, -1)
+        self.assertEqual(self.sample_obj.samp_height, 1)
+        self.assertEqual(self.sample_obj.fill_counter, 0)
+        self.sample_obj.draw_sample(self)
+        self.assertEqual(self.sample_obj.fill_counter, 1)
+        self.sample_obj.fill_switch = False
+        self.sample_obj.empty_switch = True
+        self.sample_obj.samp_y = 0
+        self.sample_obj.draw_sample(self)
+        self.assertEqual(self.sample_obj.samp_y, 1)
+        self.assertEqual(self.sample_obj.fill_counter, 0)
+        self.assertFalse(self.sample_obj.change_on)
+        self.assertEqual(self.sample_obj.samp_height, 0)
+
 if __name__ == '__main__':
     unittest.main()

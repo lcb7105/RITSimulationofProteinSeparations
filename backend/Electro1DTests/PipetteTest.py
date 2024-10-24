@@ -32,12 +32,23 @@ class TestPipette(unittest.TestCase):
         self.assertTrue(self.pipette_obj.dropped)
         self.assertFalse(self.pipette_obj.emptied)
         self.assertFalse(self.pipette_obj.retracted)
+        self.assertTrue(self.pipette_obj.incr_position())
+        self.assertTrue(self.pipette_obj.emptied)
+        self.assertTrue(self.pipette_obj.incr_position())
+        self.assertFalse(self.pipette_obj.retracted)
+        self.assertFalse(self.pipette_obj.incr_position())
+        self.assertTrue(self.pipette_obj.retracted)
 
     def test_fill_well(self):
         # Assuming fill_well method modifies the internal state, test for side effects
         self.pipette_obj.fill_well(None)
         self.assertTrue(self.pipette_obj.dropped)
         self.assertFalse(self.pipette_obj.emptied)
+        self.assertFalse(self.pipette_obj.retracted)
+        self.pipette_obj.emptied = True
+        self.pipette_obj.fill_well(None)
+        self.assertTrue(self.pipette_obj.dropped)
+        self.assertTrue(self.pipette_obj.emptied)
         self.assertFalse(self.pipette_obj.retracted)
 
     def test_set_sample(self):
