@@ -1,4 +1,4 @@
-function TwoDE() {
+const TwoDE = () => {
     return (
         <div>
             <h1 className="page-header">2DE page</h1>

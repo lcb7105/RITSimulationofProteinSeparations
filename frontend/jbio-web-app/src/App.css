@@ -251,7 +251,7 @@ button {
   transition: padding-left 0.3s ease;
 }
 
-.navbar {
+/*.navbar {
   display: flex;
   position: fixed;
   margin-top: -90px;
@@ -273,7 +273,7 @@ button {
   text-decoration: none;
   padding-top: 90px;
   margin-top: -90px;
-}
+}*/
 
 .section-header {
   color: var(--secondary-text-color);

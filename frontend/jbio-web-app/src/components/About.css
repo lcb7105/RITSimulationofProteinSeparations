@@ -62,4 +62,21 @@
     margin: 0 20px 20px 0;
     visibility: hidden; /*Change this to become visible*/
 }
+section{
+    text-align: center;
+}
+
+.developer-section, .about-section {
+    display: flex;
+    justify-content: space-around;
+}
+
+.feat-box{
+    text-align: center;
+    border: 1px solid grey;
+    border-radius: 100px;
+    width: 200px;
+    height: 200px;
+
+}
 /*Also add title in js file*/

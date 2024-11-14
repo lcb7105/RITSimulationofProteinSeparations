@@ -10,15 +10,15 @@ import './About.css';
 function About() {
     return (
         <div>
-            <div className="navbar">
+            {/*<div className="navbar">
                 <a href="#project-purpose"><h2 className="navbar-header" data-testId = 'projPurpose-nav'>Project Purpose</h2></a>
                 <a href="#commercial-use"><h2 className="navbar-header" data-testId = 'commUse-nav'>Commercial Use</h2></a>
                 <a href="#project-owner"><h2 className="navbar-header" data-testId = 'projOwner-nav'>Project Owner</h2></a>
                 <a href="#current-developers"><h2 className="navbar-header" data-testId = 'currDevs-nav'>Current Developers</h2></a>
                 <a href="#historic-developers"><h2 className="navbar-header" data-testId = 'historicDevs-nav'>Historic Developers</h2></a>
             </div>
-      
-            <h1 className="page-header" data-testId = 'projPurpose-header'>About</h1>
+
+            <h1 className="page-header" data-testId='projPurpose-header'>About</h1>
             <h2 className="section-header" id="project-purpose">Project Purpose</h2>
             <p>
                 JBioFramework (JBF) is a set of chemical simulations frequently used in chemistry,
@@ -103,7 +103,75 @@ function About() {
                         Bio here...
                     </p>
                 </div>
-            </div>
+            </div>*/}
+            <section id={"about-section"}>
+                <h2>About This Simulator</h2>
+                <div className="about-section">
+                    <div className={"column-content"}>
+                        <h3 className={"header-green"}>Project Purpose</h3>
+                        <p>
+                            JBioFramework is a set of chemical simulations frequently used
+                        </p>
+                    </div>
+                    <div className={"column-content"}>
+                        <h3 className={"header-green"}>Commercial Use</h3>
+                        <p>
+                            JBioFramework is a set of chemical simulations frequently used
+                        </p>
+                    </div>
+                    <div className={"column-content"}>
+                        <h3 className={"header-green"}>Project Owner</h3>
+                        <div className={"feat-box"}>
+                            <h4>Name</h4>
+                        </div>
+                        <p>
+                            JBioFramework is a set of chemical simulations frequently used
+                        </p>
+                    </div>
+                </div>
+            </section>
+            <section id={"past-developers"}>
+                <h2>Past Developers</h2>
+                <div className={"developer-section"}>
+                    <div className={"feat-box"}>
+                        <h3>Developer Name</h3>
+                        <p>Title</p>
+                    </div>
+                    <div className={"feat-box"}>
+                        <h3>Developer Name</h3>
+                        <p>Title</p>
+                    </div>
+                    <div className={"feat-box"}>
+                        <h3>Developer Name</h3>
+                        <p>Title</p>
+                    </div>
+                    <div className={"feat-box"}>
+                        <h3>Developer Name</h3>
+                        <p>Title</p>
+                    </div>
+                </div>
+            </section>
+            <section id={"current-developers"}>
+                <h2>Current Developers</h2>
+                <div className={"developer-section"}>
+                    <div className={"feat-box"}>
+                        <h3>Developer Name</h3>
+                        <p>Title</p>
+                    </div>
+                    <div className={"feat-box"}>
+                        <h3>Developer Name</h3>
+                        <p>Title</p>
+                    </div>
+                    <div className={"feat-box"}>
+                        <h3>Developer Name</h3>
+                        <p>Title</p>
+                    </div>
+                    <div className={"feat-box"}>
+                        <h3>Developer Name</h3>
+                        <p>Title</p>
+                    </div>
+                </div>
+            </section>
         </div>
     );
 }
