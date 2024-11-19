@@ -4,10 +4,23 @@
     align-self: flex-end;
 }
 
+.navbar a:hover{
+    color: var(--secondary-header-color) !important;
+}
+
+.navbar a{
+    color: white;
+    text-decoration: none;
+}
+
 .navbar ul li{
     list-style: none;
     margin: auto;
     justify-content: space-around;
+}
+
+.navbar a.active{
+    color: var(--primary-header-color) !important;
 }
 
 #nav-logo{

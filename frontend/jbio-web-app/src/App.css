@@ -288,3 +288,7 @@ button {
   right: 2em;
   z-index: 1000;
 }
+
+.navbar li.active a{
+  color: var(--primary-header-color);
+}

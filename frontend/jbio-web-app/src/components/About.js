@@ -177,3 +177,5 @@ function About() {
 }
 
 export default About;
+export const aboutActive = true;
+export const instActive = false;

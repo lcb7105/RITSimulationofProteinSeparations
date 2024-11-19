@@ -6,6 +6,7 @@ import Navbar from './components/Navbar.js';
 import Router from './Router.js';
 import { DarkToggle } from './components/DarkToggle.js';
 import './App.css';
+import {BrowserRouter} from "react-router-dom";
 
 
 function App() {
@@ -16,7 +17,9 @@ function App() {
     return (
         <div className="app-container" data-theme={isDark ? "dark" : "light"}>
             {/*<Sidebar isOpen={isSidebarOpen} toggle={() => setIsSidebarOpen(!isSidebarOpen)} isDark={isDark} />*/}
-            <Navbar />
+            <BrowserRouter>
+                <Navbar />
+            </BrowserRouter>
             <Router isOpen={isSidebarOpen} />
             <DarkToggle isChecked={isDark} handleChange={() => setIsDark(!isDark)} />
         </div>

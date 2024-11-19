@@ -26,6 +26,8 @@ code {
   --highlight-color: #6f8ce4;
   --primary-text-color: #0a0a0a;
   --secondary-text-color: royalblue;
+  --primary-header-color: #d0959b;
+  --secondary-header-color: #19814a;
   --toggle-bg: #f0eb9d;
   --toggle-fg: #ffd000;
 
@@ -58,6 +60,8 @@ code {
   --highlight-color: #7289da;
   --primary-text-color: #f6f6f6;
   --secondary-text-color: #7289da;
+  --primary-header-color: #d0959b;
+  --secondary-header-color: #19814a;
   --toggle-bg: #283452;
   --toggle-fg: #00a6ff;
   --check: #ff0000;
