@@ -1,0 +1,23 @@
+.pageHeaderInstructions {
+    text-align: center;
+}
+
+.flexBoxContainerInstructions {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+section p {
+    text-indent: 4ch;
+    text-align: justify;
+}
+
+section h2 {
+    text-align: center;
+}
+
+section {
+    margin: 1%;
+}
