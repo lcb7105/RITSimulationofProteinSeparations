@@ -9,12 +9,12 @@
     flex-wrap: wrap;
 }
 
-section p {
+.oneDimensionalInstructions p, .twoDimensionalInstructions p {
     text-indent: 4ch;
     text-align: justify;
 }
 
-section h2 {
+.oneDimensionalInstructions h2, .twoDimensionalInstructions h2 {
     text-align: center;
 }
 
