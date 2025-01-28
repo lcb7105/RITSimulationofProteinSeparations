@@ -18,12 +18,12 @@ section h2 {
     text-align: center;
 }
 
-section {
+.oneDimensionalInstructions, .twoDimensionalInstructions {
     width: 45%;
 }
 
 @media screen and (max-width: 600px) {
-    section {
+    .oneDimensionalInstructions, .twoDimensionalInstructions {
         width: 94.11%;
     }
 
