@@ -1,0 +1,8 @@
+body {
+    margin: 0;
+    /*font-family: "Andada Pro", serif;*/
+    font-family: 'PPFragment-SansRegular', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+
+}

@@ -1,0 +1,16 @@
+@font-face {
+    /*font-family: 'Andada Pro', serif;*/
+    /*src: url('../public/fonts/AndadaPro-VariableFont_wght.ttf') format('truetype');*/
+
+    font-family: 'PPFragment-SansRegular';
+    src: url('../public/fonts/PPFragment-SansRegular.woff2') format('woff2');
+}
+
+.App {
+    text-align: center;
+    transition: margin-left 0.3s ease, background-color 0.25s ease-in-out;
+}
+
+.navbar li.active a{
+    color: var(--primary-header-color);
+}
