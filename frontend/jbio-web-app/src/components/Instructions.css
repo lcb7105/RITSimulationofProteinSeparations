@@ -19,5 +19,16 @@ section h2 {
 }
 
 section {
-    margin: 1%;
+    width: 45%;
 }
+
+@media screen and (max-width: 600px) {
+    section {
+        width: 94.11%;
+    }
+
+    .flexBoxContainerInstructions {
+        flex-direction: column;
+    }
+}
+  
