@@ -1,11 +1,11 @@
 @font-face {
-    /*font-family: 'Andada Pro', serif;*/
-    /*src: url('../public/fonts/AndadaPro-VariableFont_wght.ttf') format('truetype');*/
-
-    font-family: 'PPFragment-SansRegular';
-    src: url('../public/fonts/PPFragment-SansRegular.woff2') format('woff2');
+    font-family: 'Andada Pro';
+    src: url('../public/fonts/AndadaPro-Regular.ttf') format('truetype');
 }
-
+@font-face {
+    font-family: 'Varela Round';
+    src: url('../public/fonts/VarelaRound-Regular.ttf') format('truetype');
+}
 .App {
     text-align: center;
     transition: margin-left 0.3s ease, background-color 0.25s ease-in-out;
