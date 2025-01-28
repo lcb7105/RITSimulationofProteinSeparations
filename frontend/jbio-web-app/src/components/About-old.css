@@ -1,0 +1,89 @@
+.profile-icon {
+    border-radius: 50%;
+    width: 200px;
+    height: 200px;
+    background: red;
+    margin: 10px;
+    justify-content: center;
+}
+
+.grid-item {
+    padding: 0 5px;
+    border: 1px solid var(--highlight-color);
+    border-radius: 5px;
+    box-shadow: 5px 10px var(--highlight-color);
+    margin: 0 20px 20px 0;
+  }
+
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 20px; 
+}
+
+.grid-item-owner {
+    padding: 0 10px;
+    border: 1px solid var(--highlight-color);
+    border-radius: 5px;
+    box-shadow: 5px 10px var(--highlight-color);
+    margin: 0 20px 20px 0;
+    width: 500px;
+}
+
+.profile-title {
+    font-size: 20px;
+    text-align: center;
+}
+
+.historic-icon {
+    border-radius: 50%;
+    width: 75px;
+    height: 75px;
+    background: red;
+    margin: 10px;
+    display: flex;
+    justify-content: center;
+}
+
+.historic-title {
+    font-size: 16px;
+}
+
+.historic-grid {
+    display: grid;
+    grid-template-columns: 4fr 4fr 4fr 4fr;
+}
+
+.historic-grid-item {
+    padding: 0 10px;
+    border: 1px solid #6f8ce4;
+    border-radius: 5px;
+    box-shadow: 5px 10px #6f8ce4;
+    margin: 0 20px 20px 0;
+    visibility: hidden; /*Change this to become visible*/
+}
+section{
+    text-align: center;
+}
+
+.developer-section, .about-section {
+    display: flex;
+    justify-content: space-around;
+}
+
+.feat-box{
+    text-align: center;
+}
+
+.feat-image{
+    border: 1px solid #e0e0e0;
+    background-color: #e0e0e0;
+    border-radius: 100px;
+    width: 200px;
+    height: 200px;
+}
+
+.about-section .column-content{
+    min-width: 33%;
+}
+/*Also add title in js file*/
