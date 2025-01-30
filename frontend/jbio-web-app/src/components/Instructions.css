@@ -9,9 +9,12 @@
     flex-wrap: wrap;
 }
 
-.oneDimensionalInstructions p, .twoDimensionalInstructions p {
-    text-indent: 4ch;
-    text-align: justify;
+.oneDimensionalInstructions p, .twoDimensionalInstructions p, .oneDimensionalInstructions ol, .twoDimensionalInstructions ol, .oneDimensionalInstructions li, .twoDimensionalInstructions li {
+    text-align: left;
+}
+
+.oneDimensionalInstructions ol, .twoDimensionalInstructions ol {
+    padding: 0;
 }
 
 .oneDimensionalInstructions h2, .twoDimensionalInstructions h2 {
