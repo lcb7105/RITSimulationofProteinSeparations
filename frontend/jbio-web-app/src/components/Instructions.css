@@ -13,10 +13,6 @@
     text-align: left;
 }
 
-.oneDimensionalInstructions ol, .twoDimensionalInstructions ol {
-    padding: 0;
-}
-
 .oneDimensionalInstructions h2, .twoDimensionalInstructions h2 {
     text-align: center;
 }
