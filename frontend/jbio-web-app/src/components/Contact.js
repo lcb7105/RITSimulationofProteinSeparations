@@ -31,7 +31,7 @@ function Contact() {
 
             <section className="pastTeamMembers">
                 
-                <h2 className="section-header">Past Team Members</h2>
+                <h2>Past Team Members</h2>
                 <div>
                     <h3>Amr Mualla</h3>
                     <ul>
