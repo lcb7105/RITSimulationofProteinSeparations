@@ -1,3 +1,16 @@
+
+import mark from "./about_images/Mark_Elliot_Zuckerberg.jpg";
+import paul from './about_images/PaulPhoto.jpg';
+import beck from "./about_images/Beck_Anderson.png";
+import chase from "./about_images/Chase_Amador.png";
+import amr from "./about_images/Amr_Mualla.png";
+import landon from "./about_images/Landon_Heatly.png";
+import mack from './about_images/Mack_Leonard.png';
+
+import placeholder from './about_images/placeholder.png';
+
+import './Contact.css';
+
 function Contact() {
     return (
         <div>
@@ -81,6 +94,7 @@ function Contact() {
 
                 <div>
                     <h3>Beck Anderson</h3>
+                    <img className="profile-icon" src={beck} alt="Beck Anderson-pic"/>
                     <ul>
                         <li>RIT Email: <a href="mailto:bea1935@rit.edu" target="_blank" title="Click to Email Beck using their RIT email">bea1935@rit.edu</a></li>
                         <li>Phone: <a href="tel:+17166402894" title="Click to call Beck if you're on your phone">+1(716)640-2894</a></li>
