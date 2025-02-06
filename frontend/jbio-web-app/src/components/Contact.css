@@ -1,0 +1,39 @@
+.pageHeaderContact {
+    text-align: center;
+}
+
+.coachSponsorContactContainer {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.coachSponsorContactContainer div {
+    width: 45%;
+}
+
+.coachSponsorContactContainer img, .currentTeamMembers img, .pastTeamMembers img {
+    width: 100%;
+    max-width: 200px;
+    height: auto;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    overflow: hidden;
+    object-fit: cover;
+    
+}
+
+.coachSponsorContactContainer ul, .coachSponsorContactContainer li {
+    text-align: left;
+}
+
+@media screen and (max-width: 600px) {
+    .coachSponsorContactContainer div, .coachSponsorContactContainer div {
+        width: 94.11%;
+    }
+
+    .coachSponsorContactContainer {
+        flex-direction: column;
+    }
+}

@@ -18,13 +18,13 @@ import './Contact.css';
 function Contact() {
     return (
         <div>
-            <h1 className="page-header">Contact</h1>
+            <h1 className="pageHeaderContact">Contact</h1>
             <section className="coachSponsorContactContainer">
                 <div>
                     <h2>Team Coach</h2>
+                    <img className="profile-icon" src={placeholder} alt="Mark Wilson-pic"></img>
                     <h3>Mark Wilson</h3>
                     <hr></hr>
-                    <img className="profile-icon" src={placeholder} alt="Mark Wilson-pic"></img>
                     <ul>
                         <li>RIT Email: <a href="mailto:mwvse@rit.edu" target="_blank" title="Click to Email Mark using his RIT email">mwvse@rit.edu</a></li>
                         <li>Personal Email: <a href="mailto:mwilson1962@gmail.com" target="_blank" title="Click to Email Mark using his PERSONAL email">mwilson1962@gmail.com</a></li>
@@ -32,9 +32,9 @@ function Contact() {
                 </div>
                 <div>
                     <h2>Project Sponsor</h2>
+                    <img className="profile-icon" src={paul} alt="Paul Craig-pic"></img>
                     <h3>Dr. Paul Craig</h3>
                     <hr></hr>
-                    <img className="profile-icon" src={paul} alt="Paul Craig-pic"></img>
                     <ul>
                         <li>RIT Email: <a href="mailto:pac8612@rit.edu" target="_blank" title="Click to Email Paul using his RIT email">pac8612@rit.edu</a></li>
                         <li>Phone: <a href="tel:+15854756145" title="Click to call Paul if you're on your phone">+1(585)475-6145</a></li>
