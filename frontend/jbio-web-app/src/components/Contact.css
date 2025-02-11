@@ -1,39 +1,80 @@
-.pageHeaderContact {
+.pageHeaderContact, .contactPage h2, .coachSponsorContactContainer ul {
     text-align: center;
+    position: relative;
 }
 
-.coachSponsorContactContainer {
+.contactPage {
+    margin: 2%;
+}
+
+.contactPage a {
+    word-wrap: break-word;
+}
+
+.coachSponsorContactContainer, .currentTeamMembers, .pastTeamMembers {
     display: flex;
     justify-content: space-evenly;
-    align-items: center;
+    align-items: stretch;
     flex-wrap: wrap;
+    gap: 1%;
 }
 
-.coachSponsorContactContainer div {
+.coachSponsorContactContainer div, .currentTeamMembers div, .pastTeamMembers div {
     width: 45%;
+    min-height: fit-content;
+    border: 1px solid black;
+    border-radius: 25px;
+    padding: 11px;
+}
+
+.sideTabletDesktop {
+    display: inline-block;
+    vertical-align: top;
+    width: 60%;
 }
 
 .coachSponsorContactContainer img, .currentTeamMembers img, .pastTeamMembers img {
     width: 100%;
-    max-width: 200px;
+    max-width: 150px;
     height: auto;
     aspect-ratio: 1;
     border-radius: 50%;
     overflow: hidden;
     object-fit: cover;
-    
+    margin-right: 11px;
 }
 
-.coachSponsorContactContainer ul, .coachSponsorContactContainer li {
+.contactPage li {
     text-align: left;
 }
 
-@media screen and (max-width: 600px) {
-    .coachSponsorContactContainer div, .coachSponsorContactContainer div {
-        width: 94.11%;
+/* Desktop and Tablets */
+@media screen and (max-width: 910px) {
+    .coachSponsorContactContainer img, .currentTeamMembers img, .pastTeamMembers img {
+        margin-right: 0;
     }
 
-    .coachSponsorContactContainer {
+    .sideTabletDesktop {
+        width: 94.11%;
+    }
+}
+
+/* Mobile and Tablets */
+@media screen and (max-width: 600px) {
+    .coachSponsorContactContainer div, .currentTeamMembers div, .pastTeamMembers div {
+        width: 94.11%;
+        margin: 2% auto;
+    }
+
+    .coachSponsorContactContainer, .pastTeamMembers, .currentTeamMembers {
         flex-direction: column;
+    }
+
+    .coachSponsorContactContainer img, .currentTeamMembers img, .pastTeamMembers img {
+        margin-right: 0;
+    }
+
+    .sideTabletDesktop {
+        width: 100%;
     }
 }
