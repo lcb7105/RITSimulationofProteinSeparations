@@ -17,40 +17,66 @@ import './Contact.css';
 
 function Contact() {
     return (
-        <div>
+        <div className='contactPage'>
             <h1 className="pageHeaderContact">Contact</h1>
             <section className="coachSponsorContactContainer">
                 <div>
                     <h2>Team Coach</h2>
                     <img className="profile-icon" src={placeholder} alt="Mark Wilson-pic"></img>
-                    <h3>Mark Wilson</h3>
-                    <hr></hr>
-                    <ul>
-                        <li>RIT Email: <a href="mailto:mwvse@rit.edu" target="_blank" title="Click to Email Mark using his RIT email">mwvse@rit.edu</a></li>
-                        <li>Personal Email: <a href="mailto:mwilson1962@gmail.com" target="_blank" title="Click to Email Mark using his PERSONAL email">mwilson1962@gmail.com</a></li>
-                    </ul>
+                    <span className='sideTabletDesktop'>
+                        <h3>Mark Wilson</h3>
+                        <hr></hr>
+                        <ul>
+                            <li>RIT Email: 
+                                <ul>
+                                    <li><a href="mailto:mwvse@rit.edu" target="_blank" title="Click to Email Mark using his RIT email">mwvse@rit.edu</a></li>    
+                                </ul>    
+                            </li>
+                            <li>Email: 
+                                <ul>
+                                    <li><a href="mailto:mwilson1962@gmail.com" target="_blank" title="Click to Email Mark using his PERSONAL email">mwilson1962@gmail.com</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </span>
                 </div>
                 <div>
                     <h2>Project Sponsor</h2>
                     <img className="profile-icon" src={paul} alt="Paul Craig-pic"></img>
-                    <h3>Dr. Paul Craig</h3>
-                    <hr></hr>
-                    <ul>
-                        <li>RIT Email: <a href="mailto:pac8612@rit.edu" target="_blank" title="Click to Email Paul using his RIT email">pac8612@rit.edu</a></li>
-                        <li>Phone: <a href="tel:+15854756145" title="Click to call Paul if you're on your phone">+1(585)475-6145</a></li>
-                    </ul>
+                    <span className='sideTabletDesktop'>
+                        <h3>Dr. Paul Craig</h3>
+                        <hr></hr>
+                        <ul>
+                            <li>RIT Email: 
+                                <ul>
+                                    <li><a href="mailto:pac8612@rit.edu" target="_blank" title="Click to Email Paul using his RIT email">pac8612@rit.edu</a></li>
+                                </ul>    
+                            </li>
+                            <li>Phone: 
+                                <ul>
+                                    <li><a href="tel:+15854756145" title="Click to call Paul if you're on your phone">+1(585)475-6145</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </span>
                 </div>
             </section>
-
-            <section className="currentTeamMembers">
             <h2>Current Team Members</h2>
+            <section className="currentTeamMembers">
                 <div>
                     <img className="profile-icon" src={toula} alt="Toula Elwell-pic"></img>
                     <h3>Toula Elwell</h3>
                     <hr></hr>
                     <ul>
-                        <li>RIT Email: <a href="mailto:tae9467@rit.edu" target="_blank" title="Click to Email Toula using her RIT email">tae9467@rit.edu</a></li>
-                        <li>Phone: <a href="tel:+15852002069" title="Click to call Toula if you're on your phone">+1(585)200-2069</a></li>
+                        <li>RIT Email: 
+                            <ul>
+                                <li><a href="mailto:tae9467@rit.edu" target="_blank" title="Click to Email Toula using her RIT email">tae9467@rit.edu</a></li>
+                            </ul></li>
+                        <li>Phone: 
+                            <ul>
+                                <li><a href="tel:+15852002069" title="Click to call Toula if you're on your phone">+1(585)200-2069</a></li>
+                            </ul>    
+                        </li>
                     </ul>
                 </div>
 
@@ -90,14 +116,12 @@ function Contact() {
                     <hr></hr>
                     <ul>
                         <li>RIT Email: <a href="mailto:jmm5915@rit.edu" target="_blank" title="Click to Email Jackson using his RIT email">jmm5915@rit.edu</a></li>
-                        <li>Phone: <a href="tel:+1" title="Click to call Jackson if you're on your phone">+1</a></li>
+                        <li>Phone: <a href="tel:+16037147265" title="Click to call Jackson if you're on your phone">+1(603)714-7265</a></li>
                     </ul>
                 </div>
             </section>
-
+            <h2>Past Team Members</h2>
             <section className="pastTeamMembers">
-                
-                <h2>Past Team Members</h2>
                 <div>
                     <img className="profile-icon" src={amr} alt="Amr Mualla-pic"></img>
                     <h3>Amr Mualla</h3>
