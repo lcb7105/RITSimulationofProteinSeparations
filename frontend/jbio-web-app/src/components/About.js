@@ -6,6 +6,11 @@ import landon from "./about_images/Landon_Heatly.png";
 import mack from './about_images/Mack_Leonard.png';
 import placeholder from './about_images/placeholder.png';
 import './About.css';
+import {render} from "@testing-library/react";
+const devboxstyle = {
+    display: "flex",
+    justifyContent: "space-around"
+};
 
 function About() {
     return (
@@ -110,7 +115,7 @@ function About() {
                     <div className={"column-content"}>
                         <h3 className={"header-green"}>Project Purpose</h3>
                         <p>
-                            JBioFramework is a set of chemical simulations frequently used
+                            JBioFramework (JBF) is a set of chemical simulations frequently used in chemistry, biochemistry, and proteomics research. It's main purpose is to allow for simplified simulation of proteins for academic and research opportunities. It is owned and operated by the RIT College of Science under the watch of Paul Craig. It is continuously being worked on with collaboration between the RIT College of Science and the RIT Software Engineering Department.
                         </p>
                     </div>
                     <div className={"column-content"}>
@@ -121,12 +126,17 @@ function About() {
                     </div>
                     <div className={"column-content"}>
                         <h3 className={"header-green"}>Project Owner</h3>
-                        <div className={"feat-box"}>
-                            <h4>Name</h4>
+                        <div style={devboxstyle}>
+                            <div className={"feat-box"}>
+                                <div className={"feat-image"}></div>
+                                <div className={"feat-attr"}>
+                                    <h3>Name</h3>
+                                </div>
+                            </div>
+                            <p>
+                                Dr. Paul Craig received his B.S. in Chemistry from Oral Roberts University in 1979, and his Ph.D. in Biological Chemistry from The University of Michigan in 1985. Following a post-doc at Henry Ford Hospital (biophysical chemistry of blood clotting; 1985-1988), he spent five years as an analytical biochemistry at BioQuant, Inc., in Ann Arbor, Michigan before joining RIT in 1993.
+                            </p>
                         </div>
-                        <p>
-                            JBioFramework is a set of chemical simulations frequently used
-                        </p>
                     </div>
                 </div>
             </section>
@@ -134,20 +144,32 @@ function About() {
                 <h2>Past Developers</h2>
                 <div className={"developer-section"}>
                     <div className={"feat-box"}>
-                        <h3>Developer Name</h3>
-                        <p>Title</p>
+                        <div className={"feat-image"}></div>
+                        <div className={"feat-attr"}>
+                            <h3>Developer Name</h3>
+                            <p>Title</p>
+                        </div>
                     </div>
                     <div className={"feat-box"}>
-                        <h3>Developer Name</h3>
-                        <p>Title</p>
+                        <div className={"feat-image"}></div>
+                        <div className={"feat-attr"}>
+                            <h3>Developer Name</h3>
+                            <p>Title</p>
+                        </div>
                     </div>
                     <div className={"feat-box"}>
-                        <h3>Developer Name</h3>
-                        <p>Title</p>
+                        <div className={"feat-image"}></div>
+                        <div className={"feat-attr"}>
+                            <h3>Developer Name</h3>
+                            <p>Title</p>
+                        </div>
                     </div>
                     <div className={"feat-box"}>
-                        <h3>Developer Name</h3>
-                        <p>Title</p>
+                        <div className={"feat-image"}></div>
+                        <div className={"feat-attr"}>
+                            <h3>Developer Name</h3>
+                            <p>Title</p>
+                        </div>
                     </div>
                 </div>
             </section>
@@ -155,20 +177,32 @@ function About() {
                 <h2>Current Developers</h2>
                 <div className={"developer-section"}>
                     <div className={"feat-box"}>
-                        <h3>Developer Name</h3>
-                        <p>Title</p>
+                        <div className={"feat-image"}></div>
+                        <div className={"feat-attr"}>
+                            <h3>Developer Name</h3>
+                            <p>Title</p>
+                        </div>
                     </div>
                     <div className={"feat-box"}>
-                        <h3>Developer Name</h3>
-                        <p>Title</p>
+                        <div className={"feat-image"}></div>
+                        <div className={"feat-attr"}>
+                            <h3>Developer Name</h3>
+                            <p>Title</p>
+                        </div>
                     </div>
                     <div className={"feat-box"}>
-                        <h3>Developer Name</h3>
-                        <p>Title</p>
+                        <div className={"feat-image"}></div>
+                        <div className={"feat-attr"}>
+                            <h3>Developer Name</h3>
+                            <p>Title</p>
+                        </div>
                     </div>
                     <div className={"feat-box"}>
-                        <h3>Developer Name</h3>
-                        <p>Title</p>
+                        <div className={"feat-image"}></div>
+                        <div className={"feat-attr"}>
+                            <h3>Developer Name</h3>
+                            <p>Title</p>
+                        </div>
                     </div>
                 </div>
             </section>

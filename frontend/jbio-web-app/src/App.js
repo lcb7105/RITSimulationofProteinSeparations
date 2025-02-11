@@ -6,7 +6,11 @@ import Navbar from './components/Navbar.js';
 import Router from './Router.js';
 import { DarkToggle } from './components/DarkToggle.js';
 import './App.css';
-import {BrowserRouter} from "react-router-dom";
+import {BrowserRouter, Route, Routes} from "react-router-dom";
+import Contact from "./components/Contact";
+import About from "./components/About";
+import Instructions from "./components/Instructions";
+import Layout from "./Layout";
 
 
 function App() {
@@ -15,14 +19,23 @@ function App() {
     const [isDark, setIsDark] = useLocalStorage('isDark', preference);
 
     return (
-        <div className="app-container" data-theme={isDark ? "dark" : "light"}>
-            {/*<Sidebar isOpen={isSidebarOpen} toggle={() => setIsSidebarOpen(!isSidebarOpen)} isDark={isDark} />*/}
-            <BrowserRouter>
-                <Navbar />
-            </BrowserRouter>
-            <Router isOpen={isSidebarOpen} />
-            <DarkToggle isChecked={isDark} handleChange={() => setIsDark(!isDark)} />
-        </div>
+        // <div className="app-container" data-theme={isDark ? "dark" : "light"}>
+        //     {/*<Sidebar isOpen={isSidebarOpen} toggle={() => setIsSidebarOpen(!isSidebarOpen)} isDark={isDark} />*/}
+        //     <BrowserRouter>
+        //         <Router isOpen={isSidebarOpen} />
+        //     </BrowserRouter>
+        //     <DarkToggle isChecked={isDark} handleChange={() => setIsDark(!isDark)} />
+        // </div>
+
+        <BrowserRouter>
+            <Routes>
+                <Route path="/" element={<Layout/>}>
+                    <Route index element={<About/>}/>
+                    <Route path="instructions" element={<Instructions />}/>
+                    <Route path="contact" element={<Contact/>}/>
+                </Route>
+            </Routes>
+        </BrowserRouter>
     );
 }
 
