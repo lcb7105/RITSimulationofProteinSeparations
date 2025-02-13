@@ -5,6 +5,7 @@
 
 .contactPage {
     margin: 2%;
+    box-sizing: border-box;
 }
 
 .contactPage a {
@@ -25,6 +26,10 @@
     border: 1px solid black;
     border-radius: 25px;
     padding: 11px;
+}
+
+.pastTeamMembers {
+    row-gap: 11px;
 }
 
 .sideTabletDesktop {
@@ -49,13 +54,18 @@
 }
 
 /* Desktop and Tablets */
-@media screen and (max-width: 910px) {
+@media screen and (max-width: 950px) {
     .coachSponsorContactContainer img, .currentTeamMembers img, .pastTeamMembers img {
         margin-right: 0;
     }
 
-    .sideTabletDesktop {
+    .sideTabletDesktop, .widthForContentUnderHR {
         width: 94.11%;
+    }
+
+    .widthForContentUnderHR {
+        display: inline-block;
+        vertical-align: top;
     }
 }
 
@@ -74,7 +84,11 @@
         margin-right: 0;
     }
 
-    .sideTabletDesktop {
-        width: 100%;
+    .sideTabletDesktop, .widthForContentUnderHR {
+        width: 99%;
+    }
+
+    .pastTeamMembers {
+        row-gap: 0px;
     }
 }

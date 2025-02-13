@@ -65,111 +65,203 @@ function Contact() {
             <section className="currentTeamMembers">
                 <div>
                     <img className="profile-icon" src={toula} alt="Toula Elwell-pic"></img>
-                    <h3>Toula Elwell</h3>
-                    <hr></hr>
-                    <ul>
-                        <li>RIT Email: 
-                            <ul>
-                                <li><a href="mailto:tae9467@rit.edu" target="_blank" title="Click to Email Toula using her RIT email">tae9467@rit.edu</a></li>
-                            </ul></li>
-                        <li>Phone: 
-                            <ul>
-                                <li><a href="tel:+15852002069" title="Click to call Toula if you're on your phone">+1(585)200-2069</a></li>
-                            </ul>    
-                        </li>
-                    </ul>
+                    <span className='widthForContentUnderHR'>
+                        <h3>Toula Elwell</h3>
+                        <hr></hr>
+                        <ul>
+                            <li>RIT Email: 
+                                <ul>
+                                    <li><a href="mailto:tae9467@rit.edu" target="_blank" title="Click to Email Toula using her RIT email">tae9467@rit.edu</a></li>
+                                </ul></li>
+                            <li>Phone: 
+                                <ul>
+                                    <li><a href="tel:+15852002069" title="Click to call Toula if you're on your phone">+1(585)200-2069</a></li>
+                                </ul>    
+                            </li>
+                        </ul>
+                    </span>
                 </div>
 
                 <div>
                     <img className="profile-icon" src={placeholder} alt="Cameron Miele-pic"></img>
-                    <h3>Cameron Miele</h3>
-                    <hr></hr>
-                    <ul>
-                        <li>RIT Email: <a href="mailto:clm1886@rit.edu" target="_blank" title="Click to Email Cameron using his RIT email">clm1886@rit.edu</a></li>
-                        <li>Phone: <a href="tel:+1" title="Click to call Cameron if you're on your phone">+1</a></li>
-                    </ul>
+                    <span className='widthForContentUnderHR'>
+                        <h3>Cameron Miele</h3>
+                        <hr></hr>
+                        <ul>
+                            <li>RIT Email: 
+                                <ul>
+                                    <li><a href="mailto:clm1886@rit.edu" target="_blank" title="Click to Email Cameron using his RIT email">clm1886@rit.edu</a></li>
+                                </ul>
+                            </li>
+                            <li>Phone: 
+                                <ul>
+                                    <li><a href="tel:+1" title="Click to call Cameron if you're on your phone">+1</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </span>
                 </div>
 
                 <div>
                     <img className="profile-icon" src={bryson} alt="Bryson VerDow-pic"></img>
-                    <h3>Bryson VerDow</h3>
-                    <hr></hr>
-                    <ul>
-                        <li>RIT Email: <a href="mailto:bjv7412@rit.edu" target="_blank" title="Click to Email Bryson using his RIT email">bjv7412@rit.edu</a></li>
-                        <li>Phone: <a href="tel:+13157531212" title="Click to call Bryson if you're on your phone">+1(315)753-1212</a></li>
-                    </ul>
+                    <span className='widthForContentUnderHR'>
+                        <h3>Bryson VerDow</h3>
+                        <hr></hr>
+                        <ul>
+                            <li>RIT Email: 
+                                <ul>
+                                    <li><a href="mailto:bjv7412@rit.edu" target="_blank" title="Click to Email Bryson using his RIT email">bjv7412@rit.edu</a></li>
+                                </ul>
+                            </li>
+                            <li>Phone: 
+                                <ul>
+                                    <li><a href="tel:+13157531212" title="Click to call Bryson if you're on your phone">+1(315)753-1212</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </span>
                 </div>
 
                 <div>
                     <img className="profile-icon" src={placeholder} alt="Castor Grey-pic"></img>
-                    <h3>Castor Grey</h3>
-                    <hr></hr>
-                    <ul>
-                        <li>RIT Email: <a href="mailto:lcb7105@rit.edu" target="_blank" title="Click to Email Castor using his RIT email">lcb7105@rit.edu</a></li>
-                        <li>Phone: <a href="tel:+1" title="Click to call Castor if you're on your phone">+1</a></li>
-                    </ul>
+                    <span className='widthForContentUnderHR'>
+                        <h3>Castor Grey</h3>
+                        <hr></hr>
+                        <ul>
+                            <li>RIT Email: 
+                                <ul>
+                                    <li><a href="mailto:lcb7105@rit.edu" target="_blank" title="Click to Email Castor using his RIT email">lcb7105@rit.edu</a></li>
+                                </ul>
+                            </li>
+                            <li>Phone: 
+                                <ul>
+                                    <li><a href="tel:+1" title="Click to call Castor if you're on your phone">+1</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </span>
                 </div>
 
                 <div>
                     <img className="profile-icon" src={placeholder} alt="Jackson Murphy-pic"></img>
-                    <h3>Jackson Murphy</h3>
-                    <hr></hr>
-                    <ul>
-                        <li>RIT Email: <a href="mailto:jmm5915@rit.edu" target="_blank" title="Click to Email Jackson using his RIT email">jmm5915@rit.edu</a></li>
-                        <li>Phone: <a href="tel:+16037147265" title="Click to call Jackson if you're on your phone">+1(603)714-7265</a></li>
-                    </ul>
+                    <span className='widthForContentUnderHR'>
+                        <h3>Jackson Murphy</h3>
+                        <hr></hr>
+                        <ul>
+                            <li>RIT Email: 
+                                <ul>
+                                    <li><a href="mailto:jmm5915@rit.edu" target="_blank" title="Click to Email Jackson using his RIT email">jmm5915@rit.edu</a></li>
+                                </ul>
+                            </li>
+                            <li>Phone: 
+                                <ul>
+                                    <li><a href="tel:+16037147265" title="Click to call Jackson if you're on your phone">+1(603)714-7265</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </span>
                 </div>
             </section>
             <h2>Past Team Members</h2>
             <section className="pastTeamMembers">
                 <div>
                     <img className="profile-icon" src={amr} alt="Amr Mualla-pic"></img>
-                    <h3>Amr Mualla</h3>
-                    <hr></hr>
-                    <ul>
-                        <li>RIT Email: <a href="mailto:am3576@rit.edu" target="_blank" title="Click to Email Amr using their RIT email">am3576@rit.edu</a></li>
-                        <li>Phone: <a href="tel:+13476317359" title="Click to call Amr if you're on your phone">+1(347)631-7359</a></li>
-                    </ul>
+                    <span className='widthForContentUnderHR'>
+                        <h3>Amr Mualla</h3>
+                        <hr></hr>
+                        <ul>
+                            <li>RIT Email: 
+                                <ul>
+                                    <li><a href="mailto:am3576@rit.edu" target="_blank" title="Click to Email Amr using their RIT email">am3576@rit.edu</a></li>
+                                </ul>
+                            </li>
+                            <li>Phone: 
+                                <ul>
+                                    <li><a href="tel:+13476317359" title="Click to call Amr if you're on your phone">+1(347)631-7359</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </span>
                 </div>
 
                 <div>
                     <img className="profile-icon" src={beck} alt="Beck Anderson-pic"></img>
-                    <h3>Beck Anderson</h3>
-                    <hr></hr>
-                    <ul>
-                        <li>RIT Email: <a href="mailto:bea1935@rit.edu" target="_blank" title="Click to Email Beck using their RIT email">bea1935@rit.edu</a></li>
-                        <li>Phone: <a href="tel:+17166402894" title="Click to call Beck if you're on your phone">+1(716)640-2894</a></li>
-                    </ul>
+                    <span className='widthForContentUnderHR'>
+                        <h3>Beck Anderson</h3>
+                        <hr></hr>
+                        <ul>
+                            <li>RIT Email: 
+                                <ul>
+                                    <li><a href="mailto:bea1935@rit.edu" target="_blank" title="Click to Email Beck using their RIT email">bea1935@rit.edu</a></li>
+                                </ul>
+                            </li>
+                            <li>Phone: 
+                                <ul>
+                                    <li><a href="tel:+17166402894" title="Click to call Beck if you're on your phone">+1(716)640-2894</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </span>
                 </div>
 
                 <div>
                     <img className="profile-icon" src={chase} alt="Chase Amador-pic"></img>
-                    <h3>Chase Amador</h3>
-                    <hr></hr>
-                    <ul>
-                        <li>RIT Email: <a href="mailto:cma6320@rit.edu" target="_blank" title="Click to Email Chase using their RIT email">cma6320@rit.edu</a></li>
-                        <li>Phone: <a href="tel:+12037254442" title="Click to call Chase if you're on your phone">+1(203)725-4442</a></li>
-                    </ul>
+                    <span className='widthForContentUnderHR'>
+                        <h3>Chase Amador</h3>
+                        <hr></hr>
+                        <ul>
+                            <li>RIT Email: 
+                                <ul>
+                                    <li><a href="mailto:cma6320@rit.edu" target="_blank" title="Click to Email Chase using their RIT email">cma6320@rit.edu</a></li>
+                                </ul>
+                            </li>
+                            <li>Phone: 
+                                <ul>
+                                    <li><a href="tel:+12037254442" title="Click to call Chase if you're on your phone">+1(203)725-4442</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </span>
                 </div>
 
                 <div>
                     <img className="profile-icon" src={landon} alt="Landon Heatly-pic"></img>
-                    <h3>Landon Heatly</h3>
-                    <hr></hr>
-                    <ul>
-                        <li>RIT Email: <a href="mailto:lbh1442@rit.edu" target="_blank" title="Click to Email Landon using their RIT email">lbh1442@rit.edu</a></li>
-                        <li>Phone: <a href="tel:+12038329841" title="Click to call Landon if you're on your phone">+1(203)832-9841</a></li>
-                    </ul>
+                    <span className='widthForContentUnderHR'>
+                        <h3>Landon Heatly</h3>
+                        <hr></hr>
+                        <ul>
+                            <li>RIT Email: 
+                                <ul>
+                                    <li><a href="mailto:lbh1442@rit.edu" target="_blank" title="Click to Email Landon using their RIT email">lbh1442@rit.edu</a></li>
+                                </ul>
+                            </li>
+                            <li>Phone: 
+                                <ul>
+                                    <li><a href="tel:+12038329841" title="Click to call Landon if you're on your phone">+1(203)832-9841</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </span>
                 </div>
 
                 <div>
                     <img className="profile-icon" src={mack} alt="Mack Leonard-pic"></img>
-                    <h3>Mack Leonard</h3>
-                    <hr></hr>
-                    <ul>
-                        <li>RIT Email: <a href="mailto:mml2034@rit.edu" target="_blank" title="Click to Email Mack using their RIT email">mml2034@rit.edu</a></li>
-                        <li>Phone: <a href="tel:+12037319620" title="Click to call Mack if you're on your phone">+1(203)731-9620</a></li>
-                    </ul>
+                    <span className='widthForContentUnderHR'>
+                        <h3>Mack Leonard</h3>
+                        <hr></hr>
+                        <ul>
+                            <li>RIT Email: 
+                                <ul>
+                                    <li><a href="mailto:mml2034@rit.edu" target="_blank" title="Click to Email Mack using their RIT email">mml2034@rit.edu</a></li>
+                                </ul>
+                            </li>
+                            <li>Phone: 
+                                <ul>
+                                    <li><a href="tel:+12037319620" title="Click to call Mack if you're on your phone">+1(203)731-9620</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </span>
                 </div>
             </section>
         </div>
