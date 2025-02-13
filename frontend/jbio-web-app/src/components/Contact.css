@@ -53,6 +53,14 @@
     text-align: left;
 }
 
+
+/* Desktop only */
+@media screen and (min-width: 950px) {
+    .currentTeamMembers div , .pastTeamMembers div {
+        max-width: 424.11px;
+    }
+}
+
 /* Desktop and Tablets */
 @media screen and (max-width: 950px) {
     .coachSponsorContactContainer img, .currentTeamMembers img, .pastTeamMembers img {
