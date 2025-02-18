@@ -28,7 +28,7 @@
     padding: 11px;
 }
 
-.pastTeamMembers {
+.pastTeamMembers, .currentTeamMembers {
     row-gap: 11px;
 }
 
