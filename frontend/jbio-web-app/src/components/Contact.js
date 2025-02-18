@@ -8,9 +8,9 @@ import landon from "./about_images/Landon_Heatly.png";
 import mack from './about_images/Mack_Leonard.png';
 import toula from "./about_images/Toula_Elwell.png";
 import bryson from "./about_images/Bryson.png";
-// import castor from "./about_images/";
+import castor from "./about_images/castor.png";
 // import cameron from "./about_images/";
-// import jackson from "./about_images/";
+import jackson from "./about_images/jackson.png";
 import placeholder from './about_images/placeholder.png';
 
 import './Contact.css';
@@ -95,7 +95,7 @@ function Contact() {
                             </li>
                             <li>Phone: 
                                 <ul>
-                                    <li><a href="tel:+1" title="Click to call Cameron if you're on your phone">+1</a></li>
+                                    <li><a href="tel:+16034013733" title="Click to call Cameron if you're on your phone">+1(603)401-3733</a></li>
                                 </ul>
                             </li>
                         </ul>
@@ -123,7 +123,7 @@ function Contact() {
                 </div>
 
                 <div>
-                    <img className="profile-icon" src={placeholder} alt="Castor Grey-pic"></img>
+                    <img className="profile-icon" src={castor} alt="Castor Grey-pic"></img>
                     <span className='widthForContentUnderHR'>
                         <h3>Castor Grey</h3>
                         <hr></hr>
@@ -135,7 +135,7 @@ function Contact() {
                             </li>
                             <li>Phone: 
                                 <ul>
-                                    <li><a href="tel:+1" title="Click to call Castor if you're on your phone">+1</a></li>
+                                    <li><a href="tel:+12403003247" title="Click to call Castor if you're on your phone">+1(240)300-3247</a></li>
                                 </ul>
                             </li>
                         </ul>
@@ -143,7 +143,7 @@ function Contact() {
                 </div>
 
                 <div>
-                    <img className="profile-icon" src={placeholder} alt="Jackson Murphy-pic"></img>
+                    <img className="profile-icon" src={jackson} alt="Jackson Murphy-pic"></img>
                     <span className='widthForContentUnderHR'>
                         <h3>Jackson Murphy</h3>
                         <hr></hr>
