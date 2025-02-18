@@ -113,19 +113,19 @@ function About() {
                 <h2>About This Simulator</h2>
                 <div className="about-section">
                     <div className={"column-content"}>
-                        <h3 className={"header-green"}>Project Purpose</h3>
+                        <h3 className={"header"}>Project Purpose</h3>
                         <p>
                             JBioFramework (JBF) is a set of chemical simulations frequently used in chemistry, biochemistry, and proteomics research. It's main purpose is to allow for simplified simulation of proteins for academic and research opportunities. It is owned and operated by the RIT College of Science under the watch of Paul Craig. It is continuously being worked on with collaboration between the RIT College of Science and the RIT Software Engineering Department.
                         </p>
                     </div>
                     <div className={"column-content"}>
-                        <h3 className={"header-green"}>Commercial Use</h3>
+                        <h3 className={"header"}>Commercial Use</h3>
                         <p>
                             JBioFramework is a set of chemical simulations frequently used
                         </p>
                     </div>
                     <div className={"column-content"}>
-                        <h3 className={"header-green"}>Project Owner</h3>
+                        <h3 className={"header"}>Project Owner</h3>
                         <div style={devboxstyle}>
                             <div className={"feat-box"}>
                                 <div className={"feat-image"}></div>
@@ -211,5 +211,3 @@ function About() {
 }
 
 export default About;
-export const aboutActive = true;
-export const instActive = false;

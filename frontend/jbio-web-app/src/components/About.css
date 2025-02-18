@@ -11,6 +11,10 @@ section{
     text-align: center;
 }
 
+.header, #past-developers h2{
+    color: var(--primary-header-color)
+}
+
 .feat-image{
     border: 1px solid #e0e0e0;
     background-color: #e0e0e0;
@@ -21,4 +25,8 @@ section{
 
 .about-section .column-content{
     min-width: 33%;
+}
+
+h2{
+    font-weight: bold;
 }
