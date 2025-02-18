@@ -53,11 +53,19 @@
     text-align: left;
 }
 
-
 /* Desktop only */
 @media screen and (min-width: 950px) {
     .currentTeamMembers div , .pastTeamMembers div {
         max-width: 424.11px;
+    }
+
+    .pastTeamMembers {
+        justify-content: center;
+        flex-wrap: nowrap;
+    }
+    
+    .pastTeamMembers div {
+        min-width: 150px;
     }
 }
 
@@ -74,6 +82,15 @@
     .widthForContentUnderHR {
         display: inline-block;
         vertical-align: top;
+    }
+
+    .pastTeamMembers {
+        justify-content: space-evenly;
+        flex-wrap: wrap;
+    }
+    
+    .pastTeamMembers div {
+        min-width: none;
     }
 }
 
@@ -98,5 +115,14 @@
 
     .pastTeamMembers {
         row-gap: 0px;
+    }
+
+    .pastTeamMembers {
+        justify-content: space-evenly;
+        flex-wrap: wrap;
+    }
+    
+    .pastTeamMembers div {
+        min-width: none;
     }
 }
