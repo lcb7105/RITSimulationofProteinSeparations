@@ -59,12 +59,13 @@
         max-width: 424.11px;
     }
 
-    .pastTeamMembers {
+    /* change current after carousel implemented */
+    .pastTeamMembers, .currentTeamMembers {
         justify-content: center;
         flex-wrap: nowrap;
     }
     
-    .pastTeamMembers div {
+    .pastTeamMembers div, .currentTeamMembers div {
         min-width: 150px;
     }
 }
@@ -84,12 +85,14 @@
         vertical-align: top;
     }
 
-    .pastTeamMembers {
+    /* change current */
+
+    .pastTeamMembers, .currentTeamMembers {
         justify-content: space-evenly;
         flex-wrap: wrap;
     }
     
-    .pastTeamMembers div {
+    .pastTeamMembers div, .currentTeamMembers div {
         min-width: none;
     }
 }
@@ -113,16 +116,15 @@
         width: 99%;
     }
 
-    .pastTeamMembers {
-        row-gap: 0px;
-    }
+    /* change current */
 
-    .pastTeamMembers {
+    .pastTeamMembers, .currentTeamMembers {
         justify-content: space-evenly;
         flex-wrap: wrap;
+        row-gap: 0px;
     }
     
-    .pastTeamMembers div {
+    .pastTeamMembers div, .currentTeamMembers div {
         min-width: none;
     }
 }
