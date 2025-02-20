@@ -9,7 +9,7 @@ import mack from './about_images/Mack_Leonard.png';
 import toula from "./about_images/Toula_Elwell.png";
 import bryson from "./about_images/Bryson.png";
 import castor from "./about_images/castor.png";
-// import cameron from "./about_images/";
+import cameron from "./about_images/Cameron.png";
 import jackson from "./about_images/jackson.png";
 import placeholder from './about_images/placeholder.png';
 
@@ -49,7 +49,7 @@ function Contact() {
                         <ul>
                             <li>RIT Email: 
                                 <ul>
-                                    <li><a href="mailto:pac8612@rit.edu" target="_blank" title="Click to Email Paul using his RIT email">pac8612@rit.edu</a></li>
+                                    <li><a href="mailto:paul.craig@rit.edu" target="_blank" title="Click to Email Paul using his RIT email">paul.craig@rit.edu</a></li>
                                 </ul>    
                             </li>
                             <li>Phone: 
@@ -61,7 +61,7 @@ function Contact() {
                     </span>
                 </div>
             </section>
-            
+
             <span className='currentTeamMembersBackground'>
                 <h2>Current Team Members</h2>
                 <section className="currentTeamMembers">
@@ -75,9 +75,10 @@ function Contact() {
                                     <ul>
                                         <li><a href="mailto:tae9467@rit.edu" target="_blank" title="Click to Email Toula using her RIT email">tae9467@rit.edu</a></li>
                                     </ul></li>
-                                <li>Phone: 
+                                <li>Roles: 
                                     <ul>
-                                        <li><a href="tel:+15852002069" title="Click to call Toula if you're on your phone">+1(585)200-2069</a></li>
+                                        <li>Project Manager</li>
+                                        <li>Front-End Developer</li>
                                     </ul>    
                                 </li>
                             </ul>
@@ -85,7 +86,7 @@ function Contact() {
                     </div>
 
                     <div>
-                        <img className="profile-icon" src={placeholder} alt="Cameron Miele-pic"></img>
+                        <img className="profile-icon" src={cameron} alt="Cameron Miele-pic"></img>
                         <span className='widthForContentUnderHR'>
                             <h3>Cameron Miele</h3>
                             <hr></hr>
@@ -95,9 +96,10 @@ function Contact() {
                                         <li><a href="mailto:clm1886@rit.edu" target="_blank" title="Click to Email Cameron using his RIT email">clm1886@rit.edu</a></li>
                                     </ul>
                                 </li>
-                                <li>Phone: 
+                                <li>Roles: 
                                     <ul>
-                                        <li><a href="tel:+16034013733" title="Click to call Cameron if you're on your phone">+1(603)401-3733</a></li>
+                                        <li>Scrum Master</li>
+                                        <li>Sponsor Communications Lead</li>
                                     </ul>
                                 </li>
                             </ul>
@@ -115,9 +117,9 @@ function Contact() {
                                         <li><a href="mailto:bjv7412@rit.edu" target="_blank" title="Click to Email Bryson using his RIT email">bjv7412@rit.edu</a></li>
                                     </ul>
                                 </li>
-                                <li>Phone: 
+                                <li>Role: 
                                     <ul>
-                                        <li><a href="tel:+13157531212" title="Click to call Bryson if you're on your phone">+1(315)753-1212</a></li>
+                                        <li>Testing Lead</li>
                                     </ul>
                                 </li>
                             </ul>
@@ -135,9 +137,10 @@ function Contact() {
                                         <li><a href="mailto:lcb7105@rit.edu" target="_blank" title="Click to Email Castor using his RIT email">lcb7105@rit.edu</a></li>
                                     </ul>
                                 </li>
-                                <li>Phone: 
+                                <li>Roles: 
                                     <ul>
-                                        <li><a href="tel:+12403003247" title="Click to call Castor if you're on your phone">+1(240)300-3247</a></li>
+                                        <li>Technical Lead</li>
+                                        <li>Front-End Developer</li>
                                     </ul>
                                 </li>
                             </ul>
@@ -155,9 +158,9 @@ function Contact() {
                                         <li><a href="mailto:jmm5915@rit.edu" target="_blank" title="Click to Email Jackson using his RIT email">jmm5915@rit.edu</a></li>
                                     </ul>
                                 </li>
-                                <li>Phone: 
+                                <li>Role: 
                                     <ul>
-                                        <li><a href="tel:+16037147265" title="Click to call Jackson if you're on your phone">+1(603)714-7265</a></li>
+                                        <li>Networking Lead</li>
                                     </ul>
                                 </li>
                             </ul>
@@ -179,11 +182,6 @@ function Contact() {
                                     <li><a href="mailto:am3576@rit.edu" target="_blank" title="Click to Email Amr using their RIT email">am3576@rit.edu</a></li>
                                 </ul>
                             </li>
-                            <li>Phone: 
-                                <ul>
-                                    <li><a href="tel:+13476317359" title="Click to call Amr if you're on your phone">+1(347)631-7359</a></li>
-                                </ul>
-                            </li>
                         </ul>
                     </span>
                 </div>
@@ -197,11 +195,6 @@ function Contact() {
                             <li>RIT Email: 
                                 <ul>
                                     <li><a href="mailto:bea1935@rit.edu" target="_blank" title="Click to Email Beck using their RIT email">bea1935@rit.edu</a></li>
-                                </ul>
-                            </li>
-                            <li>Phone: 
-                                <ul>
-                                    <li><a href="tel:+17166402894" title="Click to call Beck if you're on your phone">+1(716)640-2894</a></li>
                                 </ul>
                             </li>
                         </ul>
@@ -219,11 +212,6 @@ function Contact() {
                                     <li><a href="mailto:cma6320@rit.edu" target="_blank" title="Click to Email Chase using their RIT email">cma6320@rit.edu</a></li>
                                 </ul>
                             </li>
-                            <li>Phone: 
-                                <ul>
-                                    <li><a href="tel:+12037254442" title="Click to call Chase if you're on your phone">+1(203)725-4442</a></li>
-                                </ul>
-                            </li>
                         </ul>
                     </span>
                 </div>
@@ -239,11 +227,6 @@ function Contact() {
                                     <li><a href="mailto:lbh1442@rit.edu" target="_blank" title="Click to Email Landon using their RIT email">lbh1442@rit.edu</a></li>
                                 </ul>
                             </li>
-                            <li>Phone: 
-                                <ul>
-                                    <li><a href="tel:+12038329841" title="Click to call Landon if you're on your phone">+1(203)832-9841</a></li>
-                                </ul>
-                            </li>
                         </ul>
                     </span>
                 </div>
@@ -257,11 +240,6 @@ function Contact() {
                             <li>RIT Email: 
                                 <ul>
                                     <li><a href="mailto:mml2034@rit.edu" target="_blank" title="Click to Email Mack using their RIT email">mml2034@rit.edu</a></li>
-                                </ul>
-                            </li>
-                            <li>Phone: 
-                                <ul>
-                                    <li><a href="tel:+12037319620" title="Click to call Mack if you're on your phone">+1(203)731-9620</a></li>
                                 </ul>
                             </li>
                         </ul>

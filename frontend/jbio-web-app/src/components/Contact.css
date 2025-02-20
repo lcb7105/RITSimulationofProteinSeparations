@@ -9,7 +9,7 @@
     overflow: hidden;
 }
 
-.contactPage a {
+.contactPage a, .contactPage ul li {
     word-wrap: break-word;
 }
 
@@ -115,7 +115,7 @@
 }
 
 /* Mobile and Tablets */
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 630px) {
     .coachSponsorContactContainer div, .currentTeamMembers div, .pastTeamMembers div {
         width: 94.11%;
         margin: 2% auto;
