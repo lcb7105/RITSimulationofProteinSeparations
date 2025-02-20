@@ -40,7 +40,7 @@
 .coachSponsorContactContainer div, .currentTeamMembers div, .pastTeamMembers div {
     width: 45%;
     min-height: fit-content;
-    border: 1px solid black;
+    border: 2.5px solid black;
     border-radius: 25px;
     padding: 11px;
 }
