@@ -12,6 +12,22 @@
     word-wrap: break-word;
 }
 
+.currentTeamMembersBackground {
+    background-color: lightgray;
+    display: inline-block;
+    width: 100%;
+    margin: 2% auto auto;
+    padding: 0px 4% 2%;
+    z-index: 2;
+    position: relative;
+    overflow: hidden;
+    left: -4%;
+}
+
+.currentTeamMembers div {
+    background-color: white;
+}
+
 .coachSponsorContactContainer, .currentTeamMembers, .pastTeamMembers {
     display: flex;
     justify-content: space-evenly;

@@ -61,107 +61,111 @@ function Contact() {
                     </span>
                 </div>
             </section>
-            <h2>Current Team Members</h2>
-            <section className="currentTeamMembers">
-                <div>
-                    <img className="profile-icon" src={toula} alt="Toula Elwell-pic"></img>
-                    <span className='widthForContentUnderHR'>
-                        <h3>Toula Elwell</h3>
-                        <hr></hr>
-                        <ul>
-                            <li>RIT Email: 
-                                <ul>
-                                    <li><a href="mailto:tae9467@rit.edu" target="_blank" title="Click to Email Toula using her RIT email">tae9467@rit.edu</a></li>
-                                </ul></li>
-                            <li>Phone: 
-                                <ul>
-                                    <li><a href="tel:+15852002069" title="Click to call Toula if you're on your phone">+1(585)200-2069</a></li>
-                                </ul>    
-                            </li>
-                        </ul>
-                    </span>
-                </div>
+            
+            <span className='currentTeamMembersBackground'>
+                <h2>Current Team Members</h2>
+                <section className="currentTeamMembers">
+                    <div>
+                        <img className="profile-icon" src={toula} alt="Toula Elwell-pic"></img>
+                        <span className='widthForContentUnderHR'>
+                            <h3>Toula Elwell</h3>
+                            <hr></hr>
+                            <ul>
+                                <li>RIT Email: 
+                                    <ul>
+                                        <li><a href="mailto:tae9467@rit.edu" target="_blank" title="Click to Email Toula using her RIT email">tae9467@rit.edu</a></li>
+                                    </ul></li>
+                                <li>Phone: 
+                                    <ul>
+                                        <li><a href="tel:+15852002069" title="Click to call Toula if you're on your phone">+1(585)200-2069</a></li>
+                                    </ul>    
+                                </li>
+                            </ul>
+                        </span>
+                    </div>
 
-                <div>
-                    <img className="profile-icon" src={placeholder} alt="Cameron Miele-pic"></img>
-                    <span className='widthForContentUnderHR'>
-                        <h3>Cameron Miele</h3>
-                        <hr></hr>
-                        <ul>
-                            <li>RIT Email: 
-                                <ul>
-                                    <li><a href="mailto:clm1886@rit.edu" target="_blank" title="Click to Email Cameron using his RIT email">clm1886@rit.edu</a></li>
-                                </ul>
-                            </li>
-                            <li>Phone: 
-                                <ul>
-                                    <li><a href="tel:+16034013733" title="Click to call Cameron if you're on your phone">+1(603)401-3733</a></li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </span>
-                </div>
+                    <div>
+                        <img className="profile-icon" src={placeholder} alt="Cameron Miele-pic"></img>
+                        <span className='widthForContentUnderHR'>
+                            <h3>Cameron Miele</h3>
+                            <hr></hr>
+                            <ul>
+                                <li>RIT Email: 
+                                    <ul>
+                                        <li><a href="mailto:clm1886@rit.edu" target="_blank" title="Click to Email Cameron using his RIT email">clm1886@rit.edu</a></li>
+                                    </ul>
+                                </li>
+                                <li>Phone: 
+                                    <ul>
+                                        <li><a href="tel:+16034013733" title="Click to call Cameron if you're on your phone">+1(603)401-3733</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </span>
+                    </div>
 
-                <div>
-                    <img className="profile-icon" src={bryson} alt="Bryson VerDow-pic"></img>
-                    <span className='widthForContentUnderHR'>
-                        <h3>Bryson VerDow</h3>
-                        <hr></hr>
-                        <ul>
-                            <li>RIT Email: 
-                                <ul>
-                                    <li><a href="mailto:bjv7412@rit.edu" target="_blank" title="Click to Email Bryson using his RIT email">bjv7412@rit.edu</a></li>
-                                </ul>
-                            </li>
-                            <li>Phone: 
-                                <ul>
-                                    <li><a href="tel:+13157531212" title="Click to call Bryson if you're on your phone">+1(315)753-1212</a></li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </span>
-                </div>
+                    <div>
+                        <img className="profile-icon" src={bryson} alt="Bryson VerDow-pic"></img>
+                        <span className='widthForContentUnderHR'>
+                            <h3>Bryson VerDow</h3>
+                            <hr></hr>
+                            <ul>
+                                <li>RIT Email: 
+                                    <ul>
+                                        <li><a href="mailto:bjv7412@rit.edu" target="_blank" title="Click to Email Bryson using his RIT email">bjv7412@rit.edu</a></li>
+                                    </ul>
+                                </li>
+                                <li>Phone: 
+                                    <ul>
+                                        <li><a href="tel:+13157531212" title="Click to call Bryson if you're on your phone">+1(315)753-1212</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </span>
+                    </div>
 
-                <div>
-                    <img className="profile-icon" src={castor} alt="Castor Grey-pic"></img>
-                    <span className='widthForContentUnderHR'>
-                        <h3>Castor Grey</h3>
-                        <hr></hr>
-                        <ul>
-                            <li>RIT Email: 
-                                <ul>
-                                    <li><a href="mailto:lcb7105@rit.edu" target="_blank" title="Click to Email Castor using his RIT email">lcb7105@rit.edu</a></li>
-                                </ul>
-                            </li>
-                            <li>Phone: 
-                                <ul>
-                                    <li><a href="tel:+12403003247" title="Click to call Castor if you're on your phone">+1(240)300-3247</a></li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </span>
-                </div>
+                    <div>
+                        <img className="profile-icon" src={castor} alt="Castor Grey-pic"></img>
+                        <span className='widthForContentUnderHR'>
+                            <h3>Castor Grey</h3>
+                            <hr></hr>
+                            <ul>
+                                <li>RIT Email: 
+                                    <ul>
+                                        <li><a href="mailto:lcb7105@rit.edu" target="_blank" title="Click to Email Castor using his RIT email">lcb7105@rit.edu</a></li>
+                                    </ul>
+                                </li>
+                                <li>Phone: 
+                                    <ul>
+                                        <li><a href="tel:+12403003247" title="Click to call Castor if you're on your phone">+1(240)300-3247</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </span>
+                    </div>
 
-                <div>
-                    <img className="profile-icon" src={jackson} alt="Jackson Murphy-pic"></img>
-                    <span className='widthForContentUnderHR'>
-                        <h3>Jackson Murphy</h3>
-                        <hr></hr>
-                        <ul>
-                            <li>RIT Email: 
-                                <ul>
-                                    <li><a href="mailto:jmm5915@rit.edu" target="_blank" title="Click to Email Jackson using his RIT email">jmm5915@rit.edu</a></li>
-                                </ul>
-                            </li>
-                            <li>Phone: 
-                                <ul>
-                                    <li><a href="tel:+16037147265" title="Click to call Jackson if you're on your phone">+1(603)714-7265</a></li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </span>
-                </div>
-            </section>
+                    <div>
+                        <img className="profile-icon" src={jackson} alt="Jackson Murphy-pic"></img>
+                        <span className='widthForContentUnderHR'>
+                            <h3>Jackson Murphy</h3>
+                            <hr></hr>
+                            <ul>
+                                <li>RIT Email: 
+                                    <ul>
+                                        <li><a href="mailto:jmm5915@rit.edu" target="_blank" title="Click to Email Jackson using his RIT email">jmm5915@rit.edu</a></li>
+                                    </ul>
+                                </li>
+                                <li>Phone: 
+                                    <ul>
+                                        <li><a href="tel:+16037147265" title="Click to call Jackson if you're on your phone">+1(603)714-7265</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </span>
+                    </div>
+                </section>
+            </span>
+
             <h2>Past Team Members</h2>
             <section className="pastTeamMembers">
                 <div>
