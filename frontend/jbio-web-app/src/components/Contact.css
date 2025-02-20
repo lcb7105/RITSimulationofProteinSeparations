@@ -4,8 +4,9 @@
 }
 
 .contactPage {
-    margin: 2%;
+    padding: 2%;
     box-sizing: border-box;
+    overflow: hidden;
 }
 
 .contactPage a {
