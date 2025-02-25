@@ -50,11 +50,7 @@ html {
 
 /*background-image: url('../public/dark-toggle-button.png');*/
 
-button {
-  background: none;
-  border: none;
-  cursor: pointer;
-}
+
 
 .container {
   display: flex;
