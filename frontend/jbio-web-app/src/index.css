@@ -10,6 +10,8 @@ h1,h2,h3,h4,h5,h6 {
 }
 
 :root{
-    --primary-header-color: #d0959b;
-    --secondary-header-color: #19814a;
+    --primary-header-color: #999999;
+    --secondary-header-color: rebeccapurple;
+    --nav-background: #0a0a0a;
+    --temp-image-background: #e0e0e0;
 }
