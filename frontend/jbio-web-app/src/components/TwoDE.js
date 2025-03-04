@@ -145,6 +145,12 @@ const TwoDE = () => {
   const [yAxisMode, setYAxisMode] = useState('mw'); // 'mw' or 'distance'
   const [uploadProgress, setUploadProgress] = useState(0);
   const [isUploading, setIsUploading] = useState(false);
+  
+  // New state for PPS1-106: Acrylamide slider
+  const [acrylamidePercentage, setAcrylamidePercentage] = useState(7.5); // Default value
+  
+  // New state for PPS1-111: Collapsible protein list
+  const [isProteinListCollapsed, setIsProteinListCollapsed] = useState(false);
 
   // Constants
   const MIN_PH = phRange.min;
@@ -245,9 +251,10 @@ const TwoDE = () => {
         setDots(prevDots =>
           prevDots.map(dot => {
             // Calculate target Y position based on molecular weight or distance traveled
+            // Now affected by acrylamide percentage
             const targetPosY = yAxisMode === 'mw' 
-              ? getMWPosition(dot.mw, 600)
-              : getDistancePosition(dot.mw, 600);
+              ? getMWPosition(dot.mw, 600, acrylamidePercentage)
+              : getDistancePosition(dot.mw, 600, acrylamidePercentage);
               
             return {
               ...dot,
@@ -300,11 +307,19 @@ const TwoDE = () => {
           const pH = calculateTheoreticalPI(seq.sequence);
           const info = extractProteinInfo(seq.header);
           
+          // Extract UniProt ID from FASTA header if possible
+          let uniprotId = 'N/A';
+          // Check for UniProt format in header
+          const uniprotMatch = seq.header.match(/[OPQ][0-9][A-Z0-9]{3}[0-9]|[A-NR-Z][0-9]([A-Z][A-Z0-9]{2}[0-9]){1,2}/);
+          if (uniprotMatch) {
+            uniprotId = uniprotMatch[0];
+          }
+          
           newProteins.push({
             name: info.name,
             fullName: info.name,
             organism: info.organism,
-            uniprotId: 'N/A',
+            uniprotId: uniprotId, // Use extracted UniProt ID
             pdbId: 'N/A',
             function: 'Imported from FASTA file',
             mw,
@@ -358,24 +373,36 @@ const TwoDE = () => {
     await handleFileUpload(files);
   };
 
-  const getMWPosition = (mw, canvasHeight) => {
+  // Modified to include acrylamide percentage
+  const getMWPosition = (mw, canvasHeight, acrylamidePercent) => {
     const minMW = 1000;
     const maxMW = 1000000;
     const logMW = Math.log10(Math.min(Math.max(mw, minMW), maxMW));
-    return 170 + ((Math.log10(maxMW) - logMW) / (Math.log10(maxMW) - Math.log10(minMW))) * (canvasHeight - 220);
+    
+    // Acrylamide affects the migration - higher percentage = better separation of smaller proteins
+    const acrylamideFactor = 1 + (acrylamidePercent - 7.5) / 15; // Normalized factor
+    
+    return 170 + ((Math.log10(maxMW) - logMW) / (Math.log10(maxMW) - Math.log10(minMW))) 
+           * (canvasHeight - 220) * acrylamideFactor;
   };
 
-  const getDistancePosition = (mw, canvasHeight) => {
+  // Modified to include acrylamide percentage
+  const getDistancePosition = (mw, canvasHeight, acrylamidePercent) => {
     // Calculate distance traveled based on molecular weight
     // Smaller proteins travel farther
     const minMW = 1000;
     const maxMW = 1000000;
     const normalizedMW = (Math.log10(Math.min(Math.max(mw, minMW), maxMW)) - Math.log10(minMW)) / 
                         (Math.log10(maxMW) - Math.log10(minMW));
+    
+    // Acrylamide affects the migration - higher percentage = better separation
+    const acrylamideFactor = 1 + (acrylamidePercent - 7.5) / 10; // Normalized factor
+    
     // Invert the relationship - smaller proteins travel farther
-    const distance = MAX_DISTANCE_TRAVELED * (1 - normalizedMW);
+    const distance = MAX_DISTANCE_TRAVELED * (1 - normalizedMW) * acrylamideFactor;
+    
     // Map to canvas coordinates
-    return 170 + (distance / MAX_DISTANCE_TRAVELED) * (canvasHeight - 220);
+    return 170 + (distance / (MAX_DISTANCE_TRAVELED * acrylamideFactor)) * (canvasHeight - 220);
   };
 
   const getPHPosition = (pH, canvasWidth) => {
@@ -434,16 +461,21 @@ const TwoDE = () => {
   const handleDocumentClick = (event) => {
     const canvas = canvasRef.current;
     const infoCard = document.getElementById('protein-info-card');
+    const proteinList = document.getElementById('protein-list');
     
+    // Only close the popup if clicking outside the canvas, info card, and protein list
     if (selectedDot && 
         !canvas.contains(event.target) && 
-        (!infoCard || !infoCard.contains(event.target))) {
+        (!infoCard || !infoCard.contains(event.target)) &&
+        (!proteinList || !proteinList.contains(event.target))) {
       setSelectedDot(null);
     }
   };
 
-  // Handler for pH range input
+  // Handler for pH range input - now disabled during simulation
   const handlePhRangeChange = (type, value) => {
+    if (simulationState !== 'ready') return; // Disable during simulation
+    
     if (type === 'min') {
       // Ensure min pH is less than max pH
       const newMin = Math.min(parseFloat(value), phRange.max - 0.1);
@@ -455,16 +487,30 @@ const TwoDE = () => {
     }
   };
 
-  // Handler for pH slider
+  // Handler for pH slider - now disabled during simulation
   const handlePhSliderChange = (e) => {
+    if (simulationState !== 'ready') return; // Disable during simulation
+    
     const value = parseFloat(e.target.value);
     const type = e.target.id.includes('min') ? 'min' : 'max';
     handlePhRangeChange(type, value);
   };
 
+  // New handler for acrylamide percentage slider
+  const handleAcrylamideChange = (e) => {
+    if (simulationState !== 'ready') return; // Disable during simulation
+    
+    setAcrylamidePercentage(parseFloat(e.target.value));
+  };
+
   // Toggle Y-axis mode
   const toggleYAxisMode = () => {
     setYAxisMode(prev => prev === 'mw' ? 'distance' : 'mw');
+  };
+
+  // Toggle protein list collapse state
+  const toggleProteinList = () => {
+    setIsProteinListCollapsed(!isProteinListCollapsed);
   };
 
   useEffect(() => {
@@ -485,9 +531,26 @@ const TwoDE = () => {
     await handleFileUpload(files);
   };
 
+  // Modified to update canvas selection and show popup - PPS1-107
   const handleProteinClick = (dot) => {
     setSelectedDot(dot);
     setHoveredDot(null);
+    
+    // Update the mouse position to position the popup correctly
+    // Position it next to the protein list
+    const proteinList = document.querySelector('#protein-list');
+    if (proteinList) {
+      const rect = proteinList.getBoundingClientRect();
+      setMousePos({ 
+        x: rect.right + 10, 
+        y: rect.top + 100 // Position it near the top of the panel
+      });
+    }
+    
+    // Scroll to the protein in the canvas if it's off-screen
+    if (canvasRef.current) {
+      canvasRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
   };
 
   useEffect(() => {
@@ -499,6 +562,10 @@ const TwoDE = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       ctx.fillStyle = '#111111';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // No title on the canvas per requirement
+      ctx.fillStyle = '#FFFFFF';
+      ctx.textAlign = 'left';
 
       // Draw loading zone indicator when in ready state
       if (simulationState === 'ready') {
@@ -543,7 +610,7 @@ const TwoDE = () => {
       if (simulationState === 'ief-complete' || simulationState === 'sds-running' || simulationState === 'complete') {
         // Y-Axis Labels based on selected mode
         if (yAxisMode === 'mw') {
-          // MW Axis Labels
+          // MW Axis Labels - now vertical on left side (PPS1-105)
           for (let y = 170; y <= canvas.height - 50; y += 100) {
             ctx.beginPath();
             ctx.moveTo(50, y);
@@ -552,10 +619,14 @@ const TwoDE = () => {
             const mwValue = Math.pow(10, Math.log10(1000000) - ((y - 170) / (canvas.height - 220)) * (Math.log10(1000000) - Math.log10(1000)));
             ctx.fillStyle = '#FFFFFF';
 
-            ctx.fillText(`${Math.round(mwValue / 1000) * 1000} Da`, 10, y + 5);
+            // Vertical text for MW (PPS1-105)
+            ctx.save();
+            ctx.translate(15, y + 5);
+            ctx.fillText(`${Math.round(mwValue / 1000) * 1000} Da`, 0, 0);
+            ctx.restore();
           }
         } else {
-          // Distance Traveled Axis Labels
+          // Distance Traveled Axis Labels - now vertical on left side (PPS1-105)
           for (let i = 0; i <= MAX_DISTANCE_TRAVELED; i++) {
             const y = 170 + (i / MAX_DISTANCE_TRAVELED) * (canvas.height - 220);
             ctx.beginPath();
@@ -564,7 +635,11 @@ const TwoDE = () => {
             ctx.stroke();
             ctx.fillStyle = '#FFFFFF';
 
-            ctx.fillText(`${i} cm`, 25, y + 5);
+            // Vertical text for distance (PPS1-105)
+            ctx.save();
+            ctx.translate(25, y + 5);
+            ctx.fillText(`${i} cm`, 0, 0);
+            ctx.restore();
           }
         }
 
@@ -581,10 +656,18 @@ const TwoDE = () => {
         }
       }
 
-      // Draw axis labels
+      // Draw axis labels - now vertical (PPS1-105)
       ctx.fillStyle = '#FFFFFF';
+      ctx.textAlign = 'center';
       ctx.fillText('pH', canvas.width / 2, canvas.height - 10);
-      ctx.fillText(yAxisMode === 'mw' ? 'MW (Da)' : 'Distance (cm)', 10, canvas.height / 2);
+      
+      // Vertical MW/Distance label (PPS1-105)
+      ctx.save();
+      ctx.translate(10, canvas.height / 2);
+      ctx.rotate(-Math.PI / 2);
+      ctx.fillText(yAxisMode === 'mw' ? 'MW (Da)' : 'Distance (cm)', 0, 0);
+      ctx.restore();
+      ctx.textAlign = 'left';
 
       // Draw progress indicator during IEF
       if (simulationState === 'ief-running') {
@@ -596,19 +679,47 @@ const TwoDE = () => {
 
       // Draw Bands and Dots
       dots.forEach(dot => {
+        // Highlight effect for selected protein in canvas (PPS1-107)
+        const isHighlighted = dot === selectedDot;
+        const isHovered = dot === hoveredDot;
+        
         ctx.fillStyle = dot.color;
         
         if (simulationState === 'ready') {
           // Draw dots in loading zone
           ctx.beginPath();
-          ctx.arc(dot.x, dot.y, (dot === hoveredDot || dot === selectedDot) ? 8 : 5, 0, Math.PI * 2);
+          ctx.arc(dot.x, dot.y, (isHighlighted || isHovered) ? 8 : 5, 0, Math.PI * 2);
           ctx.fill();
+          
+          // Add glow effect for selected protein (PPS1-107)
+          if (isHighlighted) {
+            ctx.strokeStyle = '#FFFFFF';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+            
+            // Add pulsing highlight effect
+            ctx.beginPath();
+            ctx.arc(dot.x, dot.y, 12, 0, Math.PI * 2);
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.5)';
+            ctx.stroke();
+          } else if (isHovered) {
+            ctx.strokeStyle = '#FFFFFF';
+            ctx.lineWidth = 1;
+            ctx.stroke();
+          }
         } else if (simulationState === 'ief-running' || simulationState === 'ief-complete') {
           if (dot.condensing) {
             // Draw small dot during condensing phase
             ctx.beginPath();
             ctx.arc(dot.x, dot.y, 5, 0, Math.PI * 2);
             ctx.fill();
+            
+            // Add highlight for selected protein
+            if (isHighlighted) {
+              ctx.strokeStyle = '#FFFFFF';
+              ctx.lineWidth = 2;
+              ctx.stroke();
+            }
           } else {
             // Draw vertical bands in IEF
             const bandHeight = 40; // Fixed height for bands
@@ -619,26 +730,46 @@ const TwoDE = () => {
               bandHeight
             );
             
-            if (dot === hoveredDot || dot === selectedDot) {
+            if (isHighlighted || isHovered) {
               ctx.strokeStyle = '#FFFFFF';
-              ctx.lineWidth = 2;
+              ctx.lineWidth = isHighlighted ? 2 : 1;
               ctx.strokeRect(
                 dot.x - dot.bandWidth / 2,
                 dot.y - bandHeight / 2,
                 dot.bandWidth,
                 bandHeight
               );
+              
+              // Additional highlight for selected protein
+              if (isHighlighted) {
+                ctx.strokeStyle = 'rgba(255, 255, 255, 0.5)';
+                ctx.lineWidth = 1;
+                ctx.strokeRect(
+                  dot.x - dot.bandWidth / 2 - 3,
+                  dot.y - bandHeight / 2 - 3,
+                  dot.bandWidth + 6,
+                  bandHeight + 6
+                );
+              }
             }
           }
         } else {
           // Draw dots for SDS-PAGE
           ctx.beginPath();
-          ctx.arc(dot.x, dot.y, (dot === hoveredDot || dot === selectedDot) ? 8 : 5, 0, Math.PI * 2);
+          ctx.arc(dot.x, dot.y, (isHighlighted || isHovered) ? 8 : 5, 0, Math.PI * 2);
           ctx.fill();
-          if (dot === hoveredDot || dot === selectedDot) {
+          if (isHighlighted || isHovered) {
             ctx.strokeStyle = '#FFFFFF';
-            ctx.lineWidth = 2;
+            ctx.lineWidth = isHighlighted ? 2 : 1;
             ctx.stroke();
+            
+            // Additional pulsing effect for selected dot
+            if (isHighlighted) {
+              ctx.beginPath();
+              ctx.arc(dot.x, dot.y, 12, 0, Math.PI * 2);
+              ctx.strokeStyle = 'rgba(255, 255, 255, 0.5)';
+              ctx.stroke();
+            }
           }
         }
       });
@@ -647,7 +778,7 @@ const TwoDE = () => {
     };
 
     draw();
-  }, [dots, hoveredDot, selectedDot, simulationState, simulationProgress, phRange, yAxisMode]);
+  }, [dots, hoveredDot, selectedDot, simulationState, simulationProgress, phRange, yAxisMode, acrylamidePercentage]);
 
   const buttonStyle = {
     backgroundColor: '#1a1a1a',
@@ -677,11 +808,11 @@ const TwoDE = () => {
     height: '8px',
     borderRadius: '4px',
     outline: 'none',
-    opacity: '0.7',
+    opacity: simulationState === 'ready' ? '0.7' : '0.3', // Dim when disabled
     transition: 'opacity 0.2s',
     WebkitAppearance: 'none',
     backgroundColor: '#555',
-    cursor: 'pointer'
+    cursor: simulationState === 'ready' ? 'pointer' : 'not-allowed' // Change cursor when disabled
   };
 
   const inputStyle = {
@@ -692,7 +823,8 @@ const TwoDE = () => {
     padding: '4px',
     borderRadius: '4px',
     fontSize: '14px',
-    textAlign: 'center'
+    textAlign: 'center',
+    opacity: simulationState === 'ready' ? '1' : '0.5' // Dim when disabled
   };
 
   // Circular progress indicator component
@@ -726,6 +858,30 @@ const TwoDE = () => {
         </svg>
         <div style={{ position: 'absolute', fontSize: '12px' }}>
           {Math.round(progress)}%
+        </div>
+      </div>
+    );
+  };
+
+  // Component for collapsible protein list header
+  const ProteinListHeader = ({ isCollapsed, onToggle, count }) => {
+    return (
+      <div 
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          padding: '8px 0',
+          cursor: 'pointer',
+          userSelect: 'none'
+        }}
+        onClick={onToggle}
+      >
+        <h3 style={{ fontSize: '16px', margin: 0 }}>Proteins ({count})</h3>
+        <div style={{ transform: isCollapsed ? 'rotate(-90deg)' : 'rotate(0)', transition: 'transform 0.2s' }}>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <polyline points="6 9 12 15 18 9"></polyline>
+          </svg>
         </div>
       </div>
     );
@@ -832,238 +988,343 @@ const TwoDE = () => {
           </svg>
           {yAxisMode === 'mw' ? 'Show Distance' : 'Show MW'}
         </button>
-        </div>
-
-{/* pH Range Slider */}
-<div style={{ marginBottom: '20px', padding: '0 20px', maxWidth: '800px', alignSelf: 'center' }}>
-  <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '8px' }}>
-    <label style={{ fontSize: '14px', width: '120px' }}>pH Range:</label>
-    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flex: 1 }}>
-      <input 
-        type="number" 
-        min="0" 
-        max="14" 
-        step="0.1" 
-        value={phRange.min} 
-        onChange={(e) => handlePhRangeChange('min', e.target.value)}
-        style={inputStyle}
-      />
-      <input 
-        type="range" 
-        id="ph-min-slider"
-        min="0" 
-        max="14" 
-        step="0.1" 
-        value={phRange.min}
-        onChange={handlePhSliderChange}
-        style={{ ...sliderStyle, flex: 1 }}
-      />
-      <input 
-        type="range" 
-        id="ph-max-slider"
-        min="0" 
-        max="14" 
-        step="0.1" 
-        value={phRange.max}
-        onChange={handlePhSliderChange}
-        style={{ ...sliderStyle, flex: 1 }}
-      />
-      <input 
-        type="number" 
-        min="0" 
-        max="14" 
-        step="0.1" 
-        value={phRange.max} 
-        onChange={(e) => handlePhRangeChange('max', e.target.value)}
-        style={inputStyle}
-      />
-    </div>
-  </div>
-</div>
-
-<div style={{ display: 'flex', justifyContent: 'center', gap: '16px' }}>
-  <div style={{ 
-    padding: '16px', 
-    backgroundColor: '#282828', 
-    borderRadius: '4px',
-    width: '250px',
-    height: '600px',
-    display: 'flex',
-    flexDirection: 'column'
-  }}>
-    <h3 style={{ fontSize: '16px', marginBottom: '12px' }}>Proteins</h3>
-    <div style={{ 
-      display: 'flex', 
-      flexDirection: 'column', 
-      gap: '8px',
-      overflowY: 'auto',
-      flex: 1
-    }}>
-      {dots.map(dot => (
-        <div 
-          key={dot.name} 
-          onClick={() => handleProteinClick(dot)}
-          style={{ 
-            display: 'flex', 
-            alignItems: 'center', 
-            gap: '8px',
-            minHeight: '24px',
-            padding: '4px',
-            cursor: 'pointer',
-            backgroundColor: selectedDot?.name === dot.name ? '#3a3a3a' : 'transparent',
-            borderRadius: '4px',
-            transition: 'background-color 0.2s'
-          }}>
-          <div style={{ 
-            width: '12px', 
-            height: '12px', 
-            minWidth: '12px',
-            backgroundColor: dot.color,
-            borderRadius: '50%' 
-          }}/>
-          <span style={{
-            whiteSpace: 'nowrap',
-            overflow: 'hidden',
-            textOverflow: 'ellipsis',
-            fontSize: '14px'
-          }}>{dot.name}</span>
-        </div>
-      ))}
-    </div>
-    
-    {/* Upload Progress Indicator */}
-    {isUploading && (
-      <div style={{ 
-        marginTop: '16px', 
-        display: 'flex', 
-        flexDirection: 'column', 
-        alignItems: 'center' 
-      }}>
-        <div style={{ marginBottom: '8px', fontSize: '14px' }}>Uploading FASTA...</div>
-        <CircularProgress progress={uploadProgress} />
       </div>
-    )}
-  </div>
 
-  <div 
-    style={{ position: 'relative' }}
-    onDragEnter={handleDragEnter}
-    onDragOver={handleDragOver}
-    onDragLeave={handleDragLeave}
-    onDrop={handleDrop}
-  >
-    {isDragging && (
-      <div style={{
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        backgroundColor: 'rgba(0, 0, 0, 0.7)',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        zIndex: 1000,
-        borderRadius: '4px'
-      }}>
-        <div style={{
-          padding: '20px',
-          border: '2px dashed #666',
-          borderRadius: '8px',
-          textAlign: 'center'
-        }}>
-          Drop FASTA files here
-        </div>
-      </div>
-    )}
-    
-    <canvas 
-      ref={canvasRef} 
-      width={800} 
-      height={600} 
-      style={{ 
-        border: '1px solid #444', 
-        borderRadius: '4px' 
-      }} 
-      onMouseMove={handleCanvasMouseMove} 
-      onMouseLeave={handleCanvasMouseLeave}
-      onClick={handleCanvasClick}
-    />
-
-    {(hoveredDot || selectedDot) && (
-      <div 
-        id="protein-info-card"
-        style={{ 
-          position: 'fixed', 
-          left: mousePos.x + 10, 
-          top: mousePos.y + 10, 
-          backgroundColor: '#282828', 
-          border: '1px solid #444',
-          color: 'white', 
-          padding: '12px', 
-          borderRadius: '4px',
-          boxShadow: '0 2px 8px rgba(0,0,0,0.2)',
-          zIndex: 1000,
-          minWidth: '200px',
-          pointerEvents: selectedDot ? 'auto' : 'none'
-        }}
-      >
-        <h4 style={{ marginBottom: '8px', fontSize: '16px' }}>{(selectedDot || hoveredDot).fullName}</h4>
-        <div style={{ fontSize: '14px', display: 'grid', gap: '4px' }}>
-          <div>Source: {(selectedDot || hoveredDot).organism}</div>
-          {(selectedDot || hoveredDot).uniprotId !== 'N/A' && (
-            <div>
-              UniProt: <a 
-                href={`https://www.uniprot.org/uniprot/${(selectedDot || hoveredDot).uniprotId}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{ color: '#63B3ED', textDecoration: 'none' }}
-              >
-                {(selectedDot || hoveredDot).uniprotId}
-              </a>
-            </div>
-          )}
-          {(selectedDot || hoveredDot).pdbId !== 'N/A' && (
-            <div>
-              PDB: <a 
-                href={`https://www.rcsb.org/structure/${(selectedDot || hoveredDot).pdbId}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{ color: '#63B3ED', textDecoration: 'none' }}
-              >
-                {(selectedDot || hoveredDot).pdbId}
-              </a>
-            </div>
-          )}
-          <div>MW: {(selectedDot || hoveredDot).mw.toLocaleString()} Da</div>
-          <div>pH: {(selectedDot || hoveredDot).pH.toFixed(2)}</div>
-          <div style={{ marginTop: '4px' }}>
-            <div style={{ fontWeight: 500 }}>Function:</div>
-            <div style={{ color: '#A0AEC0' }}>{(selectedDot || hoveredDot).function}</div>
+      {/* pH Range Slider - now disabled during simulation (PPS1-108) */}
+      <div style={{ marginBottom: '20px', padding: '0 20px', maxWidth: '800px', alignSelf: 'center' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '8px' }}>
+          <label style={{ 
+            fontSize: '14px', 
+            width: '120px',
+            opacity: simulationState === 'ready' ? 1 : 0.5 // Dim when disabled
+          }}>pH Range:</label>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flex: 1 }}>
+            <input 
+              type="number" 
+              min="0" 
+              max="14" 
+              step="0.1" 
+              value={phRange.min} 
+              onChange={(e) => handlePhRangeChange('min', e.target.value)}
+              style={inputStyle}
+              disabled={simulationState !== 'ready'} // Disable during simulation
+            />
+            <input 
+              type="range" 
+              id="ph-min-slider"
+              min="0" 
+              max="14" 
+              step="0.1" 
+              value={phRange.min}
+              onChange={handlePhSliderChange}
+              style={sliderStyle}
+              disabled={simulationState !== 'ready'} // Disable during simulation
+            />
+            <input 
+              type="range" 
+              id="ph-max-slider"
+              min="0" 
+              max="14" 
+              step="0.1" 
+              value={phRange.max}
+              onChange={handlePhSliderChange}
+              style={sliderStyle}
+              disabled={simulationState !== 'ready'} // Disable during simulation
+            />
+            <input 
+              type="number" 
+              min="0" 
+              max="14" 
+              step="0.1" 
+              value={phRange.max} 
+              onChange={(e) => handlePhRangeChange('max', e.target.value)}
+              style={inputStyle}
+              disabled={simulationState !== 'ready'} // Disable during simulation
+            />
           </div>
-          {(selectedDot || hoveredDot).sequence && (
-            <div style={{ marginTop: '4px' }}>
-              <div style={{ fontWeight: 500 }}>Sequence Preview:</div>
-              <div style={{ 
-                color: '#A0AEC0',
-                fontFamily: 'monospace',
-                fontSize: '12px',
-                whiteSpace: 'nowrap',
-                overflow: 'hidden',
-                textOverflow: 'ellipsis',
-                maxWidth: '300px'
+        </div>
+      </div>
+      
+      {/* Acrylamide Percentage Slider (PPS1-106) */}
+      <div style={{ marginBottom: '20px', padding: '0 20px', maxWidth: '800px', alignSelf: 'center' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '8px' }}>
+          <label style={{ 
+            fontSize: '14px', 
+            width: '120px',
+            opacity: simulationState === 'ready' ? 1 : 0.5 // Dim when disabled
+          }}>Acrylamide %:</label>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flex: 1 }}>
+            <input 
+              type="number" 
+              min="5" 
+              max="20" 
+              step="0.5" 
+              value={acrylamidePercentage} 
+              onChange={(e) => setAcrylamidePercentage(parseFloat(e.target.value))}
+              style={inputStyle}
+              disabled={simulationState !== 'ready'} // Disable during simulation
+            />
+            <input 
+              type="range" 
+              min="5" 
+              max="20" 
+              step="0.5" 
+              value={acrylamidePercentage}
+              onChange={handleAcrylamideChange}
+              style={sliderStyle}
+              disabled={simulationState !== 'ready'} // Disable during simulation
+            />
+            <div style={{ 
+              minWidth: '140px', 
+              fontSize: '12px',
+              opacity: simulationState === 'ready' ? 0.8 : 0.4 // Dim when disabled
+            }}>
+              {acrylamidePercentage < 7 ? 'Resolves large proteins' : 
+               acrylamidePercentage < 12 ? 'Medium range separation' : 
+               'Resolves small proteins'}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Main content area - centered (PPS1-109) */}
+      <div style={{ 
+        display: 'flex', 
+        justifyContent: 'center', 
+        gap: '16px',
+        maxWidth: '1100px',
+        margin: '0 auto' 
+      }}>
+        {/* Protein list panel with resizable feature */}
+        <div 
+          id="protein-list"
+          style={{ 
+            padding: '16px', 
+            backgroundColor: '#282828', 
+            borderRadius: '4px',
+            width: isProteinListCollapsed ? '80px' : '250px',
+            height: '600px',
+            display: 'flex',
+            flexDirection: 'column',
+            transition: 'width 0.3s ease-in-out',
+            overflow: 'hidden',
+            position: 'relative'
+          }}
+        >
+          <ProteinListHeader 
+            isCollapsed={isProteinListCollapsed} 
+            onToggle={toggleProteinList} 
+            count={dots.length}
+          />
+          
+          {/* Resizable handle */}
+          <div
+            style={{
+              position: 'absolute',
+              top: 0,
+              right: 0,
+              width: '5px',
+              height: '100%',
+              cursor: 'ew-resize',
+              background: 'rgba(255,255,255,0.1)',
+            }}
+            onMouseDown={(e) => {
+              const startWidth = e.currentTarget.parentElement.offsetWidth;
+              const startX = e.clientX;
+              
+              const onMouseMove = (moveEvent) => {
+                if (isProteinListCollapsed) return;
+                const newWidth = Math.max(150, startWidth + moveEvent.clientX - startX);
+                e.currentTarget.parentElement.style.width = `${newWidth}px`;
+              };
+              
+              const onMouseUp = () => {
+                document.removeEventListener('mousemove', onMouseMove);
+                document.removeEventListener('mouseup', onMouseUp);
+              };
+              
+              document.addEventListener('mousemove', onMouseMove);
+              document.addEventListener('mouseup', onMouseUp);
+            }}
+          />
+          
+          <div style={{ 
+            display: 'flex', 
+            flexDirection: 'column', 
+            gap: '8px',
+            overflowY: 'auto',
+            flex: 1,
+            marginTop: '8px',
+            opacity: isProteinListCollapsed ? 0 : 1,
+            transition: 'opacity 0.2s',
+            transitionDelay: isProteinListCollapsed ? '0s' : '0.1s'
+          }}>
+            {!isProteinListCollapsed && dots.map(dot => (
+              <div 
+                key={dot.name} 
+                onClick={() => handleProteinClick(dot)}
+                style={{ 
+                  display: 'flex', 
+                  alignItems: 'center', 
+                  gap: '8px',
+                  minHeight: '24px',
+                  padding: '4px',
+                  cursor: 'pointer',
+                  backgroundColor: selectedDot?.name === dot.name ? '#3a3a3a' : 'transparent',
+                  borderRadius: '4px',
+                  transition: 'background-color 0.2s'
+                }}>
+                <div style={{ 
+                  width: '12px', 
+                  height: '12px', 
+                  minWidth: '12px',
+                  backgroundColor: dot.color,
+                  borderRadius: '50%' 
+                }}/>
+                <span style={{
+                  whiteSpace: 'nowrap',
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                  fontSize: '14px',
+                  flex: 1
+                }}>{dot.name}</span>
+              </div>
+            ))}
+          </div>
+          
+          {/* Upload Progress Indicator */}
+          {isUploading && (
+            <div style={{ 
+              marginTop: '16px', 
+              display: 'flex', 
+              flexDirection: 'column', 
+              alignItems: 'center' 
+            }}>
+              <div style={{ marginBottom: '8px', fontSize: '14px' }}>Uploading FASTA...</div>
+              <CircularProgress progress={uploadProgress} />
+            </div>
+          )}
+        </div>
+
+        <div 
+          style={{ position: 'relative' }}
+          onDragEnter={handleDragEnter}
+          onDragOver={handleDragOver}
+          onDragLeave={handleDragLeave}
+          onDrop={handleDrop}
+        >
+          {isDragging && (
+            <div style={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              backgroundColor: 'rgba(0, 0, 0, 0.7)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              zIndex: 1000,
+              borderRadius: '4px'
+            }}>
+              <div style={{
+                padding: '20px',
+                border: '2px dashed #666',
+                borderRadius: '8px',
+                textAlign: 'center'
               }}>
-                {(selectedDot || hoveredDot).sequence.substring(0, 50)}...
+                Drop FASTA files here
+              </div>
+            </div>
+          )}
+          
+          <canvas 
+            ref={canvasRef} 
+            width={800} 
+            height={600} 
+            style={{ 
+              border: '1px solid #444', 
+              borderRadius: '4px' 
+            }} 
+            onMouseMove={handleCanvasMouseMove} 
+            onMouseLeave={handleCanvasMouseLeave}
+            onClick={handleCanvasClick}
+          />
+
+          {/* Protein information popup - show for both canvas clicks and list clicks */}
+          {(hoveredDot || selectedDot) && (
+            <div 
+              id="protein-info-card"
+              style={{ 
+                position: 'fixed', 
+                left: mousePos.x + 10, 
+                top: mousePos.y + 10, 
+                backgroundColor: '#282828', 
+                border: '1px solid #444',
+                color: 'white', 
+                padding: '12px', 
+                borderRadius: '4px',
+                boxShadow: '0 2px 8px rgba(0,0,0,0.2)',
+                zIndex: 1000,
+                minWidth: '200px',
+                pointerEvents: 'auto' // Always enable interaction
+              }}
+            >
+              <h4 style={{ marginBottom: '8px', fontSize: '16px' }}>{(selectedDot || hoveredDot).fullName}</h4>
+              <div style={{ fontSize: '14px', display: 'grid', gap: '4px' }}>
+                <div>Source: {(selectedDot || hoveredDot).organism}</div>
+                {/* Updated UniProt links with proper functionality (PPS1-110) */}
+                <div>
+                  UniProt: <a 
+                    href={`https://www.uniprot.org/uniprotkb/${(selectedDot || hoveredDot).uniprotId !== 'N/A' ? (selectedDot || hoveredDot).uniprotId : (selectedDot || hoveredDot).name.replace(/\s+/g, '_')}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{ color: '#63B3ED', textDecoration: 'none' }}
+                  >
+                    {(selectedDot || hoveredDot).uniprotId !== 'N/A' ? (selectedDot || hoveredDot).uniprotId : (selectedDot || hoveredDot).name}
+                  </a>
+                </div>
+                {(selectedDot || hoveredDot).pdbId !== 'N/A' && (
+                  <div>
+                    PDB: <a 
+                      href={`https://www.rcsb.org/structure/${(selectedDot || hoveredDot).pdbId}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{ color: '#63B3ED', textDecoration: 'none' }}
+                    >
+                      {(selectedDot || hoveredDot).pdbId}
+                    </a>
+                  </div>
+                )}
+                <div>MW: {(selectedDot || hoveredDot).mw.toLocaleString()} Da</div>
+                <div>pH: {(selectedDot || hoveredDot).pH.toFixed(2)}</div>
+                <div style={{ marginTop: '4px' }}>
+                  <div style={{ fontWeight: 500 }}>Function:</div>
+                  <div style={{ color: '#A0AEC0' }}>{(selectedDot || hoveredDot).function}</div>
+                </div>
+                {(selectedDot || hoveredDot).sequence && (
+                  <div style={{ marginTop: '4px' }}>
+                    <div style={{ fontWeight: 500 }}>Sequence Preview:</div>
+                    <div style={{ 
+                      color: '#A0AEC0',
+                      fontFamily: 'monospace',
+                      fontSize: '12px',
+                      whiteSpace: 'nowrap',
+                      overflow: 'hidden',
+                      textOverflow: 'ellipsis',
+                      maxWidth: '300px'
+                    }}>
+                      {(selectedDot || hoveredDot).sequence.substring(0, 50)}...
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
           )}
         </div>
       </div>
-    )}
-  </div>
-</div>
-</div>
-);
+    </div>
+  );
 };
 
 export default TwoDE;
