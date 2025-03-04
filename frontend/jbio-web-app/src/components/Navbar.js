@@ -1,18 +1,23 @@
 import React from 'react';
 import '../components/Navbar.css';
+import logo from './about_images/basil-logo-original.png'
 import {NavLink} from "react-router-dom";
 import Dropdown from "./Dropdown";
-export default class Navbar extends React.Component{
-    render(){
+import './Hamburger.css'
+export default function Navbar(){
+    const [hamburgerOpen, setHamburgerOpen] = React.useState(false);
+    const toggleHamburger = () =>{
+        setHamburgerOpen(!hamburgerOpen);
+    }
     return (
         <div className="nav-container">
             <div className={"logo"}>
-                <div className={"temp-icon"}></div>
+                <div className={"logo-img"}><img src={logo} alt={"BASIL logo"}/></div>
                 <span id={"nav-logo"}>JBioFramework</span>
             </div>
-            <div className={"navbar"}>
+            <div className={"navbar"} id={`${hamburgerOpen ? "nav-vert" : "nav-horiz"}`}>
                 <ul>
-                    <li><NavLink to={"/"} >About</NavLink></li>
+                    <li><NavLink to={"/"}>About</NavLink></li>
                     <Dropdown>
                         <Dropdown.Button><a>Simulators</a></Dropdown.Button>
                         <Dropdown.Content>
@@ -24,8 +29,16 @@ export default class Navbar extends React.Component{
                     </Dropdown>
                     <li><NavLink to={"/instructions"}>Instructions</NavLink></li>
                     <li><NavLink to={"/contact"}>Contact</NavLink></li>
+                    {/*<li><NavLink to={""}>temp</NavLink></li>*/}
+                    {/*<li><NavLink to={""}>temp</NavLink></li>*/}
+                    {/*<li><NavLink to={""}>temp</NavLink></li>*/}
+                    {/*<li><NavLink to={""}>temp</NavLink></li>*/}
+
                 </ul>
             </div>
+            <div className={"hamburger"} onClick={toggleHamburger}>
+                <i className={"fa-solid fa-bars"}></i>
+            </div>
         </div>
-    );}
+    );
 }

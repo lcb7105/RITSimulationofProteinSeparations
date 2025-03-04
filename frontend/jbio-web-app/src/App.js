@@ -11,6 +11,8 @@ import Contact from "./components/Contact";
 import About from "./components/About";
 import Instructions from "./components/Instructions";
 import Layout from "./Layout";
+import SimOneDE from "./components/SimOneDE";
+import SimTwoDE from "./components/SimTwoDE";
 
 
 function App() {
@@ -31,6 +33,8 @@ function App() {
             <Routes>
                 <Route path="/" element={<Layout/>}>
                     <Route index element={<About/>}/>
+                    <Route path="1de" element={<SimOneDE/>}/>
+                    <Route path="2de" element={<SimTwoDE/>}/>
                     <Route path="instructions" element={<Instructions />}/>
                     <Route path="contact" element={<Contact/>}/>
                 </Route>

@@ -140,72 +140,72 @@ function About() {
                     </div>
                 </div>
             </section>
-            <section id={"past-developers"}>
-                <h2>Past Developers</h2>
-                <div className={"developer-section"}>
-                    <div className={"feat-box"}>
-                        <div className={"feat-image"}></div>
-                        <div className={"feat-attr"}>
-                            <h3>Developer Name</h3>
-                            <p>Title</p>
-                        </div>
-                    </div>
-                    <div className={"feat-box"}>
-                        <div className={"feat-image"}></div>
-                        <div className={"feat-attr"}>
-                            <h3>Developer Name</h3>
-                            <p>Title</p>
-                        </div>
-                    </div>
-                    <div className={"feat-box"}>
-                        <div className={"feat-image"}></div>
-                        <div className={"feat-attr"}>
-                            <h3>Developer Name</h3>
-                            <p>Title</p>
-                        </div>
-                    </div>
-                    <div className={"feat-box"}>
-                        <div className={"feat-image"}></div>
-                        <div className={"feat-attr"}>
-                            <h3>Developer Name</h3>
-                            <p>Title</p>
-                        </div>
-                    </div>
-                </div>
-            </section>
-            <section id={"current-developers"}>
-                <h2>Current Developers</h2>
-                <div className={"developer-section"}>
-                    <div className={"feat-box"}>
-                        <div className={"feat-image"}></div>
-                        <div className={"feat-attr"}>
-                            <h3>Developer Name</h3>
-                            <p>Title</p>
-                        </div>
-                    </div>
-                    <div className={"feat-box"}>
-                        <div className={"feat-image"}></div>
-                        <div className={"feat-attr"}>
-                            <h3>Developer Name</h3>
-                            <p>Title</p>
-                        </div>
-                    </div>
-                    <div className={"feat-box"}>
-                        <div className={"feat-image"}></div>
-                        <div className={"feat-attr"}>
-                            <h3>Developer Name</h3>
-                            <p>Title</p>
-                        </div>
-                    </div>
-                    <div className={"feat-box"}>
-                        <div className={"feat-image"}></div>
-                        <div className={"feat-attr"}>
-                            <h3>Developer Name</h3>
-                            <p>Title</p>
-                        </div>
-                    </div>
-                </div>
-            </section>
+            {/*<section id={"past-developers"}>*/}
+            {/*    <h2>Past Developers</h2>*/}
+            {/*    <div className={"developer-section"}>*/}
+            {/*        <div className={"feat-box"}>*/}
+            {/*            <div className={"feat-image"}></div>*/}
+            {/*            <div className={"feat-attr"}>*/}
+            {/*                <h3>Developer Name</h3>*/}
+            {/*                <p>Title</p>*/}
+            {/*            </div>*/}
+            {/*        </div>*/}
+            {/*        <div className={"feat-box"}>*/}
+            {/*            <div className={"feat-image"}></div>*/}
+            {/*            <div className={"feat-attr"}>*/}
+            {/*                <h3>Developer Name</h3>*/}
+            {/*                <p>Title</p>*/}
+            {/*            </div>*/}
+            {/*        </div>*/}
+            {/*        <div className={"feat-box"}>*/}
+            {/*            <div className={"feat-image"}></div>*/}
+            {/*            <div className={"feat-attr"}>*/}
+            {/*                <h3>Developer Name</h3>*/}
+            {/*                <p>Title</p>*/}
+            {/*            </div>*/}
+            {/*        </div>*/}
+            {/*        <div className={"feat-box"}>*/}
+            {/*            <div className={"feat-image"}></div>*/}
+            {/*            <div className={"feat-attr"}>*/}
+            {/*                <h3>Developer Name</h3>*/}
+            {/*                <p>Title</p>*/}
+            {/*            </div>*/}
+            {/*        </div>*/}
+            {/*    </div>*/}
+            {/*</section>*/}
+            {/*<section id={"current-developers"}>*/}
+            {/*    <h2>Current Developers</h2>*/}
+            {/*    <div className={"developer-section"}>*/}
+            {/*        <div className={"feat-box"}>*/}
+            {/*            <div className={"feat-image"}></div>*/}
+            {/*            <div className={"feat-attr"}>*/}
+            {/*                <h3>Developer Name</h3>*/}
+            {/*                <p>Title</p>*/}
+            {/*            </div>*/}
+            {/*        </div>*/}
+            {/*        <div className={"feat-box"}>*/}
+            {/*            <div className={"feat-image"}></div>*/}
+            {/*            <div className={"feat-attr"}>*/}
+            {/*                <h3>Developer Name</h3>*/}
+            {/*                <p>Title</p>*/}
+            {/*            </div>*/}
+            {/*        </div>*/}
+            {/*        <div className={"feat-box"}>*/}
+            {/*            <div className={"feat-image"}></div>*/}
+            {/*            <div className={"feat-attr"}>*/}
+            {/*                <h3>Developer Name</h3>*/}
+            {/*                <p>Title</p>*/}
+            {/*            </div>*/}
+            {/*        </div>*/}
+            {/*        <div className={"feat-box"}>*/}
+            {/*            <div className={"feat-image"}></div>*/}
+            {/*            <div className={"feat-attr"}>*/}
+            {/*                <h3>Developer Name</h3>*/}
+            {/*                <p>Title</p>*/}
+            {/*            </div>*/}
+            {/*        </div>*/}
+            {/*    </div>*/}
+            {/*</section>*/}
         </div>
     );
 }

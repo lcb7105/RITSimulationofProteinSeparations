@@ -30,3 +30,9 @@ section{
 h2{
     font-weight: bold;
 }
+
+@media screen and (max-width: 1000px){
+    .about-section{
+        flex-direction: column;
+    }
+}

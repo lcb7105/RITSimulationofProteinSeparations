@@ -35,16 +35,16 @@
 
 .nav-container{
     display: flex;
-    height: 75px;
     /*justify-content: space-between;*/
     flex-flow: row nowrap;
     background-color: var(--nav-background);
     color: white;
-    font-size: 1.25em;
+    font-size: 1.5em;
 }
 
 .navbar{
     width: 100%;
+    height: 75px;
     display: flex;
     justify-content: flex-end;
 }
@@ -59,16 +59,35 @@
     margin: auto;
 }
 
+.logo-img, .logo-img img{
+    max-width: 150px;
+    /*border-radius: 100px;*/
+    display: inline-flex;
+    margin: 2%;
+}
+
 #nav-logo{
     margin: auto;
 }
 
-@media (max-width: 1250px){
+@media (max-width: 1000px){
     .nav-container{
         flex-flow: column nowrap;
     }
-    .navbar ul{
+    .logo{
+        width: 75%;
+    }
+    .navbar ul {
         flex-direction: column;
         width: 100%;
+    }
+    #nav-horiz{
+        display: none;
+    }
+
+    #nav-vert{
+        background-color: var(--nav-background);
+        z-index: 10;
+        height: 25%;
     }
 }
