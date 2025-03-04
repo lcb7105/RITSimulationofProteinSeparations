@@ -3,12 +3,6 @@ import './Instructions.css';
 function Instructions() {
     return (
         <div>
-            {/* <div className="navbar">
-                <a href="#1de"><h2 className="navbar-header" data-testId = '1de-nav'>1DE</h2></a>
-                <a href="#2de"><h2 className="navbar-header" data-testId = '2de-nav'>2DE</h2></a>
-                <a href="#3de"><h2 className="navbar-header" data-testId = '3de-nav'>3DE</h2></a>
-            </div> */}
-
             <h1 className="pageHeaderInstructions">Instructions</h1>
             <div className='flexBoxContainerInstructions'>
                 <section className='oneDimensionalInstructions'>
@@ -51,14 +45,6 @@ function Instructions() {
                     </p>
                 </section>
             </div>
-            
-            {/* <img src="https://www.future-science.com/cms/10.2144/000112421/asset/images/medium/figure2.jpg" alt="3de" style={{width: 400 +"px"}} />
-            <ol>
-                <li>tincidunt. Vestibulum luctus fringilla enim, eu elementum</li>
-                <li>est iaculis vel. Nulla urna nulla, rutrum in</li>
-                <li>ante id, gravida</li>
-                <li>ullamcorper nisl. Integer sed aliquet nibh. Nulla tristique lacus ex, ac euismod neque</li>
-            </ol> */}
         </div>
     );
 }

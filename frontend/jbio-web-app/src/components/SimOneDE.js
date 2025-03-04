@@ -7,7 +7,7 @@ function SimOneDE() {
             <div className='simulatorBoxOneDE'>
                 <p>Insert Simulation here</p>
             </div>
-            <section>
+            <section className='OneDEinstructions'>
                 <h2>1DE Simulator Instructions</h2>
                 <h3>Steps</h3>
                 <ol>

@@ -7,7 +7,7 @@ function SimTwoDE() {
             <div className='simulatorBoxTwoDE'>
                 <p>Insert Simulation here</p>
             </div>
-            <section>
+            <section className='TwoDEinstructions'>
                 <h2>2DE Simulator Instructions</h2>
                 <h3>Steps</h3>
                 <ol>

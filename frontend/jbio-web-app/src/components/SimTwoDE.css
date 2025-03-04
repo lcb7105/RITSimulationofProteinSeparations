@@ -1,5 +1,19 @@
-.simulatorBoxOneDE {
+.simulatorBoxTwoDE {
     background-color: lightgray;
-    width: 600px;
-    height: auto;
+    overflow: hidden;
+}
+
+.TwoDEinstructions ol, .TwoDEinstructions li, .TwoDEinstructions ul {
+    text-align: left;
+}
+
+.centerText {
+    text-align: center;
+}
+
+.TwoDEinstructions {
+    margin: auto;
+    display: block;
+    width: fit-content;
+    padding-right: 2%;
 }
