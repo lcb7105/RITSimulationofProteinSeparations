@@ -80,6 +80,8 @@
     .navbar ul {
         flex-direction: column;
         width: 100%;
+        padding-right: 0;
+        padding-left: 0;
     }
     #nav-horiz{
         display: none;

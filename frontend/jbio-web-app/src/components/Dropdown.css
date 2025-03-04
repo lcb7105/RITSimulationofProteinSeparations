@@ -12,6 +12,7 @@
     overflow: visible;
     position: absolute;
     top: 0;
+    font-size: 90%;
 }
 
 .dropdown-container{
@@ -33,11 +34,14 @@
     border-radius: 0 0 10px 10px;
     align-items: flex-end;
     padding-bottom: 10px;
-    /*width: 100% !important;*/
+    width: 100% !important;
+}
+
+.dropdown-list li{
+    margin: auto;
 }
 
 .hidden{
-    /*opacity: 0;*/
     display:  none;
 }
 
