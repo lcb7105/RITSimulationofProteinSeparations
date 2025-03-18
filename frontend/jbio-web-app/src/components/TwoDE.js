@@ -1,28 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
 
-// Amino acid properties for calculations
-const AMINO_ACIDS = {
-  'A': { mass: 71.07, pKa: 0 },
-  'R': { mass: 156.18, pKa: 12.48 },
-  'N': { mass: 114.08, pKa: 0 },
-  'D': { mass: 115.08, pKa: 3.65 },
-  'C': { mass: 103.14, pKa: 8.18 },
-  'E': { mass: 129.11, pKa: 4.25 },
-  'Q': { mass: 128.13, pKa: 0 },
-  'G': { mass: 57.05, pKa: 0 },
-  'H': { mass: 137.14, pKa: 6.00 },
-  'I': { mass: 113.16, pKa: 0 },
-  'L': { mass: 113.16, pKa: 0 },
-  'K': { mass: 128.17, pKa: 10.53 },
-  'M': { mass: 131.19, pKa: 0 },
-  'F': { mass: 147.17, pKa: 0 },
-  'P': { mass: 97.11, pKa: 0 },
-  'S': { mass: 87.07, pKa: 0 },
-  'T': { mass: 101.10, pKa: 0 },
-  'W': { mass: 186.21, pKa: 0 },
-  'Y': { mass: 163.17, pKa: 10.07 },
-  'V': { mass: 99.13, pKa: 0 }
-};
 
 // Initial protein data
 const initialProteinData = {
@@ -57,64 +34,45 @@ const initialProteinData = {
     color: '#0000FF'
   }
 };
-
-const calculateMolecularWeight = (sequence) => {
-  return sequence.split('').reduce((total, aa) => {
-    return total + (AMINO_ACIDS[aa]?.mass || 0);
-  }, 0);
-};
-
-const calculateTheoreticalPI = (sequence) => {
-  const counts = sequence.split('').reduce((acc, aa) => {
-    if (AMINO_ACIDS[aa]?.pKa > 0) {
-      acc[aa] = (acc[aa] || 0) + 1;
-    }
-    return acc;
-  }, {});
-  
-  let totalPka = 0;
-  let totalCount = 0;
-  
-  Object.entries(counts).forEach(([aa, count]) => {
-    totalPka += AMINO_ACIDS[aa].pKa * count;
-    totalCount += count;
+const calculateMolecularWeight = async (sequence) => {
+  const response = await fetch('http://127.0.0.1:5000/calculateMolecularWeight', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ sequence })
   });
-  
-  return totalCount > 0 ? totalPka / totalCount : 7.0;
+  const data = await response.json();
+  return data.molecular_weight;
 };
 
-const parseFastaContent = (content) => {
-  const sequences = [];
-  let currentHeader = '';
-  let currentSequence = '';
-
-  content.split('\n').forEach(line => {
-    line = line.trim();
-    if (line.startsWith('>')) {
-      if (currentHeader && currentSequence) {
-        sequences.push({ header: currentHeader, sequence: currentSequence });
-      }
-      currentHeader = line.substring(1).trim();
-      currentSequence = '';
-    } else if (line) {
-      currentSequence += line;
-    }
+const calculateTheoreticalPI = async (sequence) => {
+  const response = await fetch('http://127.0.0.1:5000/calculateTheoreticalPI', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ sequence })
   });
-
-  if (currentHeader && currentSequence) {
-    sequences.push({ header: currentHeader, sequence: currentSequence });
-  }
-
-  return sequences;
+  const data = await response.json();
+  return data.theoretical_pi;
 };
 
-const extractProteinInfo = (header) => {
-  const match = header.match(/^gi\|(\d+)\|.*\|\s*(.*?)\s*\[(.*?)\]$/);
-  return {
-    id: match ? match[1] : 'unknown',
-    name: match ? match[2] : header,
-    organism: match ? match[3] : 'Unknown organism'
-  };
+const parseFastaContent = async (content) => {
+  const response = await fetch('http://127.0.0.1:5000/parseFastaContent', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ content })
+  });
+  const data = await response.json();
+  console.log(data);
+  return data.sequences;
+};
+
+const extractProteinInfo = async (content) => {
+  const response = await fetch('http://127.0.0.1:5000/extractProteinInfo', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ content })
+  });
+  const data = await response.json();
+  return data.protein_info;
 };
 
 const TwoDE = () => {
@@ -157,8 +115,6 @@ const TwoDE = () => {
   const MAX_PH = phRange.max;
   const PH_STEP = 2;
   const IEF_DURATION = 5000; // 5 seconds
-  const DAMPING = 0.95; // Damping factor for oscillation
-  const FORCE_MULTIPLIER = 0.5; // Strength of pH gradient force
   const MAX_DISTANCE_TRAVELED = 6; // Maximum distance traveled in cm
 
   const startIEF = () => {
