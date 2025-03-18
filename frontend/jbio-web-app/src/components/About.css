@@ -31,6 +31,28 @@ h2{
     font-weight: bold;
 }
 
+.carousel{
+    width: 60%;
+    display: inline-flex;
+}
+
+.carousel button{
+    /*display: inline-flex;*/
+    height: 75px;
+    width: 75px;
+    clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%)
+}
+
+.carousel-item{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+#button-prev{
+
+}
+
 @media screen and (max-width: 1000px){
     .about-section{
         flex-direction: column;
