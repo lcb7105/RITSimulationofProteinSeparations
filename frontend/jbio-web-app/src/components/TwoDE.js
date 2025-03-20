@@ -61,7 +61,6 @@ const parseFastaContent = async (content) => {
     body: JSON.stringify({ content })
   });
   const data = await response.json();
-  console.log(data);
   return data.sequences;
 };
 
@@ -256,7 +255,9 @@ const TwoDE = () => {
 
       try {
         const content = await file.text();
-        const sequences = parseFastaContent(content);
+        const sequences = await parseFastaContent(content).then();
+
+        console.log(sequences);
 
         sequences.forEach((seq, index) => {
           const mw = calculateMolecularWeight(seq.sequence);
