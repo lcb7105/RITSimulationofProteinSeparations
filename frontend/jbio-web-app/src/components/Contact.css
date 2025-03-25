@@ -1,39 +1,70 @@
+/* . are classnames in the corresponding html file and # are id's */
+
+/* styles all html elements in the contact.js page with a class name of pageHeaderContact, 
+as well as all the h2 elements in the page, and the coaches and sponsors unordered list elements */
 .pageHeaderContact, .contactPage h2, .coachSponsorContactContainer ul {
+    /* centers the text in the middle */
     text-align: center;
+    /* sets the position to relative so that you can move the html elements on the page if needed */
     position: relative;
 }
 
+/* styles all html elements in the contact.js page with a class name of contactPage */
 .contactPage {
+    /* adds padding thick is whitespace inside of a pages border */
     padding: 2%;
+    /* default border-box needed for each html page */
     box-sizing: border-box;
+    /* ensures no extra scroll bars appear if the html contact goes off the page */
     overflow: hidden;
 }
 
+/* styles all a tags and unordered list tags in the contact page */
 .contactPage a, .contactPage ul li {
+    /* by splitting words in half when the page shrinks to make it mobile repsonsive, Important!! */
     word-wrap: break-word;
 }
 
+/* styles the current team members background */
 .currentTeamMembersBackground {
+    /* makes the background light gray */
     background-color: lightgray;
+    /* sets the diplay to inline block */
     display: inline-block;
+    /* ensures the width an content can use up 100 percent of the space on the screen */
     width: 100%;
+    /* ensures the content is centered in the light gray background and the background is in the middle by use of auto on left and right
+    and adds some white space above and below outside of the currentTeamMembersBackground */
     margin: 2% auto auto;
+    /* adds whitespace inside of the border of the currentTeamMembersBackground */
     padding: 0px 4% 2%;
+    /* posistions this content inside currentTeamMembersBackground above or below others on the page by z-index */
     z-index: 2;
+    /* allows you to move this box around by setting posistion to relative */
     position: relative;
+    /* hides any content that falls off of the page */
     overflow: hidden;
+    /* moves the content and the box to the left */
     left: -4%;
 }
 
+/* styles each div of a current team member using the class and html tag */
 .currentTeamMembers div {
+    /* Sets the background color of an element to white */
     background-color: white;
 }
 
+/* styles every box of infomration about a person on the page */
 .coachSponsorContactContainer, .currentTeamMembers, .pastTeamMembers {
+    /* In combination with 'float' and 'position', determines the type of box or boxes that are generated for an element: set to flex */
     display: flex;
+    /* Aligns flex items along the main axis of the current line of the flex container: makes sure each team member has equal white space in between them on the page */
     justify-content: space-evenly;
+    /* Aligns flex items along the cross axis of the current line of the flex container: ensures the height of each team members box is stretched to the same height and possible width */
     align-items: stretch;
+    /* Controls whether the flex container is single-line or multi-line, and the direction of the cross-axis, which determines the direction new lines are stacked in: if it gets too crowded and the info of each team member gets squished then the member moves on the next line in the screen */
     flex-wrap: wrap;
+    /* The gap CSS property is a shorthand property for row-gap and column-gap specifying the gutters between grid rows and columns: adds space between and above each team member */
     gap: 1%;
 }
 
