@@ -68,8 +68,11 @@ as well as all the h2 elements in the page, and the coaches and sponsors unorder
     gap: 1%;
 }
 
+/* styles all the div elements on the page */
 .coachSponsorContactContainer div, .currentTeamMembers div, .pastTeamMembers div {
+    /* Specifies the width of the content area, padding area or border area (depending on 'box-sizing') of certain boxes: ensures the width of the div elements are 45% in the screen */
     width: 45%;
+    /* Allows authors to constrain content height to a certain range: in our case the min height is  */
     min-height: fit-content;
     border: 2.5px solid black;
     border-radius: 25px;
