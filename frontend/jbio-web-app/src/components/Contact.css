@@ -79,16 +79,18 @@ as well as all the h2 elements in the page, and the coaches and sponsors unorder
     padding: 11px;
 }
 
+/* puts spacing between each person in the team member section */
 .pastTeamMembers, .currentTeamMembers {
     row-gap: 11px;
 }
-
+/* css styling for paul craigs container so that the information is displayed on the side when in tablet and desktop mode to match the figma */
 .sideTabletDesktop {
     display: inline-block;
     vertical-align: top;
     width: 60%;
 }
 
+/* styles the images of each persons face to make sure they are round circles and fit the width and height given with object-fit */
 .coachSponsorContactContainer img, .currentTeamMembers img, .pastTeamMembers img {
     width: 100%;
     max-width: 150px;
@@ -99,82 +101,84 @@ as well as all the h2 elements in the page, and the coaches and sponsors unorder
     object-fit: cover;
     margin-right: 11px;
 }
-
+/* ensures the lists in the contact page have the text aligned to the left as the sponsor likes it */
 .contactPage li {
     text-align: left;
 }
 
-/* Desktop only */
+/* Desktop only for responsiveness when screen is greater than or equal to 950px */
 @media screen and (min-width: 950px) {
+    /* adds a max width to the current and past team members containers so that they don't get too large and so they appear side by side */
     .currentTeamMembers div , .pastTeamMembers div {
         max-width: 424.11px;
     }
-
-    /* change current after carousel implemented */
+    /* sets each team member to no wrapping so that when viewing each member reamins side by side a row of 5 and 
+    no one ever goes down to the next row till less than 950px of screen width */
     .pastTeamMembers, .currentTeamMembers {
         justify-content: center;
         flex-wrap: nowrap;
     }
-    
+    /* sets a min width to esure the sontent in each persons box never gets so small the text overflows */
     .pastTeamMembers div, .currentTeamMembers div {
         min-width: 150px;
     }
 }
 
-/* Desktop and Tablets */
+/* Desktop and Tablets (screen less than or equal to 950px */
 @media screen and (max-width: 950px) {
+    /* eliminates the right margin in the images so removing an extra spacing to the right of each image so it looks good on the screen */
     .coachSponsorContactContainer img, .currentTeamMembers img, .pastTeamMembers img {
         margin-right: 0;
     }
-
+    /* fixes the width of some content on the page */
     .sideTabletDesktop, .widthForContentUnderHR {
         width: 94.11%;
     }
-
+    /* extra styling that makes the page look nice */
     .widthForContentUnderHR {
         display: inline-block;
         vertical-align: top;
     }
-
-    /* change current */
-
+    /* adds spacing around each person and their content boxes surounding them on the screen and 
+    allows them to now wrap, move to the next row if their is not enough space on the screen */
     .pastTeamMembers, .currentTeamMembers {
         justify-content: space-evenly;
         flex-wrap: wrap;
     }
-    
+    /* eliminates the min width sen on each member since the screen is shrinking and will eventually
+     go to phone size where you need each person to use as much space as possible */
     .pastTeamMembers div, .currentTeamMembers div {
         min-width: none;
     }
 }
 
-/* Mobile and Tablets */
+/* Mobile and Tablets screen width is less than or euqal to 630px */
 @media screen and (max-width: 630px) {
+    /* changes the width of each team member to esure each one fills the screen and are on top of eachother in the phone view */
     .coachSponsorContactContainer div, .currentTeamMembers div, .pastTeamMembers div {
         width: 94.11%;
         margin: 2% auto;
     }
-
+    /* forces each person to not be next to eachother but on top of eachother as a column since you are now in tablet and mostly phone view */
     .coachSponsorContactContainer, .pastTeamMembers, .currentTeamMembers {
         flex-direction: column;
     }
-
+    /* eliminates the margin or extra spacing that was previously added to the right of the image */
     .coachSponsorContactContainer img, .currentTeamMembers img, .pastTeamMembers img {
         margin-right: 0;
     }
-
+    /* updates the width */
     .sideTabletDesktop, .widthForContentUnderHR {
         width: 99%;
     }
-
-    /* change current */
-
+    /* eliminates the row gap and changes the spacing between each 
+    member which looks better and makes parts of the page look the way it does */
     .pastTeamMembers, .currentTeamMembers {
         justify-content: space-evenly;
         flex-wrap: wrap;
         row-gap: 0px;
     }
-    
+    /* eliminagtes the min width set on each persons containers because on phone view now */
     .pastTeamMembers div, .currentTeamMembers div {
         min-width: none;
     }
