@@ -88,7 +88,7 @@ function Contact() {
                 </div>
             </section>
             {/* to add new team members, copy and paste this whole span and change the class name of the old one to the past team members since Toula would no longer be a current team member  */}
-            {/* the rest of the code is the same explanation as above */}
+            {/* ------------------------------------- the rest of the code is the same explanation as above ------------------------------------------------------------------------------------------------------------------------------------------ */}
             <span className='currentTeamMembersBackground'>
                 <h2>Current Team Members</h2>
                 <section className="currentTeamMembers">
