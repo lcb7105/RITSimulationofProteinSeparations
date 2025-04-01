@@ -1,93 +1,39 @@
 import React, { useEffect, useRef, useState } from 'react';
+import axios from 'axios';
 
+// Define the API base URL - adjust this based on where your backend will be running
+const API_BASE_URL = 'http://localhost:5000/api';
 
-// Initial protein data
-const initialProteinData = {
-  'β-Galactosidase': {
-    fullName: 'Beta-Galactosidase',
-    organism: 'Escherichia coli',
-    uniprotId: 'P00722',
-    pdbId: '3DYP',
-    function: 'Hydrolyzes lactose into glucose and galactose',
-    mw: 116250,
-    pH: 5.3,
-    color: '#FF0000'
-  },
-  'Albumin': {
-    fullName: 'Bovine Serum Albumin',
-    organism: 'Bos taurus',
-    uniprotId: 'P02769',
-    pdbId: '3V03',
-    function: 'Transport protein in blood plasma',
-    mw: 66200,
-    pH: 4.7,
-    color: '#00FF00'
-  },
-  'Ovalbumin': {
-    fullName: 'Ovalbumin',
-    organism: 'Gallus gallus',
-    uniprotId: 'P01012',
-    pdbId: '1OVA',
-    function: 'Major protein component in egg white',
-    mw: 45000,
-    pH: 4.6,
-    color: '#0000FF'
-  }
-};
-const calculateMolecularWeight = async (sequence) => {
-  const response = await fetch('http://127.0.0.1:5000/calculateMolecularWeight', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ sequence })
-  });
-  const data = await response.json();
-  return data.molecular_weight;
+// Amino acid properties for calculations (kept for reference, actual calculations moved to backend)
+const AMINO_ACIDS = {
+  'A': { mass: 71.07, pKa: 0 },
+  'R': { mass: 156.18, pKa: 12.48 },
+  'N': { mass: 114.08, pKa: 0 },
+  'D': { mass: 115.08, pKa: 3.65 },
+  'C': { mass: 103.14, pKa: 8.18 },
+  'E': { mass: 129.11, pKa: 4.25 },
+  'Q': { mass: 128.13, pKa: 0 },
+  'G': { mass: 57.05, pKa: 0 },
+  'H': { mass: 137.14, pKa: 6.00 },
+  'I': { mass: 113.16, pKa: 0 },
+  'L': { mass: 113.16, pKa: 0 },
+  'K': { mass: 128.17, pKa: 10.53 },
+  'M': { mass: 131.19, pKa: 0 },
+  'F': { mass: 147.17, pKa: 0 },
+  'P': { mass: 97.11, pKa: 0 },
+  'S': { mass: 87.07, pKa: 0 },
+  'T': { mass: 101.10, pKa: 0 },
+  'W': { mass: 186.21, pKa: 0 },
+  'Y': { mass: 163.17, pKa: 10.07 },
+  'V': { mass: 99.13, pKa: 0 }
 };
 
-const calculateTheoreticalPI = async (sequence) => {
-  const response = await fetch('http://127.0.0.1:5000/calculateTheoreticalPI', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ sequence })
-  });
-  const data = await response.json();
-  return data.theoretical_pi;
-};
-
-const parseFastaContent = async (content) => {
-  const response = await fetch('http://127.0.0.1:5000/parseFastaContent', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ content })
-  });
-  const data = await response.json();
-  return data.sequences;
-};
-
-const extractProteinInfo = async (content) => {
-  const response = await fetch('http://127.0.0.1:5000/extractProteinInfo', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ content })
-  });
-  const data = await response.json();
-  return data.protein_info;
-};
+// Initial protein data is now loaded from the backend
 
 const TwoDE = () => {
   const canvasRef = useRef(null);
   const animationFrameRef = useRef(null);
-  const [dots, setDots] = useState(
-    Object.entries(initialProteinData).map(([name, data]) => ({ 
-      name, 
-      ...data, 
-      x: 50, 
-      y: 300,
-      currentpH: 7,
-      velocity: 0,
-      settled: false 
-    }))
-  );
+  const [dots, setDots] = useState([]);
   
   const [hoveredDot, setHoveredDot] = useState(null);
   const [selectedDot, setSelectedDot] = useState(null);
@@ -97,16 +43,16 @@ const TwoDE = () => {
   const [simulationState, setSimulationState] = useState('ready'); // 'ready', 'ief-running', 'ief-complete', 'sds-running', 'complete'
   const [simulationProgress, setSimulationProgress] = useState(0);
   
-  // New states for implementing requested features
+  // States for implementing requested features
   const [phRange, setPhRange] = useState({ min: 0, max: 14 });
   const [yAxisMode, setYAxisMode] = useState('mw'); // 'mw' or 'distance'
   const [uploadProgress, setUploadProgress] = useState(0);
   const [isUploading, setIsUploading] = useState(false);
   
-  // New state for PPS1-106: Acrylamide slider
+  // State for PPS1-106: Acrylamide slider
   const [acrylamidePercentage, setAcrylamidePercentage] = useState(7.5); // Default value
   
-  // New state for PPS1-111: Collapsible protein list
+  // State for PPS1-111: Collapsible protein list
   const [isProteinListCollapsed, setIsProteinListCollapsed] = useState(false);
 
   // Constants
@@ -114,7 +60,40 @@ const TwoDE = () => {
   const MAX_PH = phRange.max;
   const PH_STEP = 2;
   const IEF_DURATION = 5000; // 5 seconds
+  const DAMPING = 0.95; // Damping factor for oscillation
+  const FORCE_MULTIPLIER = 0.5; // Strength of pH gradient force
   const MAX_DISTANCE_TRAVELED = 6; // Maximum distance traveled in cm
+
+  // Add this to load initial protein data
+  useEffect(() => {
+    // Fetch initial protein data from backend
+    const fetchInitialData = async () => {
+      try {
+        const response = await axios.get(`${API_BASE_URL}/get-initial-data`);
+        
+        // Only set dots if they haven't been set already
+        if (dots.length === 0) {
+          setDots(
+            Object.entries(response.data).map(([name, data]) => ({ 
+              name, 
+              ...data, 
+              x: 50, 
+              y: 300,
+              currentpH: 7,
+              velocity: 0,
+              settled: false 
+            }))
+          );
+        }
+      } catch (error) {
+        console.error('Error fetching initial data:', error);
+        // Fallback to local data if backend is not available
+        // You may want to add your initial protein data here as a fallback
+      }
+    };
+    
+    fetchInitialData();
+  }, []);
 
   const startIEF = () => {
     if (simulationState !== 'ready') return;
@@ -122,65 +101,56 @@ const TwoDE = () => {
     setSimulationState('ief-running');
     setSimulationProgress(0);
     
-    // Reset protein positions with random spread around their initial positions
-    setDots(prevDots => prevDots.map(dot => {
-      const startX = Math.random() * 700 + 50; // Random position across the width
-      const spreadY = Math.random() * 20 + 50; // Random spread in upper portion (adjusted for new layout)
-      return {
-        ...dot,
-        x: startX,
-        y: spreadY,
-        currentpH: MIN_PH + ((startX - 50) / (750)) * (MAX_PH - MIN_PH),
-        bandWidth: 40, // Initial band width
-        settled: false
-      };
-    }));
-
-    const startTime = Date.now();
-    
-    const animate = () => {
-      const currentTime = Date.now();
-      const elapsed = currentTime - startTime;
-      const progress = Math.min(elapsed / IEF_DURATION, 1);
-      
-      setSimulationProgress(progress);
-
-      setDots(prevDots => prevDots.map(dot => {
-        if (dot.settled) return dot;
-
-        // Calculate target X position based on protein's pI
-        // Ensure protein stays within pH boundaries
-        const clampedPH = Math.min(Math.max(dot.pH, MIN_PH), MAX_PH);
-        const targetX = getPHPosition(clampedPH, 800);
-        
-        // Move X position towards target with easing
-        const dx = targetX - dot.x;
-        const newX = dot.x + dx * (0.1 + progress * 0.2); // Accelerate movement with progress
-        
-        // Gradually decrease band width as progress increases
-        const newBandWidth = Math.max(3, dot.bandWidth * (1 - progress * 0.8));
-        
-        // Calculate Y position for band formation
-        const baseY = 80; // Base Y position for bands
-        const settled = Math.abs(dx) < 1;
-
-        return {
-          ...dot,
-          x: newX,
-          y: baseY,
-          bandWidth: newBandWidth,
-          settled: settled
-        };
-      }));
-
-      if (progress < 1) {
-        animationFrameRef.current = requestAnimationFrame(animate);
-      } else {
-        setSimulationState('ief-complete');
-      }
+    // Prepare the data to send to the backend
+    const data = {
+      proteins: dots.map(dot => ({
+        name: dot.name,
+        fullName: dot.fullName,
+        organism: dot.organism,
+        uniprotId: dot.uniprotId,
+        pdbId: dot.pdbId,
+        function: dot.function,
+        mw: dot.mw,
+        pH: dot.pH,
+        color: dot.color,
+        sequence: dot.sequence
+      })),
+      phRange: phRange,
+      canvasWidth: 800,
+      canvasHeight: 600
     };
-
-    animationFrameRef.current = requestAnimationFrame(animate);
+    
+    // Call the backend API
+    axios.post(`${API_BASE_URL}/simulate-ief`, data)
+      .then(response => {
+        // Get the simulation results
+        const simulationResults = response.data;
+        const totalSteps = simulationResults.length;
+        
+        // Play the animation using the pre-calculated positions
+        let currentStep = 0;
+        const animationInterval = setInterval(() => {
+          if (currentStep >= totalSteps) {
+            clearInterval(animationInterval);
+            setSimulationState('ief-complete');
+            return;
+          }
+          
+          // Update progress
+          const progress = currentStep / (totalSteps - 1);
+          setSimulationProgress(progress);
+          
+          // Update dots with the pre-calculated positions for this step
+          setDots(simulationResults[currentStep]);
+          
+          // Move to next step
+          currentStep++;
+        }, 20); // Adjust timing for smoother animation
+      })
+      .catch(error => {
+        console.error('Error in IEF simulation:', error);
+        setSimulationState('ready');
+      });
   };
 
   const startSDS = () => {
@@ -188,43 +158,55 @@ const TwoDE = () => {
     
     setSimulationState('sds-running');
     
-    // Condense proteins at the bottom of IEF band first
-    setDots(prevDots => 
-      prevDots.map(dot => ({
-        ...dot,
-        y: 150, // Move to bottom of IEF band
-        condensing: true,
-        bandWidth: 3 // Reduce band width
-      }))
-    );
-
-    // Wait for condensing animation, then start SDS-PAGE
-    setTimeout(() => {
-      const steps = 50;
-      let count = 0;
-      const interval = setInterval(() => {
-        setDots(prevDots =>
-          prevDots.map(dot => {
-            // Calculate target Y position based on molecular weight or distance traveled
-            // Now affected by acrylamide percentage
-            const targetPosY = yAxisMode === 'mw' 
-              ? getMWPosition(dot.mw, 600, acrylamidePercentage)
-              : getDistancePosition(dot.mw, 600, acrylamidePercentage);
-              
-            return {
-              ...dot,
-              y: dot.y + (targetPosY - dot.y) * 0.1,
-              condensing: false
-            };
-          })
-        );
-        count++;
-        if (count >= steps) {
-          clearInterval(interval);
-          setSimulationState('complete');
-        }
-      }, 20);
-    }, 1000); // 1 second for condensing animation
+    // Prepare data to send to the backend
+    const data = {
+      proteins: dots.map(dot => ({
+        name: dot.name,
+        fullName: dot.fullName,
+        organism: dot.organism,
+        uniprotId: dot.uniprotId,
+        pdbId: dot.pdbId,
+        function: dot.function,
+        mw: dot.mw,
+        pH: dot.pH,
+        color: dot.color,
+        x: dot.x,
+        y: dot.y,
+        bandWidth: dot.bandWidth,
+        sequence: dot.sequence
+      })),
+      yAxisMode: yAxisMode,
+      acrylamidePercentage: acrylamidePercentage,
+      canvasHeight: 600
+    };
+    
+    // Call the backend API
+    axios.post(`${API_BASE_URL}/simulate-sds`, data)
+      .then(response => {
+        // Get the simulation results
+        const simulationResults = response.data;
+        const totalSteps = simulationResults.length;
+        
+        // Play the animation using the pre-calculated positions
+        let currentStep = 0;
+        const animationInterval = setInterval(() => {
+          if (currentStep >= totalSteps) {
+            clearInterval(animationInterval);
+            setSimulationState('complete');
+            return;
+          }
+          
+          // Update dots with the pre-calculated positions for this step
+          setDots(simulationResults[currentStep]);
+          
+          // Move to next step
+          currentStep++;
+        }, 20); // Adjust timing for smoother animation
+      })
+      .catch(error => {
+        console.error('Error in SDS simulation:', error);
+        setSimulationState('ief-complete'); // Return to previous state
+      });
   };
 
   // Clean up animation frame on unmount
@@ -240,63 +222,28 @@ const TwoDE = () => {
     setIsUploading(true);
     setUploadProgress(0);
     
-    const newProteins = [];
-    const colorPalette = [
-      '#FF0000', '#00FF00', '#0000FF', '#FFFF00', '#FF00FF', '#00FFFF',
-      '#FFA500', '#800080', '#008000', '#FFC0CB', '#A52A2A', '#808080'
-    ];
-
+    // Create form data
+    const formData = new FormData();
     for (let i = 0; i < files.length; i++) {
-      // Update progress
-      setUploadProgress((i / files.length) * 100);
-      
-      const file = files[i];
-      if (!file.name.endsWith('.fasta') && !file.name.endsWith('.fa')) continue;
-
-      try {
-        const content = await file.text();
-        const sequences = await parseFastaContent(content).then();
-
-        console.log(sequences);
-
-        sequences.forEach((seq, index) => {
-          const mw = calculateMolecularWeight(seq.sequence);
-          const pH = calculateTheoreticalPI(seq.sequence);
-          const info = extractProteinInfo(seq.header);
-          
-          // Extract UniProt ID from FASTA header if possible
-          let uniprotId = 'N/A';
-          // Check for UniProt format in header
-          const uniprotMatch = seq.header.match(/[OPQ][0-9][A-Z0-9]{3}[0-9]|[A-NR-Z][0-9]([A-Z][A-Z0-9]{2}[0-9]){1,2}/);
-          if (uniprotMatch) {
-            uniprotId = uniprotMatch[0];
-          }
-          
-          newProteins.push({
-            name: info.name,
-            fullName: info.name,
-            organism: info.organism,
-            uniprotId: uniprotId, // Use extracted UniProt ID
-            pdbId: 'N/A',
-            function: 'Imported from FASTA file',
-            mw,
-            pH,
-            color: colorPalette[newProteins.length % colorPalette.length],
-            sequence: seq.sequence,
-            x: 50,
-            y: 300,
-            currentpH: 7,
-            velocity: 0,
-            settled: false
-          });
-        });
-      } catch (error) {
-        console.error(`Error processing file ${file.name}:`, error);
-      }
+      formData.append('files', files[i]);
     }
-
-    setDots(prevDots => [...prevDots, ...newProteins]);
-    setIsUploading(false);
+    
+    try {
+      // Upload to backend for processing
+      const response = await axios.post(`${API_BASE_URL}/parse-fasta`, formData, {
+        onUploadProgress: (progressEvent) => {
+          const percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
+          setUploadProgress(percentCompleted);
+        }
+      });
+      
+      // Add new proteins to the existing dots
+      setDots(prevDots => [...prevDots, ...response.data]);
+    } catch (error) {
+      console.error('Error uploading FASTA files:', error);
+    } finally {
+      setIsUploading(false);
+    }
   };
 
   const handleDragEnter = (e) => {
@@ -330,41 +277,19 @@ const TwoDE = () => {
     await handleFileUpload(files);
   };
 
-  // Modified to include acrylamide percentage
-  const getMWPosition = (mw, canvasHeight, acrylamidePercent) => {
-    const minMW = 1000;
-    const maxMW = 1000000;
-    const logMW = Math.log10(Math.min(Math.max(mw, minMW), maxMW));
-    
-    // Acrylamide affects the migration - higher percentage = better separation of smaller proteins
-    const acrylamideFactor = 1 + (acrylamidePercent - 7.5) / 15; // Normalized factor
-    
-    return 170 + ((Math.log10(maxMW) - logMW) / (Math.log10(maxMW) - Math.log10(minMW))) 
-           * (canvasHeight - 220) * acrylamideFactor;
-  };
-
-  // Modified to include acrylamide percentage
-  const getDistancePosition = (mw, canvasHeight, acrylamidePercent) => {
-    // Calculate distance traveled based on molecular weight
-    // Smaller proteins travel farther
-    const minMW = 1000;
-    const maxMW = 1000000;
-    const normalizedMW = (Math.log10(Math.min(Math.max(mw, minMW), maxMW)) - Math.log10(minMW)) / 
-                        (Math.log10(maxMW) - Math.log10(minMW));
-    
-    // Acrylamide affects the migration - higher percentage = better separation
-    const acrylamideFactor = 1 + (acrylamidePercent - 7.5) / 10; // Normalized factor
-    
-    // Invert the relationship - smaller proteins travel farther
-    const distance = MAX_DISTANCE_TRAVELED * (1 - normalizedMW) * acrylamideFactor;
-    
-    // Map to canvas coordinates
-    return 170 + (distance / (MAX_DISTANCE_TRAVELED * acrylamideFactor)) * (canvasHeight - 220);
-  };
-
+  // These functions remain in the frontend for direct UI use
   const getPHPosition = (pH, canvasWidth) => {
     const clampedPH = Math.min(Math.max(pH, MIN_PH), MAX_PH);
     return 50 + ((clampedPH - MIN_PH) / (MAX_PH - MIN_PH)) * (canvasWidth - 100);
+  };
+
+  // Clear backend cache function
+  const clearBackendCache = async () => {
+    try {
+      await axios.post(`${API_BASE_URL}/clear-cache`);
+    } catch (error) {
+      console.error('Error clearing backend cache:', error);
+    }
   };
 
   const resetPositions = () => {
@@ -380,6 +305,9 @@ const TwoDE = () => {
     setSelectedDot(null);
     setSimulationState('ready');
     setSimulationProgress(0);
+    
+    // Clear the backend cache
+    clearBackendCache();
   };
 
   const handleCanvasMouseMove = (event) => {
@@ -453,7 +381,7 @@ const TwoDE = () => {
     handlePhRangeChange(type, value);
   };
 
-  // New handler for acrylamide percentage slider
+  // Handler for acrylamide percentage slider
   const handleAcrylamideChange = (e) => {
     if (simulationState !== 'ready') return; // Disable during simulation
     
@@ -837,7 +765,7 @@ const TwoDE = () => {
         <h3 style={{ fontSize: '16px', margin: 0 }}>Proteins ({count})</h3>
         <div style={{ transform: isCollapsed ? 'rotate(-90deg)' : 'rotate(0)', transition: 'transform 0.2s' }}>
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <polyline points="6 9 12 15 18 9"></polyline>
+          <polyline points="6 9 12 15 18 9"></polyline>
           </svg>
         </div>
       </div>
