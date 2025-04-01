@@ -195,7 +195,7 @@ function Contact() {
                     </div>
                 </section>
             </span>
-
+            {/* past team members section */}
             <h2>Past Team Members</h2>
             <section className="pastTeamMembers">
                 <div>
