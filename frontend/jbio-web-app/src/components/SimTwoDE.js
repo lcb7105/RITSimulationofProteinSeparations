@@ -11,7 +11,7 @@ function SimTwoDE() {
                 <h2>2DE Simulator Instructions</h2>
                 <h3>Steps</h3>
                 <ol>
-                    <li></li>
+                    <li>ADD STEPS HERE BACKEND TEAM</li>
                 </ol>
                 <h3>Notes</h3>
                 <ul>
