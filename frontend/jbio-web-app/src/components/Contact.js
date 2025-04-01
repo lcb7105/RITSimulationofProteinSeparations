@@ -17,43 +17,69 @@ import './Contact.css';
 
 function Contact() {
     return (
+        // a div tag container that holds all the html contact for the contact page
         <div className='contactPage'>
+            {/* An h1 title tag that is the "Contact" title shown on the screen */}
             <h1 className="pageHeaderContact">Contact</h1>
+            {/* A section tag that contains the two boxes on the page showing the coach and the sponsor */}
             <section className="coachSponsorContactContainer">
+                {/* A div container that holds all the information of the coach that you can see on the screen */}
                 <div>
+                    {/* An h2 title that displays the words Team Coach on the screen */}
                     <h2>Team Coach</h2>
+                    {/* An image tag that shows an image of the coach on the screen */}
                     <img className="profile-icon" src={placeholder} alt="Mark Wilson-pic"></img>
+                    {/* A span tag that groups the other information about the coach on the screen */}
                     <span className='sideTabletDesktop'>
+                        {/* An h3 title that shows the works Mark Wilson on the page */}
                         <h3>Mark Wilson</h3>
+                        {/* An hr tag that shows the line under the coaches name */}
                         <hr></hr>
+                        {/* A unordered list tag that displays information about the coach in bullet form */}
                         <ul>
+                            {/* This list element shows the coaches rit email with another list inside for formatting */}
                             <li>RIT Email: 
                                 <ul>
+                                    {/* This a tag gives a link to the coaches email and displays it on the screen, with the href being the actual link, putting mailto: and then the email opens up email when you click on the link on the page */}
                                     <li><a href="mailto:mwvse@rit.edu" target="_blank" title="Click to Email Mark using his RIT email">mwvse@rit.edu</a></li>    
                                 </ul>    
                             </li>
+                            {/* This list element shows the coaches rit email with another list inside for formatting */}
                             <li>Email: 
                                 <ul>
+                                    {/* This a tag gives a link to the coaches email and displays it on the screen, with the href being the actual link, putting mailto: and then the email opens up email when you click on the link on the page */}
                                     <li><a href="mailto:mwilson1962@gmail.com" target="_blank" title="Click to Email Mark using his PERSONAL email">mwilson1962@gmail.com</a></li>
                                 </ul>
                             </li>
                         </ul>
                     </span>
-                </div>
+                </div> 
+                {/* The ending tag of the coaches information above as /div */}
+                {/* this div holds the project sponsors information as seen on the screen or page */}
                 <div>
+                    {/* An h2 tag that displays the words project sponsor on the screen */}
                     <h2>Project Sponsor</h2>
+                    {/* An image tag that shows an image of the project sponsors face on the screen */}
                     <img className="profile-icon" src={paul} alt="Paul Craig-pic"></img>
+                    {/* a span tag that holds all the information about the sponsor on the page */}
                     <span className='sideTabletDesktop'>
+                        {/* an h3 tag that displays the name of the sponsor on the screen */}
                         <h3>Dr. Paul Craig</h3>
+                        {/* an hr tag that shows a line underneath the name of the sponsor on the screen */}
                         <hr></hr>
+                        {/* an unordered list tag that displays the sponsors information on the screen in bullet form since it's ul */}
                         <ul>
+                            {/* a list element that shows the sponsors rit email in bullet form */}
                             <li>RIT Email: 
                                 <ul>
+                                    {/* the a link allows you to email the sponsor coach on a separate page when clicked on */}
                                     <li><a href="mailto:paul.craig@rit.edu" target="_blank" title="Click to Email Paul using his RIT email">paul.craig@rit.edu</a></li>
                                 </ul>    
                             </li>
+                            {/* An li list element that shows the sponsors phone number */}
                             <li>Phone: 
                                 <ul>
+                                    {/* An a tag that when clicked on on the screen call the number */}
                                     <li><a href="tel:+15854756145" title="Click to call Paul if you're on your phone">+1(585)475-6145</a></li>
                                 </ul>
                             </li>
@@ -61,7 +87,8 @@ function Contact() {
                     </span>
                 </div>
             </section>
-
+            {/* to add new team members, copy and paste this whole span and change the class name of the old one to the past team members since Toula would no longer be a current team member  */}
+            {/* ------------------------------------- the rest of the code is the same explanation as above ------------------------------------------------------------------------------------------------------------------------------------------ */}
             <span className='currentTeamMembersBackground'>
                 <h2>Current Team Members</h2>
                 <section className="currentTeamMembers">
@@ -168,7 +195,7 @@ function Contact() {
                     </div>
                 </section>
             </span>
-
+            {/* past team members section */}
             <h2>Past Team Members</h2>
             <section className="pastTeamMembers">
                 <div>

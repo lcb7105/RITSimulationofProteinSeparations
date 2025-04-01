@@ -29,11 +29,6 @@ export default function Navbar(){
                     </Dropdown>
                     <li><NavLink to={"/instructions"}>Instructions</NavLink></li>
                     <li><NavLink to={"/contact"}>Contact</NavLink></li>
-                    {/*<li><NavLink to={""}>temp</NavLink></li>*/}
-                    {/*<li><NavLink to={""}>temp</NavLink></li>*/}
-                    {/*<li><NavLink to={""}>temp</NavLink></li>*/}
-                    {/*<li><NavLink to={""}>temp</NavLink></li>*/}
-
                 </ul>
             </div>
             <div className={"hamburger"} onClick={toggleHamburger}>
