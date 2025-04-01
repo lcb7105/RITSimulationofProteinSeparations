@@ -1,9 +1,6 @@
 import './About.css';
 import Carousel from "./Carousel";
-const devboxstyle = {
-    display: "flex",
-    justifyContent: "space-around"
-};
+import paul from './about_images/PaulPhoto.jpg';
 
 function About() {
     return (
@@ -15,12 +12,14 @@ function About() {
                         <Carousel.Item>
                             <h3 className={"header"}>Project Purpose</h3>
                             <p className={"carousel-text"}>
-                                JBioFramework (JBF) is a set of chemical simulations frequently used in chemistry,
-                                biochemistry, and proteomics research. It's main purpose is to allow for simplified
-                                simulation of proteins for academic and research opportunities. It is owned and operated
-                                by the RIT College of Science under the watch of Paul Craig. It is continuously being
-                                worked on with collaboration between the RIT College of Science and the RIT Software
-                                Engineering Department.
+                                The JBF project contains simulations of 1D and 2D electrophoresis and is intended for
+                                use in life science teaching and research. This application and its source code have
+                                been under development by RIT students since 1997. Our future plans include adding
+                                chromatography, tandem mass spectrometry and chemical drawing. If you are using
+                                this resource, please send an email to Paul Craig (paul.craig@rit.edu) describing
+                                how you are using it (course type, course level, # students, etc.).
+                                If you are interested in contributing to this project, the source code is
+                                available  on <a href={"https://github.com/lcb7105/RITSimulationofProteinSeparations"}>Github</a> under a _________ license.
                             </p>
                         </Carousel.Item>
                         <Carousel.Item>
@@ -31,91 +30,23 @@ function About() {
                         </Carousel.Item>
                         <Carousel.Item>
                             <h3 className={"header"}>Project Owner</h3>
-                            <div style={devboxstyle}>
-                                <div className={"feat-box"}>
-                                    <div className={"feat-image"}></div>
-                                    <div className={"feat-attr"}>
-                                        <h3>Name</h3>
-                                    </div>
+                            <div className={"feat-box"}>
+                                <img className={"feat-image"} src={paul} alt={"Headshot of Dr Craig"}/>
+                                <div className={"feat-attr"}>
+                                    <h3>Dr Paul Craig</h3>
+                                    <p>
+                                        Dr. Craig received his B.S. in Chemistry from Oral Roberts University in 1979,
+                                        and his Ph.D. in Biological Chemistry from The University of Michigan in 1985.
+                                        Following a post-doc at Henry Ford Hospital (biophysical chemistry of blood
+                                        clotting; 1985-1988), he spent five years as an analytical biochemistry at BioQuant,
+                                        Inc., in Ann Arbor, Michigan before joining RIT in 1993.
+                                    </p>
                                 </div>
-                                <p>
-                                    Dr. Paul Craig received his B.S. in Chemistry from Oral Roberts University in 1979,
-                                    and his Ph.D. in Biological Chemistry from The University of Michigan in 1985.
-                                    Following a post-doc at Henry Ford Hospital (biophysical chemistry of blood
-                                    clotting; 1985-1988), he spent five years as an analytical biochemistry at BioQuant,
-                                    Inc., in Ann Arbor, Michigan before joining RIT in 1993.
-                                </p>
                             </div>
                         </Carousel.Item>
                     </Carousel>
                 </div>
             </section>
-            {/*<section id={"past-developers"}>*/}
-            {/*    <h2>Past Developers</h2>*/}
-            {/*    <div className={"developer-section"}>*/}
-            {/*        <div className={"feat-box"}>*/}
-            {/*            <div className={"feat-image"}></div>*/}
-            {/*            <div className={"feat-attr"}>*/}
-            {/*                <h3>Developer Name</h3>*/}
-            {/*                <p>Title</p>*/}
-            {/*            </div>*/}
-            {/*        </div>*/}
-            {/*        <div className={"feat-box"}>*/}
-            {/*            <div className={"feat-image"}></div>*/}
-            {/*            <div className={"feat-attr"}>*/}
-            {/*                <h3>Developer Name</h3>*/}
-            {/*                <p>Title</p>*/}
-            {/*            </div>*/}
-            {/*        </div>*/}
-            {/*        <div className={"feat-box"}>*/}
-            {/*            <div className={"feat-image"}></div>*/}
-            {/*            <div className={"feat-attr"}>*/}
-            {/*                <h3>Developer Name</h3>*/}
-            {/*                <p>Title</p>*/}
-            {/*            </div>*/}
-            {/*        </div>*/}
-            {/*        <div className={"feat-box"}>*/}
-            {/*            <div className={"feat-image"}></div>*/}
-            {/*            <div className={"feat-attr"}>*/}
-            {/*                <h3>Developer Name</h3>*/}
-            {/*                <p>Title</p>*/}
-            {/*            </div>*/}
-            {/*        </div>*/}
-            {/*    </div>*/}
-            {/*</section>*/}
-            {/*<section id={"current-developers"}>*/}
-            {/*    <h2>Current Developers</h2>*/}
-            {/*    <div className={"developer-section"}>*/}
-            {/*        <div className={"feat-box"}>*/}
-            {/*            <div className={"feat-image"}></div>*/}
-            {/*            <div className={"feat-attr"}>*/}
-            {/*                <h3>Developer Name</h3>*/}
-            {/*                <p>Title</p>*/}
-            {/*            </div>*/}
-            {/*        </div>*/}
-            {/*        <div className={"feat-box"}>*/}
-            {/*            <div className={"feat-image"}></div>*/}
-            {/*            <div className={"feat-attr"}>*/}
-            {/*                <h3>Developer Name</h3>*/}
-            {/*                <p>Title</p>*/}
-            {/*            </div>*/}
-            {/*        </div>*/}
-            {/*        <div className={"feat-box"}>*/}
-            {/*            <div className={"feat-image"}></div>*/}
-            {/*            <div className={"feat-attr"}>*/}
-            {/*                <h3>Developer Name</h3>*/}
-            {/*                <p>Title</p>*/}
-            {/*            </div>*/}
-            {/*        </div>*/}
-            {/*        <div className={"feat-box"}>*/}
-            {/*            <div className={"feat-image"}></div>*/}
-            {/*            <div className={"feat-attr"}>*/}
-            {/*                <h3>Developer Name</h3>*/}
-            {/*                <p>Title</p>*/}
-            {/*            </div>*/}
-            {/*        </div>*/}
-            {/*    </div>*/}
-            {/*</section>*/}
         </div>
     );
 }

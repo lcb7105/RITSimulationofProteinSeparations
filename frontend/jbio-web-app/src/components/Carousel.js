@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import './Carousel.css';
 
 function Carousel({children, ...props}){
     const [index, setIndex] = useState(0);
@@ -13,9 +14,9 @@ function Carousel({children, ...props}){
 
     return (
         <div className="carousel">
-            <button id={"button-prev"} onClick={handlePrevious}>Previous</button>
+            <button className={"chevron"} id={"button-prev"} onClick={handlePrevious}></button>
             {children[index]}
-            <button id={"button-next"} onClick={handleNext}>Next</button>
+            <button className={"chevron"} id={"button-next"} onClick={handleNext}></button>
         </div>
     );
 };
