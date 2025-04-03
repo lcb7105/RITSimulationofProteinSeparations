@@ -4,32 +4,6 @@ import axios from 'axios';
 // Define the API base URL - adjust this based on where your backend will be running
 const API_BASE_URL = 'http://localhost:5000/api';
 
-// Amino acid properties for calculations (kept for reference, actual calculations moved to backend)
-const AMINO_ACIDS = {
-  'A': { mass: 71.07, pKa: 0 },
-  'R': { mass: 156.18, pKa: 12.48 },
-  'N': { mass: 114.08, pKa: 0 },
-  'D': { mass: 115.08, pKa: 3.65 },
-  'C': { mass: 103.14, pKa: 8.18 },
-  'E': { mass: 129.11, pKa: 4.25 },
-  'Q': { mass: 128.13, pKa: 0 },
-  'G': { mass: 57.05, pKa: 0 },
-  'H': { mass: 137.14, pKa: 6.00 },
-  'I': { mass: 113.16, pKa: 0 },
-  'L': { mass: 113.16, pKa: 0 },
-  'K': { mass: 128.17, pKa: 10.53 },
-  'M': { mass: 131.19, pKa: 0 },
-  'F': { mass: 147.17, pKa: 0 },
-  'P': { mass: 97.11, pKa: 0 },
-  'S': { mass: 87.07, pKa: 0 },
-  'T': { mass: 101.10, pKa: 0 },
-  'W': { mass: 186.21, pKa: 0 },
-  'Y': { mass: 163.17, pKa: 10.07 },
-  'V': { mass: 99.13, pKa: 0 }
-};
-
-// Initial protein data is now loaded from the backend
-
 const TwoDE = () => {
   const canvasRef = useRef(null);
   const animationFrameRef = useRef(null);
@@ -59,41 +33,7 @@ const TwoDE = () => {
   const MIN_PH = phRange.min;
   const MAX_PH = phRange.max;
   const PH_STEP = 2;
-  const IEF_DURATION = 5000; // 5 seconds
-  const DAMPING = 0.95; // Damping factor for oscillation
-  const FORCE_MULTIPLIER = 0.5; // Strength of pH gradient force
   const MAX_DISTANCE_TRAVELED = 6; // Maximum distance traveled in cm
-
-  // Add this to load initial protein data
-  useEffect(() => {
-    // Fetch initial protein data from backend
-    const fetchInitialData = async () => {
-      try {
-        const response = await axios.get(`${API_BASE_URL}/get-initial-data`);
-        
-        // Only set dots if they haven't been set already
-        if (dots.length === 0) {
-          setDots(
-            Object.entries(response.data).map(([name, data]) => ({ 
-              name, 
-              ...data, 
-              x: 50, 
-              y: 300,
-              currentpH: 7,
-              velocity: 0,
-              settled: false 
-            }))
-          );
-        }
-      } catch (error) {
-        console.error('Error fetching initial data:', error);
-        // Fallback to local data if backend is not available
-        // You may want to add your initial protein data here as a fallback
-      }
-    };
-    
-    fetchInitialData();
-  }, []);
 
   const startIEF = () => {
     if (simulationState !== 'ready') return;
@@ -283,15 +223,6 @@ const TwoDE = () => {
     return 50 + ((clampedPH - MIN_PH) / (MAX_PH - MIN_PH)) * (canvasWidth - 100);
   };
 
-  // Clear backend cache function
-  const clearBackendCache = async () => {
-    try {
-      await axios.post(`${API_BASE_URL}/clear-cache`);
-    } catch (error) {
-      console.error('Error clearing backend cache:', error);
-    }
-  };
-
   const resetPositions = () => {
     setDots(prevDots => prevDots.map(dot => ({ 
       ...dot, 
@@ -306,8 +237,6 @@ const TwoDE = () => {
     setSimulationState('ready');
     setSimulationProgress(0);
     
-    // Clear the backend cache
-    clearBackendCache();
   };
 
   const handleCanvasMouseMove = (event) => {

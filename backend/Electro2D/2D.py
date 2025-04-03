@@ -1,7 +1,4 @@
-import os
-import json
 import math
-import time
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 import numpy as np
@@ -34,43 +31,6 @@ AMINO_ACIDS = {
     'Y': {'mass': 163.17, 'pKa': 10.07},
     'V': {'mass': 99.13, 'pKa': 0}
 }
-
-# Initial protein data
-initial_protein_data = {
-    'β-Galactosidase': {
-        'fullName': 'Beta-Galactosidase',
-        'organism': 'Escherichia coli',
-        'uniprotId': 'P00722',
-        'pdbId': '3DYP',
-        'function': 'Hydrolyzes lactose into glucose and galactose',
-        'mw': 116250,
-        'pH': 5.3,
-        'color': '#FF0000'
-    },
-    'Albumin': {
-        'fullName': 'Bovine Serum Albumin',
-        'organism': 'Bos taurus',
-        'uniprotId': 'P02769',
-        'pdbId': '3V03',
-        'function': 'Transport protein in blood plasma',
-        'mw': 66200,
-        'pH': 4.7,
-        'color': '#00FF00'
-    },
-    'Ovalbumin': {
-        'fullName': 'Ovalbumin',
-        'organism': 'Gallus gallus',
-        'uniprotId': 'P01012',
-        'pdbId': '1OVA',
-        'function': 'Major protein component in egg white',
-        'mw': 45000,
-        'pH': 4.6,
-        'color': '#0000FF'
-    }
-}
-
-# Cache for simulation results
-simulation_cache = {}
 
 def calculate_molecular_weight(sequence):
     """Calculate molecular weight based on amino acid sequence"""
@@ -172,13 +132,6 @@ def simulate_ief(proteins, ph_range, canvas_width, canvas_height, steps=25):
     max_ph = ph_range['max']
     simulation_results = []
     
-    # Create simulation cache key
-    cache_key = f"ief_{min_ph}_{max_ph}_{len(proteins)}"
-    
-    # Check if we have cached results
-    if cache_key in simulation_cache:
-        return simulation_cache[cache_key]
-    
     # For each protein, calculate positions over time
     for step in range(steps + 1):
         progress = step / steps
@@ -230,20 +183,11 @@ def simulate_ief(proteins, ph_range, canvas_width, canvas_height, steps=25):
         
         simulation_results.append(step_results)
     
-    # Cache the results
-    simulation_cache[cache_key] = simulation_results
     return simulation_results
 
 def simulate_sds(proteins, y_axis_mode, acrylamide_percentage, canvas_height, steps=25):
     """Simulate SDS-PAGE"""
     simulation_results = []
-    
-    # Create simulation cache key
-    cache_key = f"sds_{y_axis_mode}_{acrylamide_percentage}_{len(proteins)}"
-    
-    # Check if we have cached results
-    if cache_key in simulation_cache:
-        return simulation_cache[cache_key]
     
     # First condense proteins at the bottom of IEF band
     condensed_proteins = []
@@ -284,14 +228,7 @@ def simulate_sds(proteins, y_axis_mode, acrylamide_percentage, canvas_height, st
         
         simulation_results.append(step_results)
     
-    # Cache the results
-    simulation_cache[cache_key] = simulation_results
     return simulation_results
-
-@app.route('/api/get-initial-data', methods=['GET'])
-def get_initial_data():
-    """Return initial protein data"""
-    return jsonify(initial_protein_data)
 
 @app.route('/api/parse-fasta', methods=['POST'])
 def parse_fasta():
@@ -365,13 +302,6 @@ def run_sds_simulation():
     
     results = simulate_sds(proteins, y_axis_mode, acrylamide_percentage, canvas_height)
     return jsonify(results)
-
-@app.route('/api/clear-cache', methods=['POST'])
-def clear_simulation_cache():
-    """Clear simulation cache"""
-    global simulation_cache
-    simulation_cache = {}
-    return jsonify({'status': 'Cache cleared'})
 
 if __name__ == '__main__':
     # Optional: add command line arguments for host and port
