@@ -30,11 +30,12 @@ const AMINO_ACIDS = {
 
 // Initial protein data is now loaded from the backend
 
+// Main two dimension electrophoresis component that contains every piece of the 2DE
 const TwoDE = () => {
+  // A bunch of frontend states to control the UI
   const canvasRef = useRef(null);
   const animationFrameRef = useRef(null);
   const [dots, setDots] = useState([]);
-  
   const [hoveredDot, setHoveredDot] = useState(null);
   const [selectedDot, setSelectedDot] = useState(null);
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
@@ -95,6 +96,9 @@ const TwoDE = () => {
     fetchInitialData();
   }, []);
 
+  // Function to start running the IEF (first dimension), sets simulation 
+  // state to 'ief-running' and calls the 'simulate-ief backend API to
+  // run the IEF and then changes the frontend accordingly
   const startIEF = () => {
     if (simulationState !== 'ready') return;
     
@@ -153,6 +157,9 @@ const TwoDE = () => {
       });
   };
 
+  // Function to start running the SDS (second dimension), sets simulation 
+  // state to 'sds-running' and calls the 'simulate-sds backend API to
+  // run the SDS and then changes the frontend accordingly
   const startSDS = () => {
     if (simulationState !== 'ief-complete') return;
     
@@ -218,6 +225,9 @@ const TwoDE = () => {
     };
   }, []);
 
+  // Function to handle uploading a file to the 2DE by parsing out the files 
+  // through the 'parse-fasta' backend API and then adds the new proteins 
+  // to the simulation
   const handleFileUpload = async (files) => {
     setIsUploading(true);
     setUploadProgress(0);
@@ -246,6 +256,7 @@ const TwoDE = () => {
     }
   };
 
+  // Handler for when a dragged item enters an element
   const handleDragEnter = (e) => {
     e.preventDefault();
     e.stopPropagation();
@@ -253,6 +264,7 @@ const TwoDE = () => {
     setIsDragging(true);
   };
 
+  // Handler for when a dragged item leaves an element
   const handleDragLeave = (e) => {
     e.preventDefault();
     e.stopPropagation();
@@ -262,11 +274,14 @@ const TwoDE = () => {
     }
   };
 
+  // Handler for when a dragged item is being dragged ontop 
+  // of an element
   const handleDragOver = (e) => {
     e.preventDefault();
     e.stopPropagation();
   };
 
+  // Handler for when a dragged item is dropped into an element
   const handleDrop = async (e) => {
     e.preventDefault();
     e.stopPropagation();
@@ -292,6 +307,7 @@ const TwoDE = () => {
     }
   };
 
+  // Function to reset the dots in the simulation
   const resetPositions = () => {
     setDots(prevDots => prevDots.map(dot => ({ 
       ...dot, 
@@ -343,6 +359,7 @@ const TwoDE = () => {
     setHoveredDot(null);
   };
 
+  // Handler for when 
   const handleDocumentClick = (event) => {
     const canvas = canvasRef.current;
     const infoCard = document.getElementById('protein-info-card');
