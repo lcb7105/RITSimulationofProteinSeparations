@@ -1,0 +1,7 @@
+.scannerwork/*
+.scannerwork/
+__pycache__/*
+.pytest_cache/*
+__pycache__/
+.pytest_cache/
+node_modules/*
