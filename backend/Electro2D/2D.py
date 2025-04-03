@@ -35,7 +35,7 @@ AMINO_ACIDS = {
     'V': {'mass': 99.13, 'pKa': 0}
 }
 
-# Initial protein data
+# Initial protein data (not generally used for 2DE, but useful for debugging)
 initial_protein_data = {
     'β-Galactosidase': {
         'fullName': 'Beta-Galactosidase',
@@ -72,10 +72,12 @@ initial_protein_data = {
 # Cache for simulation results
 simulation_cache = {}
 
+# Calculate molecular weight based on amino acid sequence
 def calculate_molecular_weight(sequence):
     """Calculate molecular weight based on amino acid sequence"""
     return sum(AMINO_ACIDS.get(aa, {'mass': 0})['mass'] for aa in sequence)
 
+# Calculate theoretical isoelectric point based on amino acid sequence
 def calculate_theoretical_pi(sequence):
     """Calculate theoretical isoelectric point based on amino acid sequence"""
     # Count amino acids with pKa values
@@ -90,6 +92,7 @@ def calculate_theoretical_pi(sequence):
     
     return total_pka / total_count if total_count > 0 else 7.0
 
+# Parse FASTA content and extract sequences
 def parse_fasta_content(content):
     """Parse FASTA content and extract sequences"""
     sequences = []
@@ -117,6 +120,7 @@ def parse_fasta_content(content):
     
     return sequences
 
+# Extract protein information from FASTA header
 def extract_protein_info(header):
     """Extract protein information from FASTA header"""
     import re
@@ -135,11 +139,13 @@ def extract_protein_info(header):
             'organism': 'Unknown organism'
         }
 
+# Calculate X position based on pH
 def get_ph_position(pH, canvas_width, min_ph, max_ph):
     """Calculate X position based on pH"""
     clampedPH = min(max(pH, min_ph), max_ph)
     return 50 + ((clampedPH - min_ph) / (max_ph - min_ph)) * (canvas_width - 100)
 
+# Calculate Y position based on molecular weight and acrylamide percentage
 def get_mw_position(mw, canvas_height, acrylamide_percentage):
     """Calculate Y position based on molecular weight and acrylamide percentage"""
     min_mw = 1000
@@ -151,6 +157,7 @@ def get_mw_position(mw, canvas_height, acrylamide_percentage):
     
     return 170 + ((math.log10(max_mw) - log_mw) / (math.log10(max_mw) - math.log10(min_mw))) * (canvas_height - 220) * acrylamide_factor
 
+# Calculate Y position based on distance traveled
 def get_distance_position(mw, canvas_height, acrylamide_percentage, max_distance_traveled=6):
     """Calculate Y position based on distance traveled"""
     min_mw = 1000
@@ -166,6 +173,7 @@ def get_distance_position(mw, canvas_height, acrylamide_percentage, max_distance
     # Map to canvas coordinates
     return 170 + (distance / (max_distance_traveled * acrylamide_factor)) * (canvas_height - 220)
 
+# Simulate isoelectric focusing
 def simulate_ief(proteins, ph_range, canvas_width, canvas_height, steps=25):
     """Simulate isoelectric focusing"""
     min_ph = ph_range['min']
@@ -234,6 +242,7 @@ def simulate_ief(proteins, ph_range, canvas_width, canvas_height, steps=25):
     simulation_cache[cache_key] = simulation_results
     return simulation_results
 
+# Simulate SDS-PAGE
 def simulate_sds(proteins, y_axis_mode, acrylamide_percentage, canvas_height, steps=25):
     """Simulate SDS-PAGE"""
     simulation_results = []
@@ -288,11 +297,13 @@ def simulate_sds(proteins, y_axis_mode, acrylamide_percentage, canvas_height, st
     simulation_cache[cache_key] = simulation_results
     return simulation_results
 
+# API endpoint to return the initial protein data (the base proteins used for debugging)
 @app.route('/api/get-initial-data', methods=['GET'])
 def get_initial_data():
     """Return initial protein data"""
     return jsonify(initial_protein_data)
 
+# API endpoint to parse an uploaded FASTA file into a list of proteins
 @app.route('/api/parse-fasta', methods=['POST'])
 def parse_fasta():
     """Parse uploaded FASTA files"""
@@ -342,6 +353,7 @@ def parse_fasta():
     
     return jsonify(new_proteins)
 
+# API endpoint to run the isoelectric focusing part of the simulation
 @app.route('/api/simulate-ief', methods=['POST'])
 def run_ief_simulation():
     """Run isoelectric focusing simulation"""
@@ -354,6 +366,7 @@ def run_ief_simulation():
     results = simulate_ief(proteins, ph_range, canvas_width, canvas_height)
     return jsonify(results)
 
+# API endpoint to run the SDS-PAGE simulation
 @app.route('/api/simulate-sds', methods=['POST'])
 def run_sds_simulation():
     """Run SDS-PAGE simulation"""
@@ -366,6 +379,7 @@ def run_sds_simulation():
     results = simulate_sds(proteins, y_axis_mode, acrylamide_percentage, canvas_height)
     return jsonify(results)
 
+# API endpoint to clear the simulation cache
 @app.route('/api/clear-cache', methods=['POST'])
 def clear_simulation_cache():
     """Clear simulation cache"""
@@ -373,8 +387,8 @@ def clear_simulation_cache():
     simulation_cache = {}
     return jsonify({'status': 'Cache cleared'})
 
+# Optional: add command line arguments for host and por
 if __name__ == '__main__':
-    # Optional: add command line arguments for host and port
     import argparse
     parser = argparse.ArgumentParser(description='2D Electrophoresis Simulation Backend')
     parser.add_argument('--host', default='127.0.0.1', help='Server host')

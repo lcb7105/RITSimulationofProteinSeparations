@@ -41,6 +41,7 @@ class ProteinPosition(BaseModel):
 
 ACCEPTED_FILE_TYPES = ['fasta', 'fas', 'fa', 'fna', 'ffn', 'faa', 'mpfa']
 
+# Assign color based on protein type/function
 def calculate_protein_color(protein_name: str, function: str = "") -> str:
     """Assign color based on protein type/function"""
     if "dna" in protein_name.lower():
@@ -53,6 +54,7 @@ def calculate_protein_color(protein_name: str, function: str = "") -> str:
         # Generate random color for other proteins
         return f"#{random.randint(0, 0xFFFFFF):06x}"
 
+# Calculate suppressor factor based on acrylamide percentage
 def calculate_suppressor(acrylamide_percent: float) -> int:
     """Calculate suppressor factor based on acrylamide percentage"""
     if acrylamide_percent > 12:
@@ -63,6 +65,7 @@ def calculate_suppressor(acrylamide_percent: float) -> int:
         return 2
     return 1
 
+# API endpoint to handle protein file upload and parsing
 @app.post("/api/upload")
 async def upload_proteins(file: UploadFile = File(...)):
     """Handle protein file upload and parsing"""
@@ -105,6 +108,7 @@ async def upload_proteins(file: UploadFile = File(...)):
             content={"message": f"Error processing file: {str(e)}"}
         )
 
+# API endpoint to calculate protein positions based on current conditions
 @app.post("/api/calculate-positions")
 async def calculate_positions(
     proteins: List[Protein],
@@ -135,6 +139,7 @@ async def calculate_positions(
     
     return results
 
+# API endpoint to return available protein types and their colors
 @app.get("/api/protein-types")
 async def get_protein_types():
     """Return available protein types and their colors"""

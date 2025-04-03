@@ -19,6 +19,7 @@ class E2DProtein:
         self.sequence = the_sequence
         self.fcn = the_fcn
 
+        # Sets color to one of the defined colors above based on what type of protein it is
         if("dna" in the_id.lower()):
             self.color = dnaColor
         elif("ribosomal" in the_id.lower()):
