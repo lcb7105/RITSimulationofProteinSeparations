@@ -14,3 +14,5 @@ export const DarkToggle = ({ handleChange, isChecked }) => {
     </div>
   );
 };
+
+export default DarkToggle;

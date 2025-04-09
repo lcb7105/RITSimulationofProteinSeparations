@@ -39,6 +39,7 @@ class ProteinDot:
             self.y = (10 * 1 / minPercentAcrylamide) * (2) * .25 * (100000 / self.mw) + self.y
         # Make call to repaint
 
+    # Resets y-position to 48 when the simulation is reset
     def restart(self):
         self.y = 48
 

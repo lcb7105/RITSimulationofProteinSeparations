@@ -11,7 +11,7 @@ function Sidebar({ isOpen, toggle, isDark }) {
     return (
         <div className="container">
             <div className={isOpen ? "sidebar" : "sidebar sidebar-collapsed"}>
-                <button className="toggle-btn" onClick={toggle}>
+                <button className="toggle-btn" aria-label="toggle-btn" onClick={toggle}>
                     <span></span>
                     <span></span>
                     <span></span>

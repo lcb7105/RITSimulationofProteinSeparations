@@ -5,10 +5,10 @@ import axios from 'axios';
 const API_BASE_URL = 'http://localhost:5000/api';
 
 const TwoDE = () => {
+  // A bunch of frontend states to control the UI
   const canvasRef = useRef(null);
   const animationFrameRef = useRef(null);
   const [dots, setDots] = useState([]);
-  
   const [hoveredDot, setHoveredDot] = useState(null);
   const [selectedDot, setSelectedDot] = useState(null);
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
@@ -35,6 +35,40 @@ const TwoDE = () => {
   const PH_STEP = 2;
   const MAX_DISTANCE_TRAVELED = 6; // Maximum distance traveled in cm
 
+  // Add this to load initial protein data
+  useEffect(() => {
+    // Fetch initial protein data from backend
+    const fetchInitialData = async () => {
+      try {
+        const response = await axios.get(`${API_BASE_URL}/get-initial-data`);
+        
+        // Only set dots if they haven't been set already
+        if (dots.length === 0) {
+          setDots(
+            Object.entries(response.data).map(([name, data]) => ({ 
+              name, 
+              ...data, 
+              x: 50, 
+              y: 300,
+              currentpH: 7,
+              velocity: 0,
+              settled: false 
+            }))
+          );
+        }
+      } catch (error) {
+        console.error('Error fetching initial data:', error);
+        // Fallback to local data if backend is not available
+        // You may want to add your initial protein data here as a fallback
+      }
+    };
+    
+    fetchInitialData();
+  }, []);
+
+  // Function to start running the IEF (first dimension), sets simulation 
+  // state to 'ief-running' and calls the 'simulate-ief backend API to
+  // run the IEF and then changes the frontend accordingly
   const startIEF = () => {
     if (simulationState !== 'ready') return;
     
@@ -93,6 +127,9 @@ const TwoDE = () => {
       });
   };
 
+  // Function to start running the SDS (second dimension), sets simulation 
+  // state to 'sds-running' and calls the 'simulate-sds backend API to
+  // run the SDS and then changes the frontend accordingly
   const startSDS = () => {
     if (simulationState !== 'ief-complete') return;
     
@@ -158,6 +195,9 @@ const TwoDE = () => {
     };
   }, []);
 
+  // Function to handle uploading a file to the 2DE by parsing out the files 
+  // through the 'parse-fasta' backend API and then adds the new proteins 
+  // to the simulation
   const handleFileUpload = async (files) => {
     setIsUploading(true);
     setUploadProgress(0);
@@ -186,6 +226,7 @@ const TwoDE = () => {
     }
   };
 
+  // Handler for when a dragged item enters an element
   const handleDragEnter = (e) => {
     e.preventDefault();
     e.stopPropagation();
@@ -193,6 +234,7 @@ const TwoDE = () => {
     setIsDragging(true);
   };
 
+  // Handler for when a dragged item leaves an element
   const handleDragLeave = (e) => {
     e.preventDefault();
     e.stopPropagation();
@@ -202,11 +244,14 @@ const TwoDE = () => {
     }
   };
 
+  // Handler for when a dragged item is being dragged ontop 
+  // of an element
   const handleDragOver = (e) => {
     e.preventDefault();
     e.stopPropagation();
   };
 
+  // Handler for when a dragged item is dropped into an element
   const handleDrop = async (e) => {
     e.preventDefault();
     e.stopPropagation();
@@ -223,6 +268,7 @@ const TwoDE = () => {
     return 50 + ((clampedPH - MIN_PH) / (MAX_PH - MIN_PH)) * (canvasWidth - 100);
   };
 
+  
   const resetPositions = () => {
     setDots(prevDots => prevDots.map(dot => ({ 
       ...dot, 
@@ -239,6 +285,8 @@ const TwoDE = () => {
     
   };
 
+  // Handler for when the mouse cursor moves on the canvas (simulation)
+  // and checks if it is hovering over a dot on the simulation
   const handleCanvasMouseMove = (event) => {
     const canvas = canvasRef.current;
     const rect = canvas.getBoundingClientRect();
@@ -256,6 +304,8 @@ const TwoDE = () => {
     }
   };
 
+  // Handler for when the mouse cursor clicks on a dot on the simulation, which
+  // brings up that proteins information popup
   const handleCanvasClick = (event) => {
     const canvas = canvasRef.current;
     const rect = canvas.getBoundingClientRect();
@@ -272,6 +322,9 @@ const TwoDE = () => {
     setHoveredDot(null);
   };
 
+  // Handler for when the mouse course clicks on the document, which closes
+  // the selected proteins information popup if clicked outside of the
+  // canvas, info card, and protein list
   const handleDocumentClick = (event) => {
     const canvas = canvasRef.current;
     const infoCard = document.getElementById('protein-info-card');
@@ -327,6 +380,8 @@ const TwoDE = () => {
     setIsProteinListCollapsed(!isProteinListCollapsed);
   };
 
+  // React hook that is called when the selectedDot changes.
+  // It makes a call to the document click handler
   useEffect(() => {
     document.addEventListener('click', handleDocumentClick);
     return () => {
@@ -334,18 +389,21 @@ const TwoDE = () => {
     };
   }, [selectedDot]);
 
+  // Handler for when the mouse cursor leaves the canvas
+  // causes any hoveredDot to be not hovered anymore
   const handleCanvasMouseLeave = () => {
     if (!selectedDot) {
       setHoveredDot(null);
     }
   };
 
+  // Handler for when a new file is uploaded over an old one
   const handleFileInputChange = async (e) => {
     const files = [...e.target.files];
     await handleFileUpload(files);
   };
 
-  // Modified to update canvas selection and show popup - PPS1-107
+  // Modified to update canvas selection and show popup
   const handleProteinClick = (dot) => {
     setSelectedDot(dot);
     setHoveredDot(null);
@@ -367,11 +425,14 @@ const TwoDE = () => {
     }
   };
 
+  // React hook to handle all the different changes that may happen to the simulation
+  // and draws makes sure that everything is drawn as it should be
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
 
+    // The function that handles drawing everything on the simulation
     const draw = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       ctx.fillStyle = '#111111';
@@ -499,6 +560,8 @@ const TwoDE = () => {
         
         ctx.fillStyle = dot.color;
         
+        // If the simulation is in the 'ready' state, which is before
+        // anything has been run or when everything has been reset
         if (simulationState === 'ready') {
           // Draw dots in loading zone
           ctx.beginPath();
@@ -521,6 +584,8 @@ const TwoDE = () => {
             ctx.lineWidth = 1;
             ctx.stroke();
           }
+        // If the simulation is in the IEF (first dimension) stage of the simulation, 
+        // either still running or complete
         } else if (simulationState === 'ief-running' || simulationState === 'ief-complete') {
           if (dot.condensing) {
             // Draw small dot during condensing phase
@@ -567,6 +632,7 @@ const TwoDE = () => {
               }
             }
           }
+        // Otherwise do this
         } else {
           // Draw dots for SDS-PAGE
           ctx.beginPath();
@@ -594,6 +660,7 @@ const TwoDE = () => {
     draw();
   }, [dots, hoveredDot, selectedDot, simulationState, simulationProgress, phRange, yAxisMode, acrylamidePercentage]);
 
+  // Stylization for a button in the simulation
   const buttonStyle = {
     backgroundColor: '#1a1a1a',
     border: '1px solid #3a3a3a',
@@ -607,16 +674,21 @@ const TwoDE = () => {
     marginBottom: '8px'
   };
 
+  // Function to handle hovering over a button, which causes it to change 
+  // background and border colors, making it look like it is clickable
   const buttonHoverEffect = (e) => {
     e.target.style.backgroundColor = '#2a2a2a';
     e.target.style.borderColor = '#4a4a4a';
   };
-
+  
+  // Function to handle stopping hovering over a button, which causes
+  // it to go back to its default background and border colors
   const buttonLeaveEffect = (e) => {
     e.target.style.backgroundColor = '#1a1a1a';
     e.target.style.borderColor = '#3a3a3a';
   };
 
+  // Stylization for a slider in the simulation
   const sliderStyle = {
     width: '100%',
     height: '8px',
@@ -629,6 +701,8 @@ const TwoDE = () => {
     cursor: simulationState === 'ready' ? 'pointer' : 'not-allowed' // Change cursor when disabled
   };
 
+  // Stylization for a "input" (which is a field to enter a value in, 
+  // i.e. acrylamide % and pH numbers) in the simulation
   const inputStyle = {
     background: '#2a2a2a',
     border: '1px solid #444',
@@ -701,6 +775,7 @@ const TwoDE = () => {
     );
   };
 
+  // The actual component that is returned to render for the TwoDE
   return (
     <div style={{ 
       display: 'flex', 
@@ -716,6 +791,7 @@ const TwoDE = () => {
         gap: '8px', 
         marginBottom: '16px' 
       }}>
+        {/* First dimension button */}
         <button 
           style={{
             ...buttonStyle,
@@ -729,6 +805,7 @@ const TwoDE = () => {
         >
           First Dimension
         </button>
+        {/* Second dimension button */}
         <button 
           style={{
             ...buttonStyle,
@@ -742,6 +819,7 @@ const TwoDE = () => {
         >
           Second Dimension
         </button>
+        {/* Reset button */}
         <button 
           style={{
             ...buttonStyle,
@@ -759,6 +837,7 @@ const TwoDE = () => {
           </svg>
           Reset
         </button>
+        {/* Label for Upload FASTA button */}
         <label 
           style={{
             ...buttonStyle,
@@ -785,6 +864,7 @@ const TwoDE = () => {
             style={{ display: 'none' }}
           />
         </label>
+        {/* Upload FASTA button */}
         <button 
           style={{
             ...buttonStyle,
@@ -804,7 +884,7 @@ const TwoDE = () => {
         </button>
       </div>
 
-      {/* pH Range Slider - now disabled during simulation (PPS1-108) */}
+      {/* pH Range Slider, disabled during simulation */}
       <div style={{ marginBottom: '20px', padding: '0 20px', maxWidth: '800px', alignSelf: 'center' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '8px' }}>
           <label style={{ 
@@ -859,7 +939,7 @@ const TwoDE = () => {
         </div>
       </div>
       
-      {/* Acrylamide Percentage Slider (PPS1-106) */}
+      {/* Acrylamide Percentage Slider */}
       <div style={{ marginBottom: '20px', padding: '0 20px', maxWidth: '800px', alignSelf: 'center' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '8px' }}>
           <label style={{ 
@@ -901,7 +981,7 @@ const TwoDE = () => {
         </div>
       </div>
 
-      {/* Main content area - centered (PPS1-109) */}
+      {/* Main content area */}
       <div style={{ 
         display: 'flex', 
         justifyContent: 'center', 
@@ -1052,6 +1132,7 @@ const TwoDE = () => {
             </div>
           )}
           
+          {/* The actual graph part of the simulation, including the popups for protein informatiopn */}
           <canvas 
             ref={canvasRef} 
             width={800} 
