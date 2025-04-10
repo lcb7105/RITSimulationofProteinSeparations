@@ -1,0 +1,19 @@
+.simulatorBoxTwoDE {
+    background-color: lightgray;
+    overflow: hidden;
+}
+
+.TwoDEinstructions ol, .TwoDEinstructions li, .TwoDEinstructions ul {
+    text-align: left;
+}
+
+.centerText {
+    text-align: center;
+}
+
+.TwoDEinstructions {
+    margin: auto;
+    display: block;
+    width: fit-content;
+    padding-right: 2%;
+}

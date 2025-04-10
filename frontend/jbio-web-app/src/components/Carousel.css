@@ -1,0 +1,38 @@
+.carousel{
+    width: 60%;
+    display: inline-flex;
+    /*padding: 20px;*/
+}
+
+.chevron{
+    display: inline-block;
+    border-right: 4px solid black;
+    border-bottom: 4px solid black;
+    border-top: 0;
+    border-left: 0;
+    min-width: 30px;
+    min-height: 30px;
+    max-width: 30px;
+    max-height: 30px;
+}
+
+#button-prev{
+    transform: rotate(135deg);
+}
+
+#button-next{
+    transform: rotate(-45deg);
+}
+
+.carousel button{
+    background-color: transparent;
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
+.carousel-item{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+}

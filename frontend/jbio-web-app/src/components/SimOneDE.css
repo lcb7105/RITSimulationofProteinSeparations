@@ -1,0 +1,20 @@
+.simulatorBoxOneDE {
+    background-color: lightgray;
+    overflow: hidden;
+}
+
+.OneDEinstructions ol, .OneDEinstructions li, .OneDEinstructions ul {
+    text-align: left;
+}
+
+.centerText {
+    text-align: center;
+}
+
+.OneDEinstructions {
+    margin: auto;
+    display: block;
+    width: fit-content;
+    padding-right: 2%;
+}
+  

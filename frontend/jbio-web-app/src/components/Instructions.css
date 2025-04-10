@@ -1,0 +1,41 @@
+/* Centers all the text in the instructions page  */
+.pageHeaderInstructions {
+    text-align: center;
+}
+/* displays the two dimensional instructions as a flex which allows them to appear side by side on the screen
+and also set them to wrap so when the screen shrinks to a certain point, the instructions then appear one on top of the other
+for responsiveness */
+.flexBoxContainerInstructions {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+/* diplays the paragraph and list text to the left like a page as that's what you requested */
+.oneDimensionalInstructions p, .twoDimensionalInstructions p, .oneDimensionalInstructions ol, .twoDimensionalInstructions ol, .oneDimensionalInstructions li, .twoDimensionalInstructions li {
+    text-align: left;
+}
+/* centers the titles on the instructions page */
+.oneDimensionalInstructions h2, .twoDimensionalInstructions h2 {
+    text-align: center;
+}
+/* sets a width of 45% for each instructions container so that they are small enough to 
+appear side by side on desktop instead of one taking up the whole screen */
+.oneDimensionalInstructions, .twoDimensionalInstructions {
+    width: 45%;
+}
+/* For responsiveness so the instructions page looks good on all pages
+these styles happen when the width of the screen is less than or equal to 600px */
+@media screen and (max-width: 600px) {
+    /* increases the width since the one dimensional instructions and two dimensional instructions are ontop of eachother instead of side by side at this point because the screen is tablet or phone
+    this ensures it fills up the empty space around each one */
+    .oneDimensionalInstructions, .twoDimensionalInstructions {
+        width: 94.11%;
+    }
+    /* makes sure the instructions are on top instead of side by side incase it didn't wrap */
+    .flexBoxContainerInstructions {
+        flex-direction: column;
+    }
+}
+  
