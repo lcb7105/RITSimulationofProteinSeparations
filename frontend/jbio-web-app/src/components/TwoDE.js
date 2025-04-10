@@ -35,37 +35,6 @@ const TwoDE = () => {
   const PH_STEP = 2;
   const MAX_DISTANCE_TRAVELED = 6; // Maximum distance traveled in cm
 
-  // Add this to load initial protein data
-  useEffect(() => {
-    // Fetch initial protein data from backend
-    const fetchInitialData = async () => {
-      try {
-        const response = await axios.get(`${API_BASE_URL}/get-initial-data`);
-        
-        // Only set dots if they haven't been set already
-        if (dots.length === 0) {
-          setDots(
-            Object.entries(response.data).map(([name, data]) => ({ 
-              name, 
-              ...data, 
-              x: 50, 
-              y: 300,
-              currentpH: 7,
-              velocity: 0,
-              settled: false 
-            }))
-          );
-        }
-      } catch (error) {
-        console.error('Error fetching initial data:', error);
-        // Fallback to local data if backend is not available
-        // You may want to add your initial protein data here as a fallback
-      }
-    };
-    
-    fetchInitialData();
-  }, []);
-
   // Function to start running the IEF (first dimension), sets simulation 
   // state to 'ief-running' and calls the 'simulate-ief backend API to
   // run the IEF and then changes the frontend accordingly

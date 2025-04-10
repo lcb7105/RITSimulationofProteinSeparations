@@ -314,13 +314,6 @@ def run_sds_simulation():
     results = simulate_sds(proteins, y_axis_mode, acrylamide_percentage, canvas_height)
     return jsonify(results)
 
-@app.route('/api/clear-cache', methods=['POST'])
-def clear_simulation_cache():
-    """Clear simulation cache"""
-    global simulation_cache
-    simulation_cache = {}
-    return jsonify({'status': 'Cache cleared'})
-
 if __name__ == '__main__':
     import argparse
     parser = argparse.ArgumentParser(description='2D Electrophoresis Simulation Backend')
