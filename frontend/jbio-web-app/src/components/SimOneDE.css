@@ -1,10 +1,30 @@
 .simulatorBoxOneDE {
     background-color: lightgray;
-    overflow: hidden;
+    /*overflow: auto;*/
+    width: 90%;
+    /*max-height: 1000px;*/
+}
+
+.onede-box{
+    /*max-height: 20%;*/
+}
+.sim-container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .OneDEinstructions ol, .OneDEinstructions li, .OneDEinstructions ul {
     text-align: left;
+}
+
+.electrophoresis-wrapper .header{
+    /*height: 20px;*/
+    display: none;
+}
+
+.onede-box{
+    /*display: none;*/
 }
 
 .centerText {

@@ -685,7 +685,7 @@ const OneDE = () => {
           <img src="/redwire.png" alt="Red Wire" className="redwire-image" />
           <img src="/blackwire.png" alt="Black Wire" className="blackwire-image" />
         </div>
-        
+
         <div className="electrophoresis-cell">
           <div id='well-top'/>
           <div class='simulationLabel'>0 - </div>
@@ -732,7 +732,7 @@ const OneDE = () => {
                       </div>
                     );
                   })}
-                  
+
                   {idx > 0 && wellResponses[idx] && wellResponses[idx].map((protein, proteinIndex) => {
                     if (bandColors[[protein.id_str, protein.id_num]]) {
                       protein.color = bandColors[[protein.id_str, protein.id_num]];
@@ -768,26 +768,6 @@ const OneDE = () => {
           <button className="close-chart" onClick={() => setShowChart(false)}>Close</button>
         </div>
       )}
-      <div className="onede-page-instructions-box">
-        <h1 className="section-header" id="1de-page-instructions">1DE Simulation Instructions</h1>
-        <h2 className="section-header" id="1de-page-instructions">Steps</h2>
-        <ol>
-          <li>Add or drop wells as desired.</li>
-          <li>Click the "Select Folder" button to upload a folder or click a well to upload a file for that well.</li>
-          <li>Select/deselect the standards that you would like to run.</li>
-          <li>Set the voltage at the desired amount (50/100/150/200V).</li>
-          <li>Set the acrylamide percentage at the desired amount (7.5/10/12/15%).</li>
-          <li>Click the "Start" button to run the wells.</li>
-          <li>Click the "Stop" button to manually stop the wells</li>
-          <li>Click the "Refill Wells" button to stop the run and reset the filled wells with the protein bands at their inital position.</li>
-        </ol>
-        <h2 className="section-header" id="1de-page-instructions">Notes</h2>
-        <ul>
-          <li>Exact number of wells are not required (if you would like to run 5 wells, you may have 6 or more wells created).</li>
-          <li>The dye will always run in every well that is filled.</li>
-          <li>The protein bands will automatically stop at their relative migration distance down the well based on the dye.</li>
-        </ul>
-      </div>
     </div>
   );
 }
