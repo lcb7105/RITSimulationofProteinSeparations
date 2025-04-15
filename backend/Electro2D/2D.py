@@ -261,12 +261,24 @@ def parse_fasta():
         sequences = parse_fasta_content(content)
         
         for idx, seq in enumerate(sequences):
-            # Extract UniProt ID if possible
+            # Extract database IDs correctly
             uniprotId = 'N/A'
+            accessionId = 'N/A'
             import re
+            
+            # Try to extract standard UniProt ID first
             uniprot_match = re.search(r'[OPQ][0-9][A-Z0-9]{3}[0-9]|[A-NR-Z][0-9]([A-Z][A-Z0-9]{2}[0-9]){1,2}', seq['header'])
             if uniprot_match:
                 uniprotId = uniprot_match.group(0)
+            
+            # Extract accession ID from gb|XXXXX format
+            accession_match = re.search(r'\|gb\|([A-Z0-9.]+)', seq['header'])
+            if accession_match:
+                accessionId = accession_match.group(1)
+                
+            # Use accession as a fallback ID if no UniProt found
+            if uniprotId == 'N/A' and accessionId != 'N/A':
+                uniprotId = accessionId
             
             new_proteins.append({
                 'name': seq['name'],

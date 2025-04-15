@@ -1138,16 +1138,41 @@ const TwoDE = () => {
               <div style={{ fontSize: '14px', display: 'grid', gap: '4px' }}>
                 <div>Source: {(selectedDot || hoveredDot).organism}</div>
                 {/* Updated UniProt links with proper functionality (PPS1-110) */}
-                <div>
-                  UniProt: <a 
-                    href={`https://www.uniprot.org/uniprotkb/${(selectedDot || hoveredDot).uniprotId !== 'N/A' ? (selectedDot || hoveredDot).uniprotId : (selectedDot || hoveredDot).name.replace(/\s+/g, '_')}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    style={{ color: '#63B3ED', textDecoration: 'none' }}
-                  >
-                    {(selectedDot || hoveredDot).uniprotId !== 'N/A' ? (selectedDot || hoveredDot).uniprotId : (selectedDot || hoveredDot).name}
-                  </a>
-                </div>
+               
+<div>
+  {/* Check if it's an accession ID and send to the appropriate database */}
+  {(selectedDot || hoveredDot).uniprotId !== 'N/A' ? (
+    <>
+      {/* If it matches UniProt ID pattern, link to UniProt */}
+      {(selectedDot || hoveredDot).uniprotId.match(/^[A-Z][0-9][A-Z0-9]{3}[0-9]$/) ? (
+        <>
+          UniProt: <a 
+            href={`https://www.uniprot.org/uniprotkb/${(selectedDot || hoveredDot).uniprotId}/entry`}
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ color: '#63B3ED', textDecoration: 'none' }}
+          >
+            {(selectedDot || hoveredDot).uniprotId}
+          </a>
+        </>
+      ) : (
+        <>
+          {/* If it looks like a GenBank accession, use NCBI instead */}
+          GenBank: <a 
+            href={`https://www.ncbi.nlm.nih.gov/protein/${(selectedDot || hoveredDot).uniprotId}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ color: '#63B3ED', textDecoration: 'none' }}
+          >
+            {(selectedDot || hoveredDot).uniprotId}
+          </a>
+        </>
+      )}
+    </>
+  ) : (
+    "ID: Not available"
+  )}
+</div>
                 {(selectedDot || hoveredDot).pdbId !== 'N/A' && (
                   <div>
                     PDB: <a 
