@@ -1,6 +1,17 @@
 .simulatorBoxTwoDE {
-    background-color: lightgray;
-    overflow: hidden;
+    /*background-color: lightgray;*/
+    /*overflow: hidden;*/
+    width: 90%;
+}
+
+canvas{
+    width: 100%;
+}
+
+.sim-container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .TwoDEinstructions ol, .TwoDEinstructions li, .TwoDEinstructions ul {
@@ -16,4 +27,10 @@
     display: block;
     width: fit-content;
     padding-right: 2%;
+}
+
+@media screen and (max-width: 1000px) {
+    #protein-list{
+        flex-direction: row !important;
+    }
 }

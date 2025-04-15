@@ -4,6 +4,15 @@ import logo from './about_images/basil-logo-original.png'
 import {NavLink} from "react-router-dom";
 import Dropdown from "./Dropdown";
 import './Hamburger.css'
+
+/**
+ * Navbar Component
+ *
+ * dependencies - Dropdown
+ *
+ * This is the navigation bar that appears on each page. It uses the Dropdown Component to create the dropdown
+ * that lists the simulator options. To add additional menu items, add additional list items
+ * **/
 export default function Navbar(){
     const [hamburgerOpen, setHamburgerOpen] = React.useState(false);
     const toggleHamburger = () =>{
@@ -24,6 +33,7 @@ export default function Navbar(){
                             <Dropdown.List>
                                 <Dropdown.Item to="/1de">1D Electrophoresis</Dropdown.Item>
                                 <Dropdown.Item to="/2de">2D Electrophoresis</Dropdown.Item>
+                                {/*<Dropdown.Item to="/2de">2D Electrophoresis</Dropdown.Item>*/}
                             </Dropdown.List>
                         </Dropdown.Content>
                     </Dropdown>

@@ -1,11 +1,12 @@
 import './SimOneDE.css';
+import OneDE from "./OneDE";
 
 function SimOneDE() {
     return (
-        <div>
+        <div className={"sim-container"}>
             <h1>1D Electrophoresis Simulator</h1>
             <div className='simulatorBoxOneDE'>
-                <p>Insert Simulation here</p>
+                <OneDE/>
             </div>
             <section className='OneDEinstructions'>
                 <h2>1DE Simulator Instructions</h2>

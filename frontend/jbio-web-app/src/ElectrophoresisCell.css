@@ -1,21 +1,26 @@
 .electrophoresis-wrapper {
     display: flex;
-    flex-direction: column;
+    /*flex-direction: column;*/
     justify-content: center;
-    align-items: center;
-    height: 88vh;
+    /*align-items: center;*/
+    /*height: 88vh;*/
     overflow: auto;
 }
 
-.electrophoresis-cell::before {
-    content: "";
-    position: absolute;
-    left: 5%;
-    right: 5%;
-    height: 150px;
-    background-color: #FFF;
-    z-index: 2;
-}
+/*.graphic-wrapper{*/
+/*.graphic-wrapper{*/
+/*    contain: layout style paint;*/
+/*}*/
+
+/*.electrophoresis-cell::before {*/
+/*    content: "";*/
+/*    position: absolute;*/
+/*    left: 5%;*/
+/*    right: 5%;*/
+/*    height: 150px;*/
+/*    background-color: #FFF;*/
+/*    z-index: 2;*/
+/*}*/
 
 .electrophoresis-cell {
     flex-shrink: 0;
@@ -30,8 +35,8 @@
     border-radius: 5px;
     box-shadow: 0 0 0.9375em 0.1875em rgba(0, 0, 0, 0.1) inset;
     z-index: 3;
-    left: 20.5em;
-    top: -70em;
+    left: 3em;
+    /*top: -70em;*/
     overflow-y: scroll;
 }
 
@@ -157,8 +162,8 @@
 .acrylamide-gel-top {
     flex-shrink: 0;
     position: relative;
-    left: 17em;
-    bottom: 118em;
+    /*left: 17em;*/
+    /*bottom: 118em;*/
     width: 53em;
     height: 9.375em;
     border: 3px solid #000;
@@ -170,8 +175,8 @@
 .acrylamide-gel-bottom {
     flex-shrink: 0;
     position: relative;
-    left: 17em;
-    bottom: 88em;
+    /*left: 17em;*/
+    /*bottom: 88em;*/
     width: 53em;
     height: 9.375em;
     border: 3px solid #000;
@@ -206,8 +211,8 @@
 .options-box {
     flex-shrink: 0;
     position: relative;
-    top: 98em;
-    left: -30em;
+    /*top: 98em;*/
+    /*left: -30em;*/
     width: 25em;
     height: 40em;
     border: 3px solid var(--highlight-color);
@@ -229,9 +234,8 @@
 
 
 .onede-box {
-    position: relative;
-    top: 74em;
-    left: 0;
+    contain: layout paint style;
+    width: auto;
 }
 
 .uploadContainer {

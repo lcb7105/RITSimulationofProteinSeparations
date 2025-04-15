@@ -16,16 +16,16 @@ const TwoDE = () => {
   const [dragCounter, setDragCounter] = useState(0);
   const [simulationState, setSimulationState] = useState('ready'); // 'ready', 'ief-running', 'ief-complete', 'sds-running', 'complete'
   const [simulationProgress, setSimulationProgress] = useState(0);
-  
+
   // States for implementing requested features
   const [phRange, setPhRange] = useState({ min: 0, max: 14 });
   const [yAxisMode, setYAxisMode] = useState('mw'); // 'mw' or 'distance'
   const [uploadProgress, setUploadProgress] = useState(0);
   const [isUploading, setIsUploading] = useState(false);
-  
+
   // State for PPS1-106: Acrylamide slider
   const [acrylamidePercentage, setAcrylamidePercentage] = useState(7.5); // Default value
-  
+
   // State for PPS1-111: Collapsible protein list
   const [isProteinListCollapsed, setIsProteinListCollapsed] = useState(false);
 
@@ -40,10 +40,10 @@ const TwoDE = () => {
   // run the IEF and then changes the frontend accordingly
   const startIEF = () => {
     if (simulationState !== 'ready') return;
-    
+
     setSimulationState('ief-running');
     setSimulationProgress(0);
-    
+
     // Prepare the data to send to the backend
     const data = {
       proteins: dots.map(dot => ({
@@ -62,38 +62,38 @@ const TwoDE = () => {
       canvasWidth: 800,
       canvasHeight: 600
     };
-    
+
     // Call the backend API
     axios.post(`${API_BASE_URL}/simulate-ief`, data)
-      .then(response => {
-        // Get the simulation results
-        const simulationResults = response.data;
-        const totalSteps = simulationResults.length;
-        
-        // Play the animation using the pre-calculated positions
-        let currentStep = 0;
-        const animationInterval = setInterval(() => {
-          if (currentStep >= totalSteps) {
-            clearInterval(animationInterval);
-            setSimulationState('ief-complete');
-            return;
-          }
-          
-          // Update progress
-          const progress = currentStep / (totalSteps - 1);
-          setSimulationProgress(progress);
-          
-          // Update dots with the pre-calculated positions for this step
-          setDots(simulationResults[currentStep]);
-          
-          // Move to next step
-          currentStep++;
-        }, 20); // Adjust timing for smoother animation
-      })
-      .catch(error => {
-        console.error('Error in IEF simulation:', error);
-        setSimulationState('ready');
-      });
+        .then(response => {
+          // Get the simulation results
+          const simulationResults = response.data;
+          const totalSteps = simulationResults.length;
+
+          // Play the animation using the pre-calculated positions
+          let currentStep = 0;
+          const animationInterval = setInterval(() => {
+            if (currentStep >= totalSteps) {
+              clearInterval(animationInterval);
+              setSimulationState('ief-complete');
+              return;
+            }
+
+            // Update progress
+            const progress = currentStep / (totalSteps - 1);
+            setSimulationProgress(progress);
+
+            // Update dots with the pre-calculated positions for this step
+            setDots(simulationResults[currentStep]);
+
+            // Move to next step
+            currentStep++;
+          }, 20); // Adjust timing for smoother animation
+        })
+        .catch(error => {
+          console.error('Error in IEF simulation:', error);
+          setSimulationState('ready');
+        });
   };
 
   // Function to start running the SDS (second dimension), sets simulation 
@@ -101,9 +101,9 @@ const TwoDE = () => {
   // run the SDS and then changes the frontend accordingly
   const startSDS = () => {
     if (simulationState !== 'ief-complete') return;
-    
+
     setSimulationState('sds-running');
-    
+
     // Prepare data to send to the backend
     const data = {
       proteins: dots.map(dot => ({
@@ -125,34 +125,34 @@ const TwoDE = () => {
       acrylamidePercentage: acrylamidePercentage,
       canvasHeight: 600
     };
-    
+
     // Call the backend API
     axios.post(`${API_BASE_URL}/simulate-sds`, data)
-      .then(response => {
-        // Get the simulation results
-        const simulationResults = response.data;
-        const totalSteps = simulationResults.length;
-        
-        // Play the animation using the pre-calculated positions
-        let currentStep = 0;
-        const animationInterval = setInterval(() => {
-          if (currentStep >= totalSteps) {
-            clearInterval(animationInterval);
-            setSimulationState('complete');
-            return;
-          }
-          
-          // Update dots with the pre-calculated positions for this step
-          setDots(simulationResults[currentStep]);
-          
-          // Move to next step
-          currentStep++;
-        }, 20); // Adjust timing for smoother animation
-      })
-      .catch(error => {
-        console.error('Error in SDS simulation:', error);
-        setSimulationState('ief-complete'); // Return to previous state
-      });
+        .then(response => {
+          // Get the simulation results
+          const simulationResults = response.data;
+          const totalSteps = simulationResults.length;
+
+          // Play the animation using the pre-calculated positions
+          let currentStep = 0;
+          const animationInterval = setInterval(() => {
+            if (currentStep >= totalSteps) {
+              clearInterval(animationInterval);
+              setSimulationState('complete');
+              return;
+            }
+
+            // Update dots with the pre-calculated positions for this step
+            setDots(simulationResults[currentStep]);
+
+            // Move to next step
+            currentStep++;
+          }, 20); // Adjust timing for smoother animation
+        })
+        .catch(error => {
+          console.error('Error in SDS simulation:', error);
+          setSimulationState('ief-complete'); // Return to previous state
+        });
   };
 
   // Clean up animation frame on unmount
@@ -170,13 +170,13 @@ const TwoDE = () => {
   const handleFileUpload = async (files) => {
     setIsUploading(true);
     setUploadProgress(0);
-    
+
     // Create form data
     const formData = new FormData();
     for (let i = 0; i < files.length; i++) {
       formData.append('files', files[i]);
     }
-    
+
     try {
       // Upload to backend for processing
       const response = await axios.post(`${API_BASE_URL}/parse-fasta`, formData, {
@@ -185,7 +185,7 @@ const TwoDE = () => {
           setUploadProgress(percentCompleted);
         }
       });
-      
+
       // Add new proteins to the existing dots
       setDots(prevDots => [...prevDots, ...response.data]);
     } catch (error) {
@@ -226,7 +226,7 @@ const TwoDE = () => {
     e.stopPropagation();
     setIsDragging(false);
     setDragCounter(0);
-    
+
     const files = [...e.dataTransfer.files];
     await handleFileUpload(files);
   };
@@ -237,11 +237,11 @@ const TwoDE = () => {
     return 50 + ((clampedPH - MIN_PH) / (MAX_PH - MIN_PH)) * (canvasWidth - 100);
   };
 
-  
+
   const resetPositions = () => {
-    setDots(prevDots => prevDots.map(dot => ({ 
-      ...dot, 
-      x: 50, 
+    setDots(prevDots => prevDots.map(dot => ({
+      ...dot,
+      x: 50,
       y: 300,
       currentpH: 7,
       velocity: 0,
@@ -251,7 +251,7 @@ const TwoDE = () => {
     setSelectedDot(null);
     setSimulationState('ready');
     setSimulationProgress(0);
-    
+
   };
 
   // Handler for when the mouse cursor moves on the canvas (simulation)
@@ -298,10 +298,10 @@ const TwoDE = () => {
     const canvas = canvasRef.current;
     const infoCard = document.getElementById('protein-info-card');
     const proteinList = document.getElementById('protein-list');
-    
+
     // Only close the popup if clicking outside the canvas, info card, and protein list
-    if (selectedDot && 
-        !canvas.contains(event.target) && 
+    if (selectedDot &&
+        !canvas.contains(event.target) &&
         (!infoCard || !infoCard.contains(event.target)) &&
         (!proteinList || !proteinList.contains(event.target))) {
       setSelectedDot(null);
@@ -311,7 +311,7 @@ const TwoDE = () => {
   // Handler for pH range input - now disabled during simulation
   const handlePhRangeChange = (type, value) => {
     if (simulationState !== 'ready') return; // Disable during simulation
-    
+
     if (type === 'min') {
       // Ensure min pH is less than max pH
       const newMin = Math.min(parseFloat(value), phRange.max - 0.1);
@@ -326,7 +326,7 @@ const TwoDE = () => {
   // Handler for pH slider - now disabled during simulation
   const handlePhSliderChange = (e) => {
     if (simulationState !== 'ready') return; // Disable during simulation
-    
+
     const value = parseFloat(e.target.value);
     const type = e.target.id.includes('min') ? 'min' : 'max';
     handlePhRangeChange(type, value);
@@ -335,7 +335,7 @@ const TwoDE = () => {
   // Handler for acrylamide percentage slider
   const handleAcrylamideChange = (e) => {
     if (simulationState !== 'ready') return; // Disable during simulation
-    
+
     setAcrylamidePercentage(parseFloat(e.target.value));
   };
 
@@ -376,18 +376,18 @@ const TwoDE = () => {
   const handleProteinClick = (dot) => {
     setSelectedDot(dot);
     setHoveredDot(null);
-    
+
     // Update the mouse position to position the popup correctly
     // Position it next to the protein list
     const proteinList = document.querySelector('#protein-list');
     if (proteinList) {
       const rect = proteinList.getBoundingClientRect();
-      setMousePos({ 
-        x: rect.right + 10, 
+      setMousePos({
+        x: rect.right + 10,
         y: rect.top + 100 // Position it near the top of the panel
       });
     }
-    
+
     // Scroll to the protein in the canvas if it's off-screen
     if (canvasRef.current) {
       canvasRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -422,16 +422,16 @@ const TwoDE = () => {
         // Draw IEF band/gel
         ctx.fillStyle = '#222222';
         ctx.fillRect(50, 50, canvas.width - 100, 100); // IEF band area
-        
+
         // Draw pH gradient visualization above IEF band
         const gradient = ctx.createLinearGradient(50, 0, canvas.width - 50, 0);
         gradient.addColorStop(0, '#FF6B6B');   // Acidic
         gradient.addColorStop(0.5, '#4ECDC4'); // Neutral
         gradient.addColorStop(1, '#45B7D1');   // Basic
-        
+
         ctx.fillStyle = gradient;
         ctx.fillRect(50, 30, canvas.width - 100, 10);
-        
+
         // Draw pH labels
         ctx.fillStyle = '#FFFFFF';
         ctx.font = '10px Arial';
@@ -504,7 +504,7 @@ const TwoDE = () => {
       ctx.fillStyle = '#FFFFFF';
       ctx.textAlign = 'center';
       ctx.fillText('pH', canvas.width / 2, canvas.height - 10);
-      
+
       // Vertical MW/Distance label (PPS1-105)
       ctx.save();
       ctx.translate(10, canvas.height / 2);
@@ -526,9 +526,9 @@ const TwoDE = () => {
         // Highlight effect for selected protein in canvas (PPS1-107)
         const isHighlighted = dot === selectedDot;
         const isHovered = dot === hoveredDot;
-        
+
         ctx.fillStyle = dot.color;
-        
+
         // If the simulation is in the 'ready' state, which is before
         // anything has been run or when everything has been reset
         if (simulationState === 'ready') {
@@ -536,13 +536,13 @@ const TwoDE = () => {
           ctx.beginPath();
           ctx.arc(dot.x, dot.y, (isHighlighted || isHovered) ? 8 : 5, 0, Math.PI * 2);
           ctx.fill();
-          
+
           // Add glow effect for selected protein (PPS1-107)
           if (isHighlighted) {
             ctx.strokeStyle = '#FFFFFF';
             ctx.lineWidth = 2;
             ctx.stroke();
-            
+
             // Add pulsing highlight effect
             ctx.beginPath();
             ctx.arc(dot.x, dot.y, 12, 0, Math.PI * 2);
@@ -553,15 +553,15 @@ const TwoDE = () => {
             ctx.lineWidth = 1;
             ctx.stroke();
           }
-        // If the simulation is in the IEF (first dimension) stage of the simulation, 
-        // either still running or complete
+          // If the simulation is in the IEF (first dimension) stage of the simulation,
+          // either still running or complete
         } else if (simulationState === 'ief-running' || simulationState === 'ief-complete') {
           if (dot.condensing) {
             // Draw small dot during condensing phase
             ctx.beginPath();
             ctx.arc(dot.x, dot.y, 5, 0, Math.PI * 2);
             ctx.fill();
-            
+
             // Add highlight for selected protein
             if (isHighlighted) {
               ctx.strokeStyle = '#FFFFFF';
@@ -572,36 +572,36 @@ const TwoDE = () => {
             // Draw vertical bands in IEF
             const bandHeight = 40; // Fixed height for bands
             ctx.fillRect(
-              dot.x - dot.bandWidth / 2,
-              dot.y - bandHeight / 2,
-              dot.bandWidth,
-              bandHeight
-            );
-            
-            if (isHighlighted || isHovered) {
-              ctx.strokeStyle = '#FFFFFF';
-              ctx.lineWidth = isHighlighted ? 2 : 1;
-              ctx.strokeRect(
                 dot.x - dot.bandWidth / 2,
                 dot.y - bandHeight / 2,
                 dot.bandWidth,
                 bandHeight
+            );
+
+            if (isHighlighted || isHovered) {
+              ctx.strokeStyle = '#FFFFFF';
+              ctx.lineWidth = isHighlighted ? 2 : 1;
+              ctx.strokeRect(
+                  dot.x - dot.bandWidth / 2,
+                  dot.y - bandHeight / 2,
+                  dot.bandWidth,
+                  bandHeight
               );
-              
+
               // Additional highlight for selected protein
               if (isHighlighted) {
                 ctx.strokeStyle = 'rgba(255, 255, 255, 0.5)';
                 ctx.lineWidth = 1;
                 ctx.strokeRect(
-                  dot.x - dot.bandWidth / 2 - 3,
-                  dot.y - bandHeight / 2 - 3,
-                  dot.bandWidth + 6,
-                  bandHeight + 6
+                    dot.x - dot.bandWidth / 2 - 3,
+                    dot.y - bandHeight / 2 - 3,
+                    dot.bandWidth + 6,
+                    bandHeight + 6
                 );
               }
             }
           }
-        // Otherwise do this
+          // Otherwise do this
         } else {
           // Draw dots for SDS-PAGE
           ctx.beginPath();
@@ -611,7 +611,7 @@ const TwoDE = () => {
             ctx.strokeStyle = '#FFFFFF';
             ctx.lineWidth = isHighlighted ? 2 : 1;
             ctx.stroke();
-            
+
             // Additional pulsing effect for selected dot
             if (isHighlighted) {
               ctx.beginPath();
@@ -649,7 +649,7 @@ const TwoDE = () => {
     e.target.style.backgroundColor = '#2a2a2a';
     e.target.style.borderColor = '#4a4a4a';
   };
-  
+
   // Function to handle stopping hovering over a button, which causes
   // it to go back to its default background and border colors
   const buttonLeaveEffect = (e) => {
@@ -689,505 +689,505 @@ const TwoDE = () => {
     const radius = 20;
     const circumference = 2 * Math.PI * radius;
     const strokeDashoffset = circumference * (1 - progress / 100);
-    
+
     return (
-      <div style={{ position: 'relative', width: '50px', height: '50px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-        <svg width="50" height="50" viewBox="0 0 50 50">
-          <circle 
-            cx="25" 
-            cy="25" 
-            r={radius} 
-            stroke="#333" 
-            strokeWidth="4" 
-            fill="none" 
-          />
-          <circle 
-            cx="25" 
-            cy="25" 
-            r={radius} 
-            stroke="#4CAF50" 
-            strokeWidth="4" 
-            fill="none" 
-            strokeDasharray={circumference}
-            strokeDashoffset={strokeDashoffset}
-            transform="rotate(-90 25 25)"
-          />
-        </svg>
-        <div style={{ position: 'absolute', fontSize: '12px' }}>
-          {Math.round(progress)}%
+        <div style={{ position: 'relative', width: '50px', height: '50px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <svg width="50" height="50" viewBox="0 0 50 50">
+            <circle
+                cx="25"
+                cy="25"
+                r={radius}
+                stroke="#333"
+                strokeWidth="4"
+                fill="none"
+            />
+            <circle
+                cx="25"
+                cy="25"
+                r={radius}
+                stroke="#4CAF50"
+                strokeWidth="4"
+                fill="none"
+                strokeDasharray={circumference}
+                strokeDashoffset={strokeDashoffset}
+                transform="rotate(-90 25 25)"
+            />
+          </svg>
+          <div style={{ position: 'absolute', fontSize: '12px' }}>
+            {Math.round(progress)}%
+          </div>
         </div>
-      </div>
     );
   };
 
   // Component for collapsible protein list header
   const ProteinListHeader = ({ isCollapsed, onToggle, count }) => {
     return (
-      <div 
-        style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          padding: '8px 0',
-          cursor: 'pointer',
-          userSelect: 'none'
-        }}
-        onClick={onToggle}
-      >
-        <h3 style={{ fontSize: '16px', margin: 0 }}>Proteins ({count})</h3>
-        <div style={{ transform: isCollapsed ? 'rotate(-90deg)' : 'rotate(0)', transition: 'transform 0.2s' }}>
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-          <polyline points="6 9 12 15 18 9"></polyline>
-          </svg>
+        <div
+            style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              padding: '8px 0',
+              cursor: 'pointer',
+              userSelect: 'none'
+            }}
+            onClick={onToggle}
+        >
+          <h3 style={{ fontSize: '16px', margin: 0 }}>Proteins ({count})</h3>
+          <div style={{ transform: isCollapsed ? 'rotate(-90deg)' : 'rotate(0)', transition: 'transform 0.2s' }}>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </div>
         </div>
-      </div>
     );
   };
 
   // The actual component that is returned to render for the TwoDE
   return (
-    <div style={{ 
-      display: 'flex', 
-      flexDirection: 'column', 
-      padding: '16px', 
-      backgroundColor: '#1a1a1a', 
-      color: 'white',
-      marginTop: '20px'
-    }}>
-      <div style={{ 
-        display: 'flex', 
-        justifyContent: 'center', 
-        gap: '8px', 
-        marginBottom: '16px' 
+      <div style={{
+        display: 'flex',
+        flexDirection: 'column',
+        padding: '16px',
+        backgroundColor: '#1a1a1a',
+        color: 'white',
+        marginTop: '20px'
       }}>
-        {/* First dimension button */}
-        <button 
-          style={{
-            ...buttonStyle,
-            opacity: simulationState === 'ief-running' ? 0.5 : 1,
-            cursor: simulationState === 'ready' ? 'pointer' : 'not-allowed'
-          }}
-          onClick={startIEF}
-          disabled={simulationState !== 'ready'}
-          onMouseOver={buttonHoverEffect}
-          onMouseOut={buttonLeaveEffect}
-        >
-          First Dimension
-        </button>
-        {/* Second dimension button */}
-        <button 
-          style={{
-            ...buttonStyle,
-            opacity: simulationState !== 'ief-complete' ? 0.5 : 1,
-            cursor: simulationState === 'ief-complete' ? 'pointer' : 'not-allowed'
-          }}
-          onClick={startSDS}
-          disabled={simulationState !== 'ief-complete'}
-          onMouseOver={buttonHoverEffect}
-          onMouseOut={buttonLeaveEffect}
-        >
-          Second Dimension
-        </button>
-        {/* Reset button */}
-        <button 
-          style={{
-            ...buttonStyle,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            gap: '4px'
-          }}
-          onClick={resetPositions}
-          onMouseOver={buttonHoverEffect}
-          onMouseOut={buttonLeaveEffect}
-        >
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <path d="M2.5 12a9.5 9.5 0 1 1 9.5 9.5 9.5 9.5 0 0 1-9.5-9.5m9.5-9.5v9.5l5-4.5"/>
-          </svg>
-          Reset
-        </button>
-        {/* Label for Upload FASTA button */}
-        <label 
-          style={{
-            ...buttonStyle,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            gap: '4px',
-            cursor: 'pointer'
-          }}
-          onMouseOver={buttonHoverEffect}
-          onMouseOut={buttonLeaveEffect}
-        >
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-            <polyline points="17 8 12 3 7 8"/>
-            <line x1="12" y1="3" x2="12" y2="15"/>
-          </svg>
-          Upload FASTA
-          <input
-            type="file"
-            accept=".fasta,.fa"
-            multiple
-            onChange={handleFileInputChange}
-            style={{ display: 'none' }}
-          />
-        </label>
-        {/* Upload FASTA button */}
-        <button 
-          style={{
-            ...buttonStyle,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            gap: '4px'
-          }}
-          onClick={toggleYAxisMode}
-          onMouseOver={buttonHoverEffect}
-          onMouseOut={buttonLeaveEffect}
-        >
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <path d="M8 3v18M3 8h10M3 16h10M16 3v18M16 8h5M16 16h5"/>
-          </svg>
-          {yAxisMode === 'mw' ? 'Show Distance' : 'Show MW'}
-        </button>
-      </div>
-
-      {/* pH Range Slider, disabled during simulation */}
-      <div style={{ marginBottom: '20px', padding: '0 20px', maxWidth: '800px', alignSelf: 'center' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '8px' }}>
-          <label style={{ 
-            fontSize: '14px', 
-            width: '120px',
-            opacity: simulationState === 'ready' ? 1 : 0.5 // Dim when disabled
-          }}>pH Range:</label>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flex: 1 }}>
-            <input 
-              type="number" 
-              min="0" 
-              max="14" 
-              step="0.1" 
-              value={phRange.min} 
-              onChange={(e) => handlePhRangeChange('min', e.target.value)}
-              style={inputStyle}
-              disabled={simulationState !== 'ready'} // Disable during simulation
-            />
-            <input 
-              type="range" 
-              id="ph-min-slider"
-              min="0" 
-              max="14" 
-              step="0.1" 
-              value={phRange.min}
-              onChange={handlePhSliderChange}
-              style={sliderStyle}
-              disabled={simulationState !== 'ready'} // Disable during simulation
-            />
-            <input 
-              type="range" 
-              id="ph-max-slider"
-              min="0" 
-              max="14" 
-              step="0.1" 
-              value={phRange.max}
-              onChange={handlePhSliderChange}
-              style={sliderStyle}
-              disabled={simulationState !== 'ready'} // Disable during simulation
-            />
-            <input 
-              type="number" 
-              min="0" 
-              max="14" 
-              step="0.1" 
-              value={phRange.max} 
-              onChange={(e) => handlePhRangeChange('max', e.target.value)}
-              style={inputStyle}
-              disabled={simulationState !== 'ready'} // Disable during simulation
-            />
-          </div>
-        </div>
-      </div>
-      
-      {/* Acrylamide Percentage Slider */}
-      <div style={{ marginBottom: '20px', padding: '0 20px', maxWidth: '800px', alignSelf: 'center' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '8px' }}>
-          <label style={{ 
-            fontSize: '14px', 
-            width: '120px',
-            opacity: simulationState === 'ready' ? 1 : 0.5 // Dim when disabled
-          }}>Acrylamide %:</label>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flex: 1 }}>
-            <input 
-              type="number" 
-              min="5" 
-              max="20" 
-              step="0.5" 
-              value={acrylamidePercentage} 
-              onChange={(e) => setAcrylamidePercentage(parseFloat(e.target.value))}
-              style={inputStyle}
-              disabled={simulationState !== 'ready'} // Disable during simulation
-            />
-            <input 
-              type="range" 
-              min="5" 
-              max="20" 
-              step="0.5" 
-              value={acrylamidePercentage}
-              onChange={handleAcrylamideChange}
-              style={sliderStyle}
-              disabled={simulationState !== 'ready'} // Disable during simulation
-            />
-            <div style={{ 
-              minWidth: '140px', 
-              fontSize: '12px',
-              opacity: simulationState === 'ready' ? 0.8 : 0.4 // Dim when disabled
-            }}>
-              {acrylamidePercentage < 7 ? 'Resolves large proteins' : 
-               acrylamidePercentage < 12 ? 'Medium range separation' : 
-               'Resolves small proteins'}
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Main content area */}
-      <div style={{ 
-        display: 'flex', 
-        justifyContent: 'center', 
-        gap: '16px',
-        maxWidth: '1100px',
-        margin: '0 auto' 
-      }}>
-        {/* Protein list panel with resizable feature */}
-        <div 
-          id="protein-list"
-          style={{ 
-            padding: '16px', 
-            backgroundColor: '#282828', 
-            borderRadius: '4px',
-            width: isProteinListCollapsed ? '80px' : '250px',
-            height: '600px',
-            display: 'flex',
-            flexDirection: 'column',
-            transition: 'width 0.3s ease-in-out',
-            overflow: 'hidden',
-            position: 'relative'
-          }}
-        >
-          <ProteinListHeader 
-            isCollapsed={isProteinListCollapsed} 
-            onToggle={toggleProteinList} 
-            count={dots.length}
-          />
-          
-          {/* Resizable handle */}
-          <div
-            style={{
-              position: 'absolute',
-              top: 0,
-              right: 0,
-              width: '5px',
-              height: '100%',
-              cursor: 'ew-resize',
-              background: 'rgba(255,255,255,0.1)',
-            }}
-            onMouseDown={(e) => {
-              const startWidth = e.currentTarget.parentElement.offsetWidth;
-              const startX = e.clientX;
-              
-              const onMouseMove = (moveEvent) => {
-                if (isProteinListCollapsed) return;
-                const newWidth = Math.max(150, startWidth + moveEvent.clientX - startX);
-                e.currentTarget.parentElement.style.width = `${newWidth}px`;
-              };
-              
-              const onMouseUp = () => {
-                document.removeEventListener('mousemove', onMouseMove);
-                document.removeEventListener('mouseup', onMouseUp);
-              };
-              
-              document.addEventListener('mousemove', onMouseMove);
-              document.addEventListener('mouseup', onMouseUp);
-            }}
-          />
-          
-          <div style={{ 
-            display: 'flex', 
-            flexDirection: 'column', 
-            gap: '8px',
-            overflowY: 'auto',
-            flex: 1,
-            marginTop: '8px',
-            opacity: isProteinListCollapsed ? 0 : 1,
-            transition: 'opacity 0.2s',
-            transitionDelay: isProteinListCollapsed ? '0s' : '0.1s'
-          }}>
-            {!isProteinListCollapsed && dots.map(dot => (
-              <div 
-                key={dot.name} 
-                onClick={() => handleProteinClick(dot)}
-                style={{ 
-                  display: 'flex', 
-                  alignItems: 'center', 
-                  gap: '8px',
-                  minHeight: '24px',
-                  padding: '4px',
-                  cursor: 'pointer',
-                  backgroundColor: selectedDot?.name === dot.name ? '#3a3a3a' : 'transparent',
-                  borderRadius: '4px',
-                  transition: 'background-color 0.2s'
-                }}>
-                <div style={{ 
-                  width: '12px', 
-                  height: '12px', 
-                  minWidth: '12px',
-                  backgroundColor: dot.color,
-                  borderRadius: '50%' 
-                }}/>
-                <span style={{
-                  whiteSpace: 'nowrap',
-                  overflow: 'hidden',
-                  textOverflow: 'ellipsis',
-                  fontSize: '14px',
-                  flex: 1
-                }}>{dot.name}</span>
-              </div>
-            ))}
-          </div>
-          
-          {/* Upload Progress Indicator */}
-          {isUploading && (
-            <div style={{ 
-              marginTop: '16px', 
-              display: 'flex', 
-              flexDirection: 'column', 
-              alignItems: 'center' 
-            }}>
-              <div style={{ marginBottom: '8px', fontSize: '14px' }}>Uploading FASTA...</div>
-              <CircularProgress progress={uploadProgress} />
-            </div>
-          )}
-        </div>
-
-        <div 
-          style={{ position: 'relative' }}
-          onDragEnter={handleDragEnter}
-          onDragOver={handleDragOver}
-          onDragLeave={handleDragLeave}
-          onDrop={handleDrop}
-        >
-          {isDragging && (
-            <div style={{
-              position: 'absolute',
-              top: 0,
-              left: 0,
-              right: 0,
-              bottom: 0,
-              backgroundColor: 'rgba(0, 0, 0, 0.7)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              zIndex: 1000,
-              borderRadius: '4px'
-            }}>
-              <div style={{
-                padding: '20px',
-                border: '2px dashed #666',
-                borderRadius: '8px',
-                textAlign: 'center'
-              }}>
-                Drop FASTA files here
-              </div>
-            </div>
-          )}
-          
-          {/* The actual graph part of the simulation, including the popups for protein informatiopn */}
-          <canvas 
-            ref={canvasRef} 
-            width={800} 
-            height={600} 
-            style={{ 
-              border: '1px solid #444', 
-              borderRadius: '4px' 
-            }} 
-            onMouseMove={handleCanvasMouseMove} 
-            onMouseLeave={handleCanvasMouseLeave}
-            onClick={handleCanvasClick}
-          />
-
-          {/* Protein information popup - show for both canvas clicks and list clicks */}
-          {(hoveredDot || selectedDot) && (
-            <div 
-              id="protein-info-card"
-              style={{ 
-                position: 'fixed', 
-                left: mousePos.x + 10, 
-                top: mousePos.y + 10, 
-                backgroundColor: '#282828', 
-                border: '1px solid #444',
-                color: 'white', 
-                padding: '12px', 
-                borderRadius: '4px',
-                boxShadow: '0 2px 8px rgba(0,0,0,0.2)',
-                zIndex: 1000,
-                minWidth: '200px',
-                pointerEvents: 'auto' // Always enable interaction
+        <div style={{
+          display: 'flex',
+          justifyContent: 'center',
+          gap: '8px',
+          marginBottom: '16px'
+        }}>
+          {/* First dimension button */}
+          <button
+              style={{
+                ...buttonStyle,
+                opacity: simulationState === 'ief-running' ? 0.5 : 1,
+                cursor: simulationState === 'ready' ? 'pointer' : 'not-allowed'
               }}
-            >
-              <h4 style={{ marginBottom: '8px', fontSize: '16px' }}>{(selectedDot || hoveredDot).fullName}</h4>
-              <div style={{ fontSize: '14px', display: 'grid', gap: '4px' }}>
-                <div>Source: {(selectedDot || hoveredDot).organism}</div>
-                {/* Updated UniProt links with proper functionality (PPS1-110) */}
-                <div>
-                  UniProt: <a 
-                    href={`https://www.uniprot.org/uniprotkb/${(selectedDot || hoveredDot).uniprotId !== 'N/A' ? (selectedDot || hoveredDot).uniprotId : (selectedDot || hoveredDot).name.replace(/\s+/g, '_')}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    style={{ color: '#63B3ED', textDecoration: 'none' }}
-                  >
-                    {(selectedDot || hoveredDot).uniprotId !== 'N/A' ? (selectedDot || hoveredDot).uniprotId : (selectedDot || hoveredDot).name}
-                  </a>
-                </div>
-                {(selectedDot || hoveredDot).pdbId !== 'N/A' && (
-                  <div>
-                    PDB: <a 
-                      href={`https://www.rcsb.org/structure/${(selectedDot || hoveredDot).pdbId}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      style={{ color: '#63B3ED', textDecoration: 'none' }}
-                    >
-                      {(selectedDot || hoveredDot).pdbId}
-                    </a>
-                  </div>
-                )}
-                <div>MW: {(selectedDot || hoveredDot).mw.toLocaleString()} Da</div>
-                <div>pH: {(selectedDot || hoveredDot).pH.toFixed(2)}</div>
-                <div style={{ marginTop: '4px' }}>
-                  <div style={{ fontWeight: 500 }}>Function:</div>
-                  <div style={{ color: '#A0AEC0' }}>{(selectedDot || hoveredDot).function}</div>
-                </div>
-                {(selectedDot || hoveredDot).sequence && (
-                  <div style={{ marginTop: '4px' }}>
-                    <div style={{ fontWeight: 500 }}>Sequence Preview:</div>
-                    <div style={{ 
-                      color: '#A0AEC0',
-                      fontFamily: 'monospace',
-                      fontSize: '12px',
+              onClick={startIEF}
+              disabled={simulationState !== 'ready'}
+              onMouseOver={buttonHoverEffect}
+              onMouseOut={buttonLeaveEffect}
+          >
+            First Dimension
+          </button>
+          {/* Second dimension button */}
+          <button
+              style={{
+                ...buttonStyle,
+                opacity: simulationState !== 'ief-complete' ? 0.5 : 1,
+                cursor: simulationState === 'ief-complete' ? 'pointer' : 'not-allowed'
+              }}
+              onClick={startSDS}
+              disabled={simulationState !== 'ief-complete'}
+              onMouseOver={buttonHoverEffect}
+              onMouseOut={buttonLeaveEffect}
+          >
+            Second Dimension
+          </button>
+          {/* Reset button */}
+          <button
+              style={{
+                ...buttonStyle,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '4px'
+              }}
+              onClick={resetPositions}
+              onMouseOver={buttonHoverEffect}
+              onMouseOut={buttonLeaveEffect}
+          >
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <path d="M2.5 12a9.5 9.5 0 1 1 9.5 9.5 9.5 9.5 0 0 1-9.5-9.5m9.5-9.5v9.5l5-4.5"/>
+            </svg>
+            Reset
+          </button>
+          {/* Label for Upload FASTA button */}
+          <label
+              style={{
+                ...buttonStyle,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '4px',
+                cursor: 'pointer'
+              }}
+              onMouseOver={buttonHoverEffect}
+              onMouseOut={buttonLeaveEffect}
+          >
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+              <polyline points="17 8 12 3 7 8"/>
+              <line x1="12" y1="3" x2="12" y2="15"/>
+            </svg>
+            Upload FASTA
+            <input
+                type="file"
+                accept=".fasta,.fa"
+                multiple
+                onChange={handleFileInputChange}
+                style={{ display: 'none' }}
+            />
+          </label>
+          {/* Upload FASTA button */}
+          <button
+              style={{
+                ...buttonStyle,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '4px'
+              }}
+              onClick={toggleYAxisMode}
+              onMouseOver={buttonHoverEffect}
+              onMouseOut={buttonLeaveEffect}
+          >
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <path d="M8 3v18M3 8h10M3 16h10M16 3v18M16 8h5M16 16h5"/>
+            </svg>
+            {yAxisMode === 'mw' ? 'Show Distance' : 'Show MW'}
+          </button>
+        </div>
+
+        {/* pH Range Slider, disabled during simulation */}
+        <div style={{ marginBottom: '20px', padding: '0 20px', maxWidth: '800px', alignSelf: 'center' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '8px' }}>
+            <label style={{
+              fontSize: '14px',
+              width: '120px',
+              opacity: simulationState === 'ready' ? 1 : 0.5 // Dim when disabled
+            }}>pH Range:</label>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flex: 1 }}>
+              <input
+                  type="number"
+                  min="0"
+                  max="14"
+                  step="0.1"
+                  value={phRange.min}
+                  onChange={(e) => handlePhRangeChange('min', e.target.value)}
+                  style={inputStyle}
+                  disabled={simulationState !== 'ready'} // Disable during simulation
+              />
+              <input
+                  type="range"
+                  id="ph-min-slider"
+                  min="0"
+                  max="14"
+                  step="0.1"
+                  value={phRange.min}
+                  onChange={handlePhSliderChange}
+                  style={sliderStyle}
+                  disabled={simulationState !== 'ready'} // Disable during simulation
+              />
+              <input
+                  type="range"
+                  id="ph-max-slider"
+                  min="0"
+                  max="14"
+                  step="0.1"
+                  value={phRange.max}
+                  onChange={handlePhSliderChange}
+                  style={sliderStyle}
+                  disabled={simulationState !== 'ready'} // Disable during simulation
+              />
+              <input
+                  type="number"
+                  min="0"
+                  max="14"
+                  step="0.1"
+                  value={phRange.max}
+                  onChange={(e) => handlePhRangeChange('max', e.target.value)}
+                  style={inputStyle}
+                  disabled={simulationState !== 'ready'} // Disable during simulation
+              />
+            </div>
+          </div>
+        </div>
+
+        {/* Acrylamide Percentage Slider */}
+        <div style={{ marginBottom: '20px', padding: '0 20px', maxWidth: '800px', alignSelf: 'center' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '8px' }}>
+            <label style={{
+              fontSize: '14px',
+              width: '120px',
+              opacity: simulationState === 'ready' ? 1 : 0.5 // Dim when disabled
+            }}>Acrylamide %:</label>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flex: 1 }}>
+              <input
+                  type="number"
+                  min="5"
+                  max="20"
+                  step="0.5"
+                  value={acrylamidePercentage}
+                  onChange={(e) => setAcrylamidePercentage(parseFloat(e.target.value))}
+                  style={inputStyle}
+                  disabled={simulationState !== 'ready'} // Disable during simulation
+              />
+              <input
+                  type="range"
+                  min="5"
+                  max="20"
+                  step="0.5"
+                  value={acrylamidePercentage}
+                  onChange={handleAcrylamideChange}
+                  style={sliderStyle}
+                  disabled={simulationState !== 'ready'} // Disable during simulation
+              />
+              <div style={{
+                minWidth: '140px',
+                fontSize: '12px',
+                opacity: simulationState === 'ready' ? 0.8 : 0.4 // Dim when disabled
+              }}>
+                {acrylamidePercentage < 7 ? 'Resolves large proteins' :
+                    acrylamidePercentage < 12 ? 'Medium range separation' :
+                        'Resolves small proteins'}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Main content area */}
+        <div style={{
+          display: 'flex',
+          justifyContent: 'center',
+          gap: '16px',
+          maxWidth: '1100px',
+          margin: '0 auto'
+        }}>
+          {/* Protein list panel with resizable feature */}
+          <div
+              id="protein-list"
+              style={{
+                padding: '16px',
+                backgroundColor: '#282828',
+                borderRadius: '4px',
+                width: isProteinListCollapsed ? '80px' : '250px',
+                height: '600px',
+                display: 'flex',
+                flexDirection: 'column',
+                transition: 'width 0.3s ease-in-out',
+                overflow: 'hidden',
+                position: 'relative'
+              }}
+          >
+            <ProteinListHeader
+                isCollapsed={isProteinListCollapsed}
+                onToggle={toggleProteinList}
+                count={dots.length}
+            />
+
+            {/* Resizable handle */}
+            <div
+                style={{
+                  position: 'absolute',
+                  top: 0,
+                  right: 0,
+                  width: '5px',
+                  height: '100%',
+                  cursor: 'ew-resize',
+                  background: 'rgba(255,255,255,0.1)',
+                }}
+                onMouseDown={(e) => {
+                  const startWidth = e.currentTarget.parentElement.offsetWidth;
+                  const startX = e.clientX;
+
+                  const onMouseMove = (moveEvent) => {
+                    if (isProteinListCollapsed) return;
+                    const newWidth = Math.max(150, startWidth + moveEvent.clientX - startX);
+                    e.currentTarget.parentElement.style.width = `${newWidth}px`;
+                  };
+
+                  const onMouseUp = () => {
+                    document.removeEventListener('mousemove', onMouseMove);
+                    document.removeEventListener('mouseup', onMouseUp);
+                  };
+
+                  document.addEventListener('mousemove', onMouseMove);
+                  document.addEventListener('mouseup', onMouseUp);
+                }}
+            />
+
+            <div style={{
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '8px',
+              overflowY: 'auto',
+              flex: 1,
+              marginTop: '8px',
+              opacity: isProteinListCollapsed ? 0 : 1,
+              transition: 'opacity 0.2s',
+              transitionDelay: isProteinListCollapsed ? '0s' : '0.1s'
+            }}>
+              {!isProteinListCollapsed && dots.map(dot => (
+                  <div
+                      key={dot.name}
+                      onClick={() => handleProteinClick(dot)}
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '8px',
+                        minHeight: '24px',
+                        padding: '4px',
+                        cursor: 'pointer',
+                        backgroundColor: selectedDot?.name === dot.name ? '#3a3a3a' : 'transparent',
+                        borderRadius: '4px',
+                        transition: 'background-color 0.2s'
+                      }}>
+                    <div style={{
+                      width: '12px',
+                      height: '12px',
+                      minWidth: '12px',
+                      backgroundColor: dot.color,
+                      borderRadius: '50%'
+                    }}/>
+                    <span style={{
                       whiteSpace: 'nowrap',
                       overflow: 'hidden',
                       textOverflow: 'ellipsis',
-                      maxWidth: '300px'
-                    }}>
-                      {(selectedDot || hoveredDot).sequence.substring(0, 50)}...
-                    </div>
+                      fontSize: '14px',
+                      flex: 1
+                    }}>{dot.name}</span>
                   </div>
-                )}
-              </div>
+              ))}
             </div>
-          )}
+
+            {/* Upload Progress Indicator */}
+            {isUploading && (
+                <div style={{
+                  marginTop: '16px',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center'
+                }}>
+                  <div style={{ marginBottom: '8px', fontSize: '14px' }}>Uploading FASTA...</div>
+                  <CircularProgress progress={uploadProgress} />
+                </div>
+            )}
+          </div>
+
+          <div
+              style={{ position: 'relative' }}
+              onDragEnter={handleDragEnter}
+              onDragOver={handleDragOver}
+              onDragLeave={handleDragLeave}
+              onDrop={handleDrop}
+          >
+            {isDragging && (
+                <div style={{
+                  position: 'absolute',
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  bottom: 0,
+                  backgroundColor: 'rgba(0, 0, 0, 0.7)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  zIndex: 1000,
+                  borderRadius: '4px'
+                }}>
+                  <div style={{
+                    padding: '20px',
+                    border: '2px dashed #666',
+                    borderRadius: '8px',
+                    textAlign: 'center'
+                  }}>
+                    Drop FASTA files here
+                  </div>
+                </div>
+            )}
+
+            {/* The actual graph part of the simulation, including the popups for protein informatiopn */}
+            <canvas
+                ref={canvasRef}
+                width={800}
+                height={600}
+                style={{
+                  border: '1px solid #444',
+                  borderRadius: '4px'
+                }}
+                onMouseMove={handleCanvasMouseMove}
+                onMouseLeave={handleCanvasMouseLeave}
+                onClick={handleCanvasClick}
+            />
+
+            {/* Protein information popup - show for both canvas clicks and list clicks */}
+            {(hoveredDot || selectedDot) && (
+                <div
+                    id="protein-info-card"
+                    style={{
+                      position: 'fixed',
+                      left: mousePos.x + 10,
+                      top: mousePos.y + 10,
+                      backgroundColor: '#282828',
+                      border: '1px solid #444',
+                      color: 'white',
+                      padding: '12px',
+                      borderRadius: '4px',
+                      boxShadow: '0 2px 8px rgba(0,0,0,0.2)',
+                      zIndex: 1000,
+                      minWidth: '200px',
+                      pointerEvents: 'auto' // Always enable interaction
+                    }}
+                >
+                  <h4 style={{ marginBottom: '8px', fontSize: '16px' }}>{(selectedDot || hoveredDot).fullName}</h4>
+                  <div style={{ fontSize: '14px', display: 'grid', gap: '4px' }}>
+                    <div>Source: {(selectedDot || hoveredDot).organism}</div>
+                    {/* Updated UniProt links with proper functionality (PPS1-110) */}
+                    <div>
+                      UniProt: <a
+                        href={`https://www.uniprot.org/uniprotkb/${(selectedDot || hoveredDot).uniprotId !== 'N/A' ? (selectedDot || hoveredDot).uniprotId : (selectedDot || hoveredDot).name.replace(/\s+/g, '_')}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style={{ color: '#63B3ED', textDecoration: 'none' }}
+                    >
+                      {(selectedDot || hoveredDot).uniprotId !== 'N/A' ? (selectedDot || hoveredDot).uniprotId : (selectedDot || hoveredDot).name}
+                    </a>
+                    </div>
+                    {(selectedDot || hoveredDot).pdbId !== 'N/A' && (
+                        <div>
+                          PDB: <a
+                            href={`https://www.rcsb.org/structure/${(selectedDot || hoveredDot).pdbId}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            style={{ color: '#63B3ED', textDecoration: 'none' }}
+                        >
+                          {(selectedDot || hoveredDot).pdbId}
+                        </a>
+                        </div>
+                    )}
+                    <div>MW: {(selectedDot || hoveredDot).mw.toLocaleString()} Da</div>
+                    <div>pH: {(selectedDot || hoveredDot).pH.toFixed(2)}</div>
+                    <div style={{ marginTop: '4px' }}>
+                      <div style={{ fontWeight: 500 }}>Function:</div>
+                      <div style={{ color: '#A0AEC0' }}>{(selectedDot || hoveredDot).function}</div>
+                    </div>
+                    {(selectedDot || hoveredDot).sequence && (
+                        <div style={{ marginTop: '4px' }}>
+                          <div style={{ fontWeight: 500 }}>Sequence Preview:</div>
+                          <div style={{
+                            color: '#A0AEC0',
+                            fontFamily: 'monospace',
+                            fontSize: '12px',
+                            whiteSpace: 'nowrap',
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                            maxWidth: '300px'
+                          }}>
+                            {(selectedDot || hoveredDot).sequence.substring(0, 50)}...
+                          </div>
+                        </div>
+                    )}
+                  </div>
+                </div>
+            )}
+          </div>
         </div>
       </div>
-    </div>
   );
 };
 

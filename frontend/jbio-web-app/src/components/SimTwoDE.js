@@ -1,11 +1,13 @@
 import './SimTwoDE.css';
+import './TwoDE.js';
+import TwoDE from "./TwoDE";
 
 function SimTwoDE() {
     return (
-        <div>
+        <div className="sim-container">
             <h1>2D Electrophoresis Simulator</h1>
             <div className='simulatorBoxTwoDE'>
-                <p>Insert Simulation here</p>
+                <TwoDE/>
             </div>
             <section className='TwoDEinstructions'>
                 <h2>2DE Simulator Instructions</h2>
