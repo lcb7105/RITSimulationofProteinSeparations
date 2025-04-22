@@ -33,6 +33,11 @@
     min-width: 250px;
 }
 
+.container-wrapper{
+    position: sticky;
+    top: 0;
+}
+
 .nav-container{
     display: flex;
     /*justify-content: space-between;*/
