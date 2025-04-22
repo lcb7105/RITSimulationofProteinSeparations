@@ -32,5 +32,10 @@ canvas{
 @media screen and (max-width: 1000px) {
     #protein-list{
         flex-direction: row !important;
+        width: auto !important;
+        height: 10% !important;
+    }
+    div:has(#protein-list){
+        flex-direction: column;
     }
 }
