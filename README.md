@@ -14,7 +14,7 @@ Dr. Paul Craig received his B.S. in Chemistry from Oral Roberts University in 19
 ### Git
 
 ```bash
-git clone https://github.com/AmrMualla/RITSimulationofProteinSimulations.git
+git clone https://github.com/lcb7105/RITSimulationofProteinSeparations.git
 ```
 
 Windows:
@@ -170,6 +170,14 @@ again to update the package. Then you should see this:
 
 After running a test, it will tell you how many test suites and tests have passed and if they failed, where and why they did.
 
+<br/>
+
+IMPORTANT: 
+Running npm test will automatically run coverage as well. 
+If there are no results in the coverage report, make a small change to the test file (like adding a random space somewhere, save the file locally, and run npm test again.
+
+<br/>
+
 #### Jest Test Basics
 If on Windows, the Jest tests are stored in
 
@@ -211,6 +219,33 @@ python3 -m unittest backend.Electro1DTests.ProteinTest
 OR
 
 Some IDEs have a built-in run function for files that can be executed. If you wish to do this, navigate to the ProteinTest.py or any other test file and click the run button.
+
+<br/>
+
+To run coverage on the backend tests, first you need to install coverage by running this command.
+
+```bash
+pip install coverage
+```
+
+Then to generate coverage on the tests, you need to run this command for each individual test file. Make sure to replace ProteinTest.py with the intended test file name.
+
+```bash
+cd .\RITSimulationofProteinSimulations\
+coverage run -m unittest backend/Electro1DTests/ProteinTest.py
+```
+
+Then run this command to show the coverage report.
+
+```bash
+coverage report
+```
+
+If you want to generate an html file for the coverage report you can also run this command.
+
+```bash
+coverage html
+```
 
 <br/>
 
