@@ -225,6 +225,8 @@ def simulate_sds(proteins, y_axis_mode, acrylamide_percentage, canvas_height, st
             else:
                 targetPosY = get_distance_position(protein['mw'], canvas_height, acrylamide_percentage)
             
+            if targetPosY >= 600:
+                targetPosY == 600
             # Move gradually toward target position
             protein_data.update({
                 'x': prev_data['x'],
