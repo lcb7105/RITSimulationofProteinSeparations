@@ -4,23 +4,24 @@
     justify-content: center;
     /*align-items: center;*/
     /*height: 88vh;*/
-    overflow: auto;
+    overflow: visible !important;
+    position: relative;
+    padding-top: 2em;
+    /*contain: layout paint style;*/
 }
 
-/*.graphic-wrapper{*/
-/*.graphic-wrapper{*/
-/*    contain: layout style paint;*/
-/*}*/
-
-/*.electrophoresis-cell::before {*/
-/*    content: "";*/
-/*    position: absolute;*/
-/*    left: 5%;*/
-/*    right: 5%;*/
-/*    height: 150px;*/
-/*    background-color: #FFF;*/
-/*    z-index: 2;*/
-/*}*/
+.graphic-wrapper{
+    overflow: visible;
+}
+.electrophoresis-cell::before {
+    content: "";
+    position: absolute;
+    left: 5%;
+    right: 5%;
+    height: 150px;
+    background-color: #FFF;
+    z-index: 2;
+}
 
 .electrophoresis-cell {
     flex-shrink: 0;
@@ -36,7 +37,8 @@
     box-shadow: 0 0 0.9375em 0.1875em rgba(0, 0, 0, 0.1) inset;
     z-index: 3;
     left: 3em;
-    /*top: -70em;*/
+    top: 18em;
+    /*margin-bottom: 2em;*/
     overflow-y: scroll;
 }
 
@@ -163,7 +165,8 @@
     flex-shrink: 0;
     position: relative;
     /*left: 17em;*/
-    /*bottom: 118em;*/
+    top: -29em;
+    margin-bottom: 1em;
     width: 53em;
     height: 9.375em;
     border: 3px solid #000;
@@ -176,22 +179,23 @@
     flex-shrink: 0;
     position: relative;
     /*left: 17em;*/
-    /*bottom: 88em;*/
+    /*top: -5em;*/
     width: 53em;
     height: 9.375em;
     border: 3px solid #000;
     background-color: #a5cefc; 
     border-radius: 0 0 5px 5px; 
-    z-index: 1; 
+    z-index: 1;
+    margin-top: 2em;
 }
 
 
 .acrylamide-label {
     flex-shrink: 0;
     font-weight: bold;
-    left: 17.5em;
-    bottom: 89.6em;
-    position: relative;
+    position: absolute;
+    bottom: 2em;
+    left: 1em;
     z-index: 1;
     color: #000000;
 }
@@ -236,6 +240,8 @@
 .onede-box {
     contain: layout paint style;
     width: auto;
+    position: relative;
+    overflow: visible;
 }
 
 .uploadContainer {
@@ -298,9 +304,9 @@
 }
 
 .wires {
-    position: relative;
-    top: -75em;
-    left: 15em;
+    position: absolute;
+    top: -36em;
+    left: -2em;
 }
 
 .redwire-image{
@@ -386,8 +392,8 @@
     flex-shrink: 0;
     font-size: 20px;
     font-weight: bold;
-    top: -121.5em;
-    left: 27.3em;
+    top: -52em;
+    left: 20.3em;
     position: relative;
     z-index: 1;
 }
