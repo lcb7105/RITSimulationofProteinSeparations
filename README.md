@@ -172,6 +172,8 @@ After running a test, it will tell you how many test suites and tests have passe
 
 <br/>
 
+#### Generating Test Coverage
+
 IMPORTANT: 
 Running npm test will automatically run coverage as well. 
 If there are no results in the coverage report, make a small change to the test file (like adding a random space somewhere, save the file locally, and run npm test again.
@@ -221,6 +223,8 @@ OR
 Some IDEs have a built-in run function for files that can be executed. If you wish to do this, navigate to the ProteinTest.py or any other test file and click the run button.
 
 <br/>
+
+#### Generating Test Coverage
 
 To run coverage on the backend tests, first you need to install coverage by running this command.
 
